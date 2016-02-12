@@ -44,18 +44,17 @@ public class FileUploadServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 	}
 
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		String wavFormFile = null;
 		try {
-			List<FileItem> items = new ServletFileUpload(
-					new DiskFileItemFactory()).parseRequest(request);
+			List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
 			for (FileItem item : items) {
 				if (item.isFormField()) {
 					// Process regular form field (input
@@ -84,42 +83,35 @@ public class FileUploadServlet extends HttpServlet {
 
 	}
 
-	private static final String RESOURCES_FOLDER = "C:\\Users\\Hawkes\\workspace\\WC\\WebContent\\resources\\";
+	private static final String RESOURCES_FOLDER = "C:\\Users\\Hawkes\\git\\WC\\WebContent\\resources";
 
-	private String processUploadedFile(FileItem item) throws IOException,
-			UnsupportedAudioFileException {
+	private String processUploadedFile(FileItem item) throws IOException, UnsupportedAudioFileException {
 
 		String currentTime = Long.toString(System.currentTimeMillis());
 
-		String filePath1 = RESOURCES_FOLDER + "\\originalUpload\\"
-				+ currentTime + ".mp3";
-		String filePath2 = RESOURCES_FOLDER + "\\generatedWav\\" + currentTime
-				+ ".wav";
-		String filePath3 = RESOURCES_FOLDER + "\\wavForm\\" + currentTime
-				+ ".txt";
+		String filePath1 = RESOURCES_FOLDER + "\\originalUpload\\" + currentTime + ".mp3";
+		String filePath2 = RESOURCES_FOLDER + "\\generatedWav\\" + currentTime + ".wav";
+		String filePath3 = RESOURCES_FOLDER + "\\wavForm\\" + currentTime + ".txt";
 
 		writeUploadedFileToDisk(item, filePath1);
 
 		Alex alex = new Alex();
-		Vector<Coordinate> coordinates = alex.convertMP3ToWAV(filePath1,
-				filePath2);
+		Vector<Coordinate> coordinates = alex.convertMP3ToWAV(filePath1, filePath2);
 
 		writeCoordinatesToFile(filePath3, coordinates);
 
 		return currentTime + ".wav";
 	}
 
-	private void writeCoordinatesToFile(String filePath,
-			Vector<Coordinate> coordinates) throws IOException {
+	private void writeCoordinatesToFile(String filePath, Vector<Coordinate> coordinates) throws IOException {
 		Writer writer = null;
 
 		try {
-			writer = new BufferedWriter(new OutputStreamWriter(
-					new FileOutputStream(filePath), "utf-8"));
+			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath), "utf-8"));
 
 			for (Coordinate coordinate : coordinates) {
-				writer.write(coordinate.getX() + "," + coordinate.getY_min()
-						+ "," + coordinate.getY_max() + newLineChar);
+				writer.write(
+						coordinate.getX() + "," + coordinate.getY_min() + "," + coordinate.getY_max() + newLineChar);
 			}
 		} catch (IOException ex) {
 			throw ex;
@@ -133,8 +125,7 @@ public class FileUploadServlet extends HttpServlet {
 
 	static final String newLineChar = System.getProperty("line.separator");
 
-	private void writeUploadedFileToDisk(FileItem item, String filePath)
-			throws IOException {
+	private void writeUploadedFileToDisk(FileItem item, String filePath) throws IOException {
 		// Process form file field (input type="file").
 		String fieldname = item.getFieldName();
 		String filename = FilenameUtils.getName(item.getName());
