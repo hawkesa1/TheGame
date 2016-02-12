@@ -23,7 +23,7 @@ function loadWaveForm(wavFormFile) {
 			yHigh = ((tempLines[i].split(',')[2]));
 			wavePoints[wp++] = new WavePoint(time, yLow, yHigh);
 		}
-		waveForm = new WaveForm(400, 1, 20, 200, 200, 2, wavePoints);
+		waveForm = new WaveForm(800, 1, 20, 200, 200, 2, wavePoints);
 		animate();
 	}
 }
@@ -128,7 +128,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 	ctx.strokeStyle = $('#positionLineColor').val();
 	ctx.beginPath();
 	ctx.moveTo(20, 200);
-	ctx.lineTo(820, 200);
+	ctx.lineTo(windowWidth-20, 200);
 	ctx.stroke();
 
 	function drawArc(xPosition, yPosition, radius) {

@@ -3,18 +3,30 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
+
+
+<style>
+</style>
+
+
 <script src="./js/jquery-2.1.1.min.js" type="text/javascript"></script>
 <script src="./js/main.js" type="text/javascript"></script>
 <script src="./js/wavfile.js" type="text/javascript"></script>
-<script src="./js/lyrics.js" type="text/javascript"></script>
-
+<script src="./js/touchControls.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="css/wav.css" media="screen" />
-<script src="./js/touchControls.js" type="text/javascript"></script>
+
+
 </head>
 <body>
 
-	<div>
+	<div class="topBanner">
+		<span class=topBannerItem> Waveform Generator </span>
+	</div>
+
+
+
+	<div id="songOptions">
 		<select id="loadTrack">
 			<option value="1412522059065">song1</option>
 			<option value="1412522493814">song2</option>
@@ -25,46 +37,48 @@
 			<option value="1455269779319">song7</option>
 		</select> <input type="button" value="load" onclick="loadTrack()"></input>
 
-		<table id ="colourOptions">
-			
-				<tr><td>Wav Line Colour</td></tr>
-				<tr><td><input type="color" id="lineColor" value="#F0FFFF">
-				<tr><td>Background Colour</td></tr>
-				<tr><td><input type="color" id="backgroundColor" value="#000000">
-				<tr><td>Position Rectangle</td></tr>
-				<tr><td><input type="color" id="rectangleColor" value="#9932CC">
-				<tr><td>Position Lines</td></tr>
-				<tr><td><input type="color" id="positionLineColor" value="#FF69B4">
-				</td></tr>
-			
+		<table id="colourOptions">
+
+			<tr>
+				<td>Wav Line Colour</td>
+				<td><input type="color" id="lineColor" value="#F0FFFF">
+			<tr>
+				<td>Background Colour</td>
+				<td><input type="color" id="backgroundColor" value="#000000">
+			<tr>
+				<td>Position Rectangle</td>
+				<td><input type="color" id="rectangleColor" value="#9932CC">
+			<tr>
+				<td>Position Lines</td>
+				<td><input type="color" id="positionLineColor" value="#FF69B4">
+			</tr>
+
 			<tr>
 				<td>Circle Colour</td>
-				<td><input type="color" id="circleColor" value="#90EE90">
+				<td><input type="color" id="circleColor" value="#90EE90"></td>
 			</tr>
 			<tr>
 				<td>Zoom Level</td>
 				<td><input id="zoomLevel" type="number" min="1" max="70"
-					value=2>
+					value=2></td>
 			</tr>
 
 		</table>
 
+		<div>
+			<BR>
+			<audio id="audio" controls> <source id="audioSrc"
+				type="audio/mpeg"> Your browser does not support the audio
+			element. </audio>
+		</div>
+		<div id="logMessages">Log</div>
 	</div>
 
 
-	<div>
-	<BR>
-		<audio id="audio" controls> <source id="audioSrc"
-			type="audio/mpeg"> Your browser does not support the audio
-		element. </audio>
-	</div>
-<BR>
-	<div id="logMessages">
-		Log
-	</div>
 
-	
+
 	<div id="controls"></div>
+
 
 </body>
 </html>
