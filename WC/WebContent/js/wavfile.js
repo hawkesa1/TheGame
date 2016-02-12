@@ -1,3 +1,5 @@
+var WAV_FILE_TIME_GAP=10;
+
 function loadWaveForm(wavFormFile) {
 	$.ajax({
 		type : 'GET',
@@ -12,7 +14,7 @@ function loadWaveForm(wavFormFile) {
 		var tempLines = text.split('\n');
 		var wp = 0;
 		var wavePoints = [];
-		var startPoints = 100;
+		var startPoints = 0;
 		var time, yHigh, yLow;
 		for ( var i = 0; i < startPoints; i++) {
 			wavePoints[wp++] = new WavePoint(0, 0, 0);
@@ -54,7 +56,7 @@ function WaveForm(drawTime, pointHeight, xShift, yShift, currentLine,
 	this.totalStartTime = 0;
 }
 WaveForm.prototype.draw = function(time, ctx) {
-	this.startTime = Math.round((time - this.totalStartTime) / 10);
+	this.startTime = Math.round((time - this.totalStartTime) / WAV_FILE_TIME_GAP);
 	ctx.strokeStyle = $('#lineColor').val();
 	ctx.moveTo(this.xShift, this.yShift);
 	ctx.beginPath();
@@ -127,8 +129,8 @@ WaveForm.prototype.draw = function(time, ctx) {
 	// Draw Horizontal Line
 	ctx.strokeStyle = $('#positionLineColor').val();
 	ctx.beginPath();
-	ctx.moveTo(20, 200);
-	ctx.lineTo(windowWidth-20, 200);
+	ctx.moveTo(this.xShift, 200);
+	ctx.lineTo(windowWidth-this.xShift, 200);
 	ctx.stroke();
 
 	function drawArc(xPosition, yPosition, radius) {
