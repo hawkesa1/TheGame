@@ -1,4 +1,21 @@
 var WAV_FILE_TIME_GAP=10;
+var DRAW_TIME_BY_PAGE_WIDTH=400;
+var POINT_SPACING=2;
+var X_MOVE=20;
+
+$(window).on('resize', function(){
+    var win = $(this); //this = window
+    canvas1.width=win.width();
+    windowWidth=win.width();
+    waveForm.drawTime=calculateDrawTime();
+    
+});
+
+
+function calculateDrawTime()
+{
+	return (windowWidth/POINT_SPACING)-(X_MOVE);
+}
 
 function loadWaveForm(wavFormFile) {
 	$.ajax({
@@ -14,7 +31,7 @@ function loadWaveForm(wavFormFile) {
 		var tempLines = text.split('\n');
 		var wp = 0;
 		var wavePoints = [];
-		var startPoints = 0;
+		var startPoints = 100;
 		var time, yHigh, yLow;
 		for ( var i = 0; i < startPoints; i++) {
 			wavePoints[wp++] = new WavePoint(0, 0, 0);
@@ -25,7 +42,7 @@ function loadWaveForm(wavFormFile) {
 			yHigh = ((tempLines[i].split(',')[2]));
 			wavePoints[wp++] = new WavePoint(time, yLow, yHigh);
 		}
-		waveForm = new WaveForm(800, 1, 20, 200, 200, 2, wavePoints);
+		waveForm = new WaveForm(calculateDrawTime(), 1, X_MOVE, 200, 200, POINT_SPACING, wavePoints);
 		animate();
 	}
 }
@@ -130,7 +147,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 	ctx.strokeStyle = $('#positionLineColor').val();
 	ctx.beginPath();
 	ctx.moveTo(this.xShift, 200);
-	ctx.lineTo(windowWidth-this.xShift, 200);
+	ctx.lineTo(windowWidth-(X_MOVE), 200);
 	ctx.stroke();
 
 	function drawArc(xPosition, yPosition, radius) {

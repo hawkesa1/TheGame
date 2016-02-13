@@ -19,6 +19,9 @@ $(document).ready(
 			myVid = document.getElementById("audio");
 			// myVid.playbackRate=0.5;
 			bindCanvasTouchControls();
+			
+			
+			loadTrack();
 		});
 var audioTime;
 function animate() {

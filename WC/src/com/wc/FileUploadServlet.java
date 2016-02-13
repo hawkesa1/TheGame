@@ -79,7 +79,9 @@ public class FileUploadServlet extends HttpServlet {
 		// Actual logic goes here.
 		PrintWriter out = response.getWriter();
 
-		out.println("<h1>" + wavFormFile + "</h1>");
+		//out.println("<h1>" + wavFormFile + "</h1>");
+		
+		 response.sendRedirect("page2.html");
 
 	}
 
