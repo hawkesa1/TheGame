@@ -52,6 +52,7 @@ public class FileUploadServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		String currentTime = Long.toString(System.currentTimeMillis());
 		String wavFormFile = null;
 		try {
 			List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
@@ -63,7 +64,7 @@ public class FileUploadServlet extends HttpServlet {
 					String fieldvalue = item.getString();
 					// ... (do your job here)
 				} else {
-					wavFormFile = processUploadedFile(item);
+					wavFormFile = processUploadedFile(item, currentTime);
 				}
 			}
 		} catch (FileUploadException e) {
@@ -81,15 +82,15 @@ public class FileUploadServlet extends HttpServlet {
 
 		//out.println("<h1>" + wavFormFile + "</h1>");
 		
-		 response.sendRedirect("page2.html");
+		 response.sendRedirect("page2.html?trackId="+currentTime+"&trackName="+currentTime);
 
 	}
 
 	private static final String RESOURCES_FOLDER = "C:\\Users\\Hawkes\\git\\WC\\WebContent\\resources";
 
-	private String processUploadedFile(FileItem item) throws IOException, UnsupportedAudioFileException {
+	private String processUploadedFile(FileItem item, String currentTime) throws IOException, UnsupportedAudioFileException {
 
-		String currentTime = Long.toString(System.currentTimeMillis());
+		
 
 		String filePath1 = RESOURCES_FOLDER + "\\originalUpload\\" + currentTime + ".mp3";
 		String filePath2 = RESOURCES_FOLDER + "\\generatedWav\\" + currentTime + ".wav";

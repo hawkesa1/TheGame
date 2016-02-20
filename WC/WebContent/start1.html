@@ -10,6 +10,7 @@
 
 
 <script src="./js/jquery-2.1.1.min.js" type="text/javascript"></script>
+<script src="./js/jquery-ui.min.js" type="text/javascript"></script>
 <script src="./js/main.js" type="text/javascript"></script>
 <script src="./js/wavfile.js" type="text/javascript"></script>
 <script src="./js/touchControls.js" type="text/javascript"></script>
@@ -30,6 +31,17 @@
 		element. </audio>
 	</div>
 
+
+	<div id="uploadDiv">
+		<div id='uploadBanner'>
+			<span class="uploadBannerItem"> Upload New File </span>
+		</div>
+
+		<iframe src="page2.html" width="400" height="300" frameBorder="0">
+		</iframe>
+
+	</div>
+
 	<div id="songOptions">
 		<select id="loadTrack">
 			<option value="1412522059065">song1</option>
@@ -39,27 +51,30 @@
 			<option value="1414260253916">song5</option>
 			<option value="1453640501838">song6</option>
 			<option value="1455269779319">song7</option>
+			<option value="1455384869959">song8</option>
+			<option value="1455385095375">song9</option>
+			<option value="1455385286479">song10</option>
 		</select> <input type="button" value="load" onclick="loadTrack()"></input>
 
 		<table id="colourOptions">
 
 			<tr>
 				<td>Wav Line Colour</td>
-				<td><input type="color" id="lineColor" value="#F0FFFF">
+				<td><input type="color" id="lineColor" value="#59f951">
 			<tr>
 				<td>Background Colour</td>
 				<td><input type="color" id="backgroundColor" value="#000000">
 			<tr>
 				<td>Position Rectangle</td>
-				<td><input type="color" id="rectangleColor" value="#9932CC">
+				<td><input type="color" id="rectangleColor" value="#59f951">
 			<tr>
 				<td>Position Lines</td>
-				<td><input type="color" id="positionLineColor" value="#FF69B4">
+				<td><input type="color" id="positionLineColor" value="#FFFFFF">
 			</tr>
 
 			<tr>
 				<td>Circle Colour</td>
-				<td><input type="color" id="circleColor" value="#90EE90"></td>
+				<td><input type="color" id="circleColor" value="#59f951"></td>
 			</tr>
 			<tr>
 				<td>Zoom Level</td>
@@ -73,13 +88,6 @@
 			<BR>
 
 		</div>
-		<div id="logMessages">Log</div>
-
-		<iframe src="page2.html">
-		
-			
-			
-		</iframe>
 	</div>
 
 

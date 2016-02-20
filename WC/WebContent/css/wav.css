@@ -30,7 +30,7 @@ body {
 	left:0px;
 	top:44px;
 	width:875px;
-	height:400px;
+	height:300px;
 	z-index:999;
 }
 table#colourOptions
@@ -52,6 +52,35 @@ body {
 	margin: 0px;
 }
 
+#uploadBanner {
+	align: center;
+	background-color: #333;
+	color: #fff;
+	height: 44px;
+	border: 0px;
+	padding: 0px;
+	width:400px;
+}
+.uploadBannerItem {
+	position: absolute;
+	top: 14px;
+	left: 14px;
+}
+#uploadFormDiv
+{
+	width:400px;
+	background-color:black;
+	height:200px;
+}
+
+#uploadDiv
+{
+	position:absolute;
+	top:600px;
+	left:600px;
+}
+
+
 .topBanner {
 	align: center;
 	background-color: #333;
@@ -71,12 +100,10 @@ body {
 	border: 0px;
 	padding: 0px;
 	position:absolute;
-	top:443px;
+	top:343px;
 }
 
 .topBannerItem {
-
-	
 	position: absolute;
 	top: 14px;
 	left: 14px;
