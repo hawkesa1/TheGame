@@ -29,9 +29,10 @@ body {
 	position:absolute;
 	left:0px;
 	top:44px;
-	width:875px;
+	width:800px;
 	height:300px;
 	z-index:999;
+	border: 1px solid yellow;
 }
 table#colourOptions
 {

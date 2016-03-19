@@ -8,7 +8,7 @@ $(document).ready(function($) {
 	windowWidth = $(document).width();
 	windowHeight = $(document).height();
 	canvas1 = document.createElement('canvas');
-	canvas1.width = windowWidth;
+	canvas1.width = 800;
 	canvas1.height = 300;
 	canvas1.id = "canvas1";
 	context1 = canvas1.getContext('2d');
