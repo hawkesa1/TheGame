@@ -3,6 +3,7 @@ var DRAW_TIME_BY_PAGE_WIDTH = 0;
 var POINT_SPACING = 2;
 var X_MOVE = 0;
 var arcRadius = 2;
+var SHIFT_TO_FIX_LINE_THICKNESS=0.5;
 
 function loadWaveForm(wavFormFile) {
 	$.ajax({
@@ -65,7 +66,7 @@ function WaveForm(drawTime, pointHeight, xShift, yShift, currentLine,
 WaveForm.prototype.draw = function(time, ctx) {
 	this.startTime = Math.round((time - this.totalStartTime)
 			/ WAV_FILE_TIME_GAP);
-	ctx.moveTo(this.xShift, this.yShift);
+	ctx.moveTo(this.xShift, this.yShift+SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.beginPath();
 	this.first = true;
 
@@ -86,7 +87,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 			this.first = false;
 			drawArc(this.pointX, this.pointY, arcRadius);
 		}
-		ctx.lineTo(this.pointX, this.pointY);
+		ctx.lineTo(this.pointX, this.pointY+SHIFT_TO_FIX_LINE_THICKNESS);
 		if (this.pointX == this.xShift + this.currentLine) {
 			this.currentYPoint = this.pointY;
 		}
@@ -96,7 +97,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 	drawArc(this.xShift + this.currentLine, this.currentYPoint, arcRadius);
 
 	// Draw Lower Line
-	ctx.moveTo(this.xShift, this.yShift);
+	ctx.moveTo(this.xShift, this.yShift+SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.beginPath();
 	this.first = true;
 	for (var i = this.startTime; i < (this.startTime + this.drawTime); i++) {
@@ -112,7 +113,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 			this.first = false;
 			drawArc(this.pointX, this.pointY, arcRadius);
 		}
-		ctx.lineTo(this.pointX, this.pointY);
+		ctx.lineTo(this.pointX, this.pointY+SHIFT_TO_FIX_LINE_THICKNESS);
 		if (this.pointX == this.xShift + this.currentLine) {
 			this.currentYPoint = this.pointY;
 		}
@@ -142,24 +143,24 @@ WaveForm.prototype.draw = function(time, ctx) {
 
 	// Draw vertical line
 	ctx.beginPath();
-	ctx.moveTo(this.xShift + this.currentLine, 50);
-	ctx.lineTo(this.xShift + this.currentLine, 250);
+	ctx.moveTo(this.xShift + this.currentLine, 50+SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx.lineTo(this.xShift + this.currentLine, 250+SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.stroke();
 
 	// Draw Horizontal Line
 	ctx.beginPath();
-	ctx.moveTo(this.xShift, this.yShift);
-	ctx.lineTo(windowWidth - (X_MOVE), this.yShift);
+	ctx.moveTo(this.xShift, this.yShift+SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx.lineTo(windowWidth - (X_MOVE), this.yShift+SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.stroke();
 	
 	ctx.beginPath();
-	ctx.moveTo(this.xShift, this.yShift+100);
-	ctx.lineTo(windowWidth - (X_MOVE), this.yShift+100);
+	ctx.moveTo(this.xShift, this.yShift+100+SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx.lineTo(windowWidth - (X_MOVE), this.yShift+100+SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.stroke();
 	
 	ctx.beginPath();
-	ctx.moveTo(this.xShift, this.yShift-100);
-	ctx.lineTo(windowWidth - (X_MOVE), this.yShift-100);
+	ctx.moveTo(this.xShift, this.yShift-100+SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx.lineTo(windowWidth - (X_MOVE), this.yShift-100+SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.stroke();
 
 	function drawArc(xPosition, yPosition, radius) {
@@ -171,7 +172,6 @@ WaveForm.prototype.draw = function(time, ctx) {
 		ctx.stroke();
 		ctx.strokeStyle = $('#lineColor').val();
 	}
-
 };
 
 function secondsToTime(seconds)

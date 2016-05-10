@@ -11,7 +11,7 @@ $(document).ready(function($) {
 	windowHeight = $(document).height();
 	canvas1 = document.createElement('canvas');
 	canvas1.width = 850;
-	canvas1.height = 600;
+	canvas1.height = 300;
 	canvas1.id = "canvas1";
 	context1 = canvas1.getContext('2d');
 	$('#canvasContainer').html(canvas1);
