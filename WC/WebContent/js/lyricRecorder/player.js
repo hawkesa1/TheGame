@@ -5,6 +5,8 @@ var touchDiv;
 var mp3Location = "./resources/originalUpload/";
 var audioTime;
 var lineArray = new Array();
+var onlyWordsArray = new Array();
+
 
 $(document).ready(function($) {
 	console.log("Loaded Play Page1");
@@ -16,7 +18,7 @@ $(document).ready(function($) {
 	canvas1.id = "canvas1";
 	context1 = canvas1.getContext('2d');
 	$('#canvasContainer').html(canvas1);
-	//bindCanvasTouchControls();
+	// bindCanvasTouchControls();
 
 	loadTrack();
 });
@@ -29,40 +31,89 @@ $(document).ready(function($) {
  * 
  */
 
-
-
-
-
 $(function() {
-    $("#lyricTextButton").click( function()
-         {
-    		var text=$('#lyricText').val();
-    		console.log(text);
-    		var lineArray=lyricsTextToObjects(text)
-    		$('#lyrics').html(generateLyrics(lineArray));
-    		$(function() {
-    		    $(".word").click( function(event)
-    		         {
-    		    		wordClicked(event.target.id);
-    		         }
-    		    );
-    		});
-    		
-         }
-    );
+	$("#lyricTextButton").click(function() {
+		var text = $('#lyricText').val();
+		console.log(text);
+		var lineArray = lyricsTextToObjects(text)
+		$('#lyrics').html(generateLyrics(lineArray));
+		$(function() {
+			$(".word").click(function(event) {
+				wordClicked(event.target.id);
+			});
+		});
+
+		currentLineIndex=0;
+		currentWordIndex=0;
+		var aLineObject = lineArray[currentLineIndex];
+		var aWordObject = aLineObject.words[currentWordIndex];
+		
+		$('#wordInfoWord').val(
+				aWordObject.word.replace(
+						/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ""));
+		$('#wordInfoStartTime').val(aWordObject.startTime);
+		$('#wordInfoEndTime').val(aWordObject.endTime);
+		$('.word').removeClass("wordSelected");
+		$('#word_' + currentLineIndex + "_" + currentWordIndex)
+		.addClass("wordSelected");
+		
+	});
 });
 
-function wordClicked(wordId)
-{
-	var lineIndex=wordId.split('_')[1];
-	var wordIndex=wordId.split('_')[2];
-	var aLineObject=lineArray[lineIndex];
-	var aWordObject=aLineObject.words[wordIndex];
-	
-	
-	console.log("M" + aWordObject.word);
-}
+var currentLineIndex = 0;
+var currentWordIndex = 0;
 
+$(function() {
+	$("#addCurrentWord").mousedown(function() {
+		var aLineObject = lineArray[currentLineIndex];
+		var aWordObject = aLineObject.words[currentWordIndex];
+		aWordObject.startTime = $("#audio").prop("currentTime")*100;
+		if (currentWordIndex == 0) {
+			aLineObject.startTime = $("#audio").prop("currentTime");
+		}
+		$('#wordInfoWord').val(
+				aWordObject.word.replace(
+						/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ""));
+		$('#wordInfoStartTime').val(aWordObject.startTime);
+		$('#wordInfoEndTime').val("");
+		$('.word').removeClass("wordSelected");
+		$('#word_' + currentLineIndex + "_" + currentWordIndex)
+				.addClass("wordSelected");
+	});
+});
+$(function() {
+	$("#addCurrentWord").mouseup(
+			function() {
+				var aLineObject = lineArray[currentLineIndex];
+				var aWordObject = aLineObject.words[currentWordIndex];
+				aWordObject.endTime = $("#audio").prop("currentTime")*100;
+				$('#wordInfoEndTime').val(aWordObject.endTime);
+				currentWordIndex++;
+				if (currentWordIndex >= aLineObject.words.length) {
+					currentWordIndex = 0;
+					aLineObject.endTime= $("#audio").prop("currentTime")*100;
+					currentLineIndex++;
+				}
+				aLineObject = lineArray[currentLineIndex];
+				aWordObject = aLineObject.words[currentWordIndex];
+				
+			});
+});
+
+function wordClicked(wordId) {
+	var lineIndex = wordId.split('_')[1];
+	var wordIndex = wordId.split('_')[2];
+	currentLineIndex = lineIndex;
+	currentWordIndex = wordIndex;
+	var aLineObject = lineArray[lineIndex];
+	var aWordObject = aLineObject.words[wordIndex];
+	$('#wordInfoWord').val(
+			aWordObject.word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ""));
+	$('#wordInfoStartTime').val(aWordObject.startTime);
+	$('#wordInfoEndTime').val(aWordObject.endTime);
+	$('.word').removeClass("wordSelected");
+	$('#' + wordId).addClass("wordSelected");
+}
 
 function lyricsTextToObjects(lyricsText) {
 	lyricsText = lyricsText.replace(/\\r\\n/g, '\n');
@@ -70,16 +121,20 @@ function lyricsTextToObjects(lyricsText) {
 	var aWordObject;
 	var aLineObject;
 	var wordsArray;
-	
+
 	var words;
-	for ( var i = 0; i < lines.length; i++) {
+	var k=0;
+	for (var i = 0; i < lines.length; i++) {
 		aLineObject = new LineObject();
 		wordsArray = new Array();
 		words = lines[i].split(' ');
-		for ( var j = 0; j < words.length; j++) {
+		for (var j = 0; j < words.length; j++) {
 			aWordObject = new WordObject();
 			aWordObject.word = words[j];
 			wordsArray[j] = aWordObject;
+			
+			onlyWordsArray[k]=aWordObject;
+			k++;
 		}
 		aLineObject.words = wordsArray;
 		lineArray[i] = aLineObject;
@@ -90,13 +145,13 @@ function generateLyrics(lines) {
 	var html = "";
 	var words;
 	var id;
-	for ( var i = 0; i < lines.length; i++) {
+	for (var i = 0; i < lines.length; i++) {
 		words = lines[i].words;
 		html += "<div class='line'>";
-		for ( var j = 0; j < words.length; j++) {
+		for (var j = 0; j < words.length; j++) {
 			id = "word_" + i + "_" + j;
 			html += "<span class='word' id='" + id + "'>" + words[j].word
-					+ "</span>" +" ";
+					+ "</span>" + " ";
 		}
 		html += "</div>";
 	}
@@ -113,9 +168,6 @@ function LineObject() {
 function SongObject() {
 
 }
-
-
-
 
 function addTrack(trackId, trackName) {
 	console.log("Add Track: " + trackId + " " + trackName);

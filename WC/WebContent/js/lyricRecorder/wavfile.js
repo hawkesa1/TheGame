@@ -82,12 +82,11 @@ function WaveForm(drawTime, pointHeight, xShift, yShift, currentLine,
 var firstPass = true;
 var aWord;
 
-//Receives the currentTimeof the audio file and the context of the canvas
+// Receives the currentTimeof the audio file and the context of the canvas
 WaveForm.prototype.draw = function(time, ctx) {
-	//The wav file has 1 entry per WAV_FILE_TIME_GAP (usually 10ms)
-	this.startTime = Math.round((time)
-			/ WAV_FILE_TIME_GAP);
-	
+	// The wav file has 1 entry per WAV_FILE_TIME_GAP (usually 10ms)
+	this.startTime = Math.round((time) / WAV_FILE_TIME_GAP);
+
 	ctx.moveTo(this.xShift, this.yShift + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.beginPath();
 	this.first = true;
@@ -95,14 +94,15 @@ WaveForm.prototype.draw = function(time, ctx) {
 	// Draw Upper Line
 	var point = 0;
 
-	//We only draw part of the full audio, so we are only interested in the time between start time and the upper limit
+	// We only draw part of the full audio, so we are only interested in the
+	// time between start time and the upper limit
 	for (var i = this.startTime; i < (this.startTime + (this.drawTime)); i++) {
-		
-		//to determine the x location of the point
+
+		// to determine the x location of the point
 		this.pointX = ((i - this.startTime) * this.pointSpacing) + this.xShift;
 		point = 0;
 
-		//to determine the y location of the point
+		// to determine the y location of the point
 		if (i < this.wavePoints.length) {
 			point = this.wavePoints[i].yHigh;
 		} else {
@@ -148,30 +148,48 @@ WaveForm.prototype.draw = function(time, ctx) {
 	drawArc(this.pointX, this.pointY, arcRadius);
 	drawArc(this.xShift + this.currentLine, this.currentYPoint, arcRadius);
 
-	
-	
-	for (var i=0; i<words.length; i++)
-	{
-		aWord=words[i];
-		if(aWord.startTime+(aWord.endTime-aWord.startTime)+100>this.startTime)
-		{
-			var aPoint = (((aWord.startTime - this.startTime)+100) * this.pointSpacing) + this.xShift;
-			ctx.rect(aPoint, 250.5, aWord.endTime-aWord.startTime, 50);
-			ctx.fillStyle = 'yellow';
-			ctx.fill();
-			ctx.stroke();
-			ctx.fillStyle = 'black';
+	for (var i = 0; i < onlyWordsArray.length; i++) {
+		aWord = onlyWordsArray[i];
+		if (aWord.startTime) {
+			var endTime = aWord.endTime;
+			if (!endTime) {
+				endTime = this.startTime;
+			}
+			if (aWord.startTime + (endTime - aWord.startTime) + 100 > this.startTime) {
+				console.log (aWord.word);
+				var topLeft = (((aWord.startTime - this.startTime) + 100) * this.pointSpacing)
+						+ this.xShift;
+				var width = ((endTime - aWord.startTime)) * this.pointSpacing;
+				ctx.rect(topLeft, 250.5, width, 50);
+				ctx.fillStyle = 'yellow';
+				ctx.fill();
+				ctx.stroke();
+				ctx.fillStyle = 'black';
+			}
 		}
+
 	}
-	
+
+	for (var i = 0; i < words.length; i++) {
+		// aWord=words[i];
+		// if(aWord.startTime+(aWord.endTime-aWord.startTime)+100>this.startTime)
+		// {
+		// var aPoint = (((aWord.startTime - this.startTime)+100) *
+		// this.pointSpacing) + this.xShift;
+		// ctx.rect(aPoint, 250.5, aWord.endTime-aWord.startTime, 50);
+		// ctx.fillStyle = 'yellow';
+		// ctx.fill();
+		// ctx.stroke();
+		// ctx.fillStyle = 'black';
+		// }
+	}
+
 	for (var i = this.startTime; i < (this.startTime + (this.drawTime)); i++) {
 		if (firstPass) {
 			console.log(i);
 			firstPass = false;
 		}
 	}
-
-	
 
 	// Draw Numbers
 	var point = 0;

@@ -5,3 +5,9 @@ iframe
 {
 	height:150px;
 }
+
+.wordSelected
+{
+	color:green;
+	font-weight:bold;
+}
