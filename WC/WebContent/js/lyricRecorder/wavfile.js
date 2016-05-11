@@ -3,7 +3,7 @@ var DRAW_TIME_BY_PAGE_WIDTH = 0;
 var POINT_SPACING = 2;
 var X_MOVE = 0;
 var arcRadius = 2;
-var SHIFT_TO_FIX_LINE_THICKNESS=0.5;
+var SHIFT_TO_FIX_LINE_THICKNESS = 0.5;
 
 function loadWaveForm(wavFormFile) {
 	$.ajax({
@@ -30,8 +30,8 @@ function loadWaveForm(wavFormFile) {
 			yHigh = ((tempLines[i].split(',')[2]));
 			wavePoints[wp++] = new WavePoint(time, yLow, yHigh);
 		}
-		waveForm = new WaveForm(500, 1, X_MOVE, 150, 200,
-				POINT_SPACING, wavePoints);
+		waveForm = new WaveForm(500, 1, X_MOVE, 150, 200, POINT_SPACING,
+				wavePoints);
 		animate();
 	}
 }
@@ -44,6 +44,23 @@ function WavePoint(time, yLow, yHigh) {
 	this.time = time;
 	this.yHigh = yHigh;
 	this.yLow = yLow;
+}
+
+var words = [];
+var word1 = new Word(40, 300, "Hello");
+var word2 = new Word(400, 600, "How");
+var word3 = new Word(600, 900, "Are");
+var word4 = new Word(1000, 1100, "You");
+
+words[0] = word1;
+words[1] = word2;
+words[2] = word3;
+words[3] = word4;
+
+function Word(startTime, endTime, text) {
+	this.startTime = startTime;
+	this.endTime = endTime;
+	this.text = text;
 }
 
 function WaveForm(drawTime, pointHeight, xShift, yShift, currentLine,
@@ -61,22 +78,31 @@ function WaveForm(drawTime, pointHeight, xShift, yShift, currentLine,
 	this.first = true;
 	this.wavePoint;
 	this.startTime = 0;
-	this.totalStartTime = 0;
 }
+var firstPass = true;
+var aWord;
+
+//Receives the currentTimeof the audio file and the context of the canvas
 WaveForm.prototype.draw = function(time, ctx) {
-	this.startTime = Math.round((time - this.totalStartTime)
+	//The wav file has 1 entry per WAV_FILE_TIME_GAP (usually 10ms)
+	this.startTime = Math.round((time)
 			/ WAV_FILE_TIME_GAP);
-	ctx.moveTo(this.xShift, this.yShift+SHIFT_TO_FIX_LINE_THICKNESS);
+	
+	ctx.moveTo(this.xShift, this.yShift + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.beginPath();
 	this.first = true;
 
 	// Draw Upper Line
 	var point = 0;
+
+	//We only draw part of the full audio, so we are only interested in the time between start time and the upper limit
 	for (var i = this.startTime; i < (this.startTime + (this.drawTime)); i++) {
-		ctx.strokeStyle = "#000000";
+		
+		//to determine the x location of the point
 		this.pointX = ((i - this.startTime) * this.pointSpacing) + this.xShift;
 		point = 0;
 
+		//to determine the y location of the point
 		if (i < this.wavePoints.length) {
 			point = this.wavePoints[i].yHigh;
 		} else {
@@ -87,7 +113,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 			this.first = false;
 			drawArc(this.pointX, this.pointY, arcRadius);
 		}
-		ctx.lineTo(this.pointX, this.pointY+SHIFT_TO_FIX_LINE_THICKNESS);
+		ctx.lineTo(this.pointX, this.pointY + SHIFT_TO_FIX_LINE_THICKNESS);
 		if (this.pointX == this.xShift + this.currentLine) {
 			this.currentYPoint = this.pointY;
 		}
@@ -97,7 +123,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 	drawArc(this.xShift + this.currentLine, this.currentYPoint, arcRadius);
 
 	// Draw Lower Line
-	ctx.moveTo(this.xShift, this.yShift+SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx.moveTo(this.xShift, this.yShift + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.beginPath();
 	this.first = true;
 	for (var i = this.startTime; i < (this.startTime + this.drawTime); i++) {
@@ -113,7 +139,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 			this.first = false;
 			drawArc(this.pointX, this.pointY, arcRadius);
 		}
-		ctx.lineTo(this.pointX, this.pointY+SHIFT_TO_FIX_LINE_THICKNESS);
+		ctx.lineTo(this.pointX, this.pointY + SHIFT_TO_FIX_LINE_THICKNESS);
 		if (this.pointX == this.xShift + this.currentLine) {
 			this.currentYPoint = this.pointY;
 		}
@@ -121,6 +147,31 @@ WaveForm.prototype.draw = function(time, ctx) {
 	ctx.stroke();
 	drawArc(this.pointX, this.pointY, arcRadius);
 	drawArc(this.xShift + this.currentLine, this.currentYPoint, arcRadius);
+
+	
+	
+	for (var i=0; i<words.length; i++)
+	{
+		aWord=words[i];
+		if(aWord.startTime+(aWord.endTime-aWord.startTime)+100>this.startTime)
+		{
+			var aPoint = (((aWord.startTime - this.startTime)+100) * this.pointSpacing) + this.xShift;
+			ctx.rect(aPoint, 250.5, aWord.endTime-aWord.startTime, 50);
+			ctx.fillStyle = 'yellow';
+			ctx.fill();
+			ctx.stroke();
+			ctx.fillStyle = 'black';
+		}
+	}
+	
+	for (var i = this.startTime; i < (this.startTime + (this.drawTime)); i++) {
+		if (firstPass) {
+			console.log(i);
+			firstPass = false;
+		}
+	}
+
+	
 
 	// Draw Numbers
 	var point = 0;
@@ -135,32 +186,45 @@ WaveForm.prototype.draw = function(time, ctx) {
 			point = 0;
 		}
 		if (i % 100 == 0) {
-			ctx.fillText(secondsToTime((i/100)-1), this.pointX-2, 260);
-			ctx.fillText(secondsToTime((i/100)-1), this.pointX-2, 45);
+			ctx.fillText(secondsToTime((i / 100) - 1), this.pointX - 2, 260);
+			ctx.fillText(secondsToTime((i / 100) - 1), this.pointX - 2, 45);
 		}
 	}
-	
 
 	// Draw vertical line
 	ctx.beginPath();
-	ctx.moveTo(this.xShift + this.currentLine, 50+SHIFT_TO_FIX_LINE_THICKNESS);
-	ctx.lineTo(this.xShift + this.currentLine, 250+SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx
+			.moveTo(this.xShift + this.currentLine,
+					50 + SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx.lineTo(this.xShift + this.currentLine,
+			450 + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.stroke();
 
 	// Draw Horizontal Line
 	ctx.beginPath();
-	ctx.moveTo(this.xShift, this.yShift+SHIFT_TO_FIX_LINE_THICKNESS);
-	ctx.lineTo(windowWidth - (X_MOVE), this.yShift+SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx.moveTo(this.xShift, this.yShift + SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx.lineTo(windowWidth - (X_MOVE), this.yShift
+			+ SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.stroke();
-	
+
+	// Draw Top Line
 	ctx.beginPath();
-	ctx.moveTo(this.xShift, this.yShift+100+SHIFT_TO_FIX_LINE_THICKNESS);
-	ctx.lineTo(windowWidth - (X_MOVE), this.yShift+100+SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx.moveTo(this.xShift, this.yShift + 100 + SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx.lineTo(windowWidth - (X_MOVE), this.yShift + 100
+			+ SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.stroke();
-	
+
+	// Draw Bottom Line
 	ctx.beginPath();
-	ctx.moveTo(this.xShift, this.yShift-100+SHIFT_TO_FIX_LINE_THICKNESS);
-	ctx.lineTo(windowWidth - (X_MOVE), this.yShift-100+SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx.moveTo(this.xShift, this.yShift - 100 + SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx.lineTo(windowWidth - (X_MOVE), this.yShift - 100
+			+ SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx.stroke();
+
+	// Draw Bottom Line
+	ctx.beginPath();
+	ctx.moveTo(this.xShift, 300 + SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx.lineTo(windowWidth - (X_MOVE), 300 + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.stroke();
 
 	function drawArc(xPosition, yPosition, radius) {
@@ -174,7 +238,6 @@ WaveForm.prototype.draw = function(time, ctx) {
 	}
 };
 
-function secondsToTime(seconds)
-{
+function secondsToTime(seconds) {
 	return seconds;
 }

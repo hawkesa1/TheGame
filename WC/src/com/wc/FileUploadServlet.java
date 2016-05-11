@@ -82,7 +82,7 @@ public class FileUploadServlet extends HttpServlet {
 
 		//out.println("<h1>" + wavFormFile + "</h1>");
 		
-		 response.sendRedirect("page2.html?trackId="+currentTime+"&trackName="+currentTime);
+		 response.sendRedirect("lyricRecorderUpload.html?trackId="+currentTime+"&trackName="+currentTime);
 
 	}
 
