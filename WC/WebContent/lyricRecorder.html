@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Player</title>
+<style>
+</style>
+
+<script src="./js/jquery/jquery-2.1.1.min.js" type="text/javascript"></script>
+<script src="./js/jquery/jquery-ui.min.js" type="text/javascript"></script>
+<script src="./js/lyricRecorder/player.js" type="text/javascript"></script>
+<script src="./js/lyricRecorder/wavfile.js" type="text/javascript"></script>
+<script src="./js/lyricRecorder/touchControls.js" type="text/javascript"></script>
+<link rel="stylesheet" href="css/lyricRecorder.css" media="screen" />
+</head>
+<body>
+
+	<iframe src="lyricRecorderUpload.html" width="400" height="50" frameBorder="0">
+		</iframe>
+
+<select id="loadTrack">
+		<option value="1412522059065">song1</option>
+		<option value="1412522493814">song2</option>
+		<option value="1462952484472">song2</option>
+</select>
+
+<textarea rows="4" cols="50">
+Lyrics
+</textarea>
+
+<div id="canvasContainer">
+</div>
+
+	<audio id="audio" controls> <source id="audioSrc"
+		type="audio/mpeg"> Your browser does not support the audio
+	element. </audio>
+
+	
+	
+	<input type="button" value="load" onclick="loadTrack()"></input>
+
+
+</body>
+</html>
