@@ -6,7 +6,7 @@ var mp3Location = "./resources/originalUpload/";
 var audioTime;
 var lineArray = new Array();
 var onlyWordsArray = new Array();
-
+var stopAtTime;
 
 $(document).ready(function($) {
 	console.log("Loaded Play Page1");
@@ -59,6 +59,22 @@ $(function() {
 		
 	});
 });
+
+
+$(function() {
+	$("#wordInfoPlay").click(function() {
+		var aLineObject = lineArray[currentLineIndex];
+		var aWordObject = aLineObject.words[currentWordIndex];
+		var vid = document.getElementById("audio");
+		vid.currentTime = aWordObject.startTime/100;
+		vid.play();
+		stopAtTime=aWordObject.endTime*10;
+	});
+});
+
+
+
+
 
 var currentLineIndex = 0;
 var currentWordIndex = 0;
@@ -113,6 +129,12 @@ function wordClicked(wordId) {
 	$('#wordInfoEndTime').val(aWordObject.endTime);
 	$('.word').removeClass("wordSelected");
 	$('#' + wordId).addClass("wordSelected");
+	
+	var vid = document.getElementById("audio");
+	vid.currentTime = aWordObject.startTime/100;
+	vid.play();
+	stopAtTime=aWordObject.endTime*10;
+	
 }
 
 function lyricsTextToObjects(lyricsText) {

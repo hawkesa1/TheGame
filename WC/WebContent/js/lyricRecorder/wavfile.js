@@ -84,6 +84,15 @@ var aWord;
 
 // Receives the currentTimeof the audio file and the context of the canvas
 WaveForm.prototype.draw = function(time, ctx) {
+	
+	if(time>stopAtTime)
+	{
+		var vid = document.getElementById("audio");
+		vid.pause();
+		stopAtTime=999999;
+	}
+	
+	
 	// The wav file has 1 entry per WAV_FILE_TIME_GAP (usually 10ms)
 	this.startTime = Math.round((time) / WAV_FILE_TIME_GAP);
 
@@ -152,11 +161,10 @@ WaveForm.prototype.draw = function(time, ctx) {
 		aWord = onlyWordsArray[i];
 		if (aWord.startTime) {
 			var endTime = aWord.endTime;
-			if (!endTime) {
+			if (!endTime && aWord.startTime<this.startTime) {
 				endTime = this.startTime;
 			}
 			if (aWord.startTime + (endTime - aWord.startTime) + 100 > this.startTime) {
-				console.log (aWord.word);
 				var topLeft = (((aWord.startTime - this.startTime) + 100) * this.pointSpacing)
 						+ this.xShift;
 				var width = ((endTime - aWord.startTime)) * this.pointSpacing;
