@@ -14,14 +14,14 @@ $(document).ready(function($) {
 	windowWidth = $(document).width();
 	windowHeight = $(document).height();
 	canvas1 = document.createElement('canvas');
-	canvas1.width = 850;
+	canvas1.width = 800;
 	canvas1.height = 301;
 	canvas1.id = "canvas1";
 	context1 = canvas1.getContext('2d');
 	$('#canvasContainer').html(canvas1);
 	// bindCanvasTouchControls();
 
-	loadTrack();
+	//loadTrack();
 });
 
 /*

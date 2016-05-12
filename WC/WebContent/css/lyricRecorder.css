@@ -11,3 +11,28 @@ iframe
 	color:green;
 	font-weight:bold;
 }
+
+#lyrics
+{
+	height:200px;
+	width:600px;
+	border: 1px solid black;
+	overflow-y:scroll;
+}
+#wordInfo
+{
+	width:200px;
+	height:200px;
+	border:1px solid black;
+	position:relative;
+	top:-202px;
+	left:605px;
+	margin-bottom: -202px;
+}
+#canvasContainer
+{
+	border:1px solid black;
+	width:800px;
+
+}
+
