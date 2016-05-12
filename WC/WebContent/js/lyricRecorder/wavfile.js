@@ -11,10 +11,10 @@ function loadWaveForm(wavFormFile) {
 		url : './resources/wavForm/' + wavFormFile + '.txt',
 		data : null,
 		success : function(text) {
-			loadWords(text);
+			generateWaveForm(text);
 		}
 	});
-	function loadWords(text) {
+	function generateWaveForm(text) {
 		text = text.replace(/\\r\\n/g, '\n');
 		var tempLines = text.split('\n');
 		var wp = 0;
@@ -35,6 +35,25 @@ function loadWaveForm(wavFormFile) {
 		animate();
 	}
 }
+
+
+function loadLyricsData(wavFormFile) {
+	$.ajax({
+		type : 'GET',
+		url : './resources/lyricData/' + wavFormFile + '.json',
+		data : null,
+		cache: false,
+		success : function(text) {
+			generateLyricData(text);
+		}
+	});
+	function generateLyricData(text) {
+		lineArray=text;
+		$('#lyrics').html(generateLyrics(lineArray));
+		addClickToLyrics();
+	}
+}
+
 
 function calculateDrawTime() {
 	return (windowWidth / POINT_SPACING) - (X_MOVE);

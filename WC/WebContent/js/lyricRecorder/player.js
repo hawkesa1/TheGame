@@ -7,6 +7,7 @@ var audioTime;
 var lineArray = new Array();
 var onlyWordsArray = new Array();
 var stopAtTime;
+var currentSongId;
 
 $(document).ready(function($) {
 	console.log("Loaded Play Page1");
@@ -32,16 +33,13 @@ $(document).ready(function($) {
  */
 
 $(function() {
-	$("#save")
-			.click(
-					function() {
-						lineArrayToJSON();
-					});
+	$("#save").click(function() {
+		saveLyrics(lineArrayToJSON(), "songId1");
+	});
 });
 
-function lineArrayToJSON()
-{
-	console.log($.toJSON(lineArray));
+function lineArrayToJSON() {
+	return $.toJSON(lineArray);
 }
 
 function millisecondsToISOMinutesSecondsMilliseconds(milliseconds) {
@@ -62,11 +60,7 @@ $(function() {
 						console.log(text);
 						var lineArray = lyricsTextToObjects(text)
 						$('#lyrics').html(generateLyrics(lineArray));
-						$(function() {
-							$(".word").click(function(event) {
-								wordClicked(event.target.id);
-							});
-						});
+						addClickToLyrics();
 						currentLineIndex = 0;
 						currentWordIndex = 0;
 						var aLineObject = lineArray[currentLineIndex];
@@ -87,6 +81,44 @@ $(function() {
 
 					});
 });
+
+
+function lyricsTextToObjects(lyricsText) {
+	lyricsText = lyricsText.replace(/\\r\\n/g, '\n');
+	var lines = lyricsText.split('\n');
+	var aWordObject;
+	var aLineObject;
+	var wordsArray;
+	var words;
+	var k = 0;
+	for (var i = 0; i < lines.length; i++) {
+		aLineObject = new LineObject();
+		wordsArray = new Array();
+		words = lines[i].split(' ');
+		for (var j = 0; j < words.length; j++) {
+			aWordObject = new WordObject();
+			aWordObject.word = words[j];
+			wordsArray[j] = aWordObject;
+
+			onlyWordsArray[k] = aWordObject;
+			k++;
+		}
+		aLineObject.words = wordsArray;
+		lineArray[i] = aLineObject;
+	}
+	return lineArray;
+}
+
+function addClickToLyrics() {
+	$(function() {
+		$(".word").click(function(event) {
+			wordClicked(event.target.id);
+		});
+	});
+}
+
+
+
 
 $(function() {
 	$("#wordInfoPlay").click(function() {
@@ -111,7 +143,7 @@ $(function() {
 						aWordObject.startTime = $("#audio").prop("currentTime") * 1000;
 						if (currentWordIndex == 0) {
 							aLineObject.startTime = $("#audio").prop(
-									"currentTime"*1000);
+									"currentTime" * 1000);
 						}
 						$('#wordInfoWord').val(
 								aWordObject.word.replace(
@@ -157,12 +189,10 @@ function wordClicked(wordId) {
 	var aWordObject = aLineObject.words[wordIndex];
 	$('#wordInfoWord').val(
 			aWordObject.word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ""));
-	$('#wordInfoStartTime')
-			.val(
-					millisecondsToISOMinutesSecondsMilliseconds(aWordObject.startTime));
-	$('#wordInfoEndTime')
-			.val(
-					millisecondsToISOMinutesSecondsMilliseconds(aWordObject.endTime));
+	$('#wordInfoStartTime').val(
+			millisecondsToISOMinutesSecondsMilliseconds(aWordObject.startTime));
+	$('#wordInfoEndTime').val(
+			millisecondsToISOMinutesSecondsMilliseconds(aWordObject.endTime));
 	$('.word').removeClass("wordSelected");
 	$('#' + wordId).addClass("wordSelected");
 
@@ -173,45 +203,23 @@ function wordClicked(wordId) {
 
 }
 
-function lyricsTextToObjects(lyricsText) {
-	lyricsText = lyricsText.replace(/\\r\\n/g, '\n');
-	var lines = lyricsText.split('\n');
-	var aWordObject;
-	var aLineObject;
-	var wordsArray;
-
-	var words;
-	var k = 0;
-	for (var i = 0; i < lines.length; i++) {
-		aLineObject = new LineObject();
-		wordsArray = new Array();
-		words = lines[i].split(' ');
-		for (var j = 0; j < words.length; j++) {
-			aWordObject = new WordObject();
-			aWordObject.word = words[j];
-			wordsArray[j] = aWordObject;
-
-			onlyWordsArray[k] = aWordObject;
-			k++;
-		}
-		aLineObject.words = wordsArray;
-		lineArray[i] = aLineObject;
-	}
-	return lineArray;
-}
 function generateLyrics(lines) {
 	var html = "";
 	var words;
 	var id;
+	var k = 0;
 	for (var i = 0; i < lines.length; i++) {
 		words = lines[i].words;
 		html += "<div class='line'>";
 		for (var j = 0; j < words.length; j++) {
+			onlyWordsArray[k] = words[j];
+			k++;
 			id = "word_" + i + "_" + j;
 			html += "<span class='word' id='" + id + "'>" + words[j].word
 					+ "</span>" + " ";
 		}
 		html += "</div>";
+
 	}
 	return html;
 }
@@ -253,5 +261,27 @@ function loadTrack() {
 	var source = document.getElementById('audioSrc');
 	source.src = mp3Location + selectedValue + ".mp3";
 	loadWaveForm(selectedValue);
+	loadLyricsData(selectedValue);
+	currentSongId = selectedValue;
 	audio.load();
+}
+
+function saveLyrics(JSONFormattedLyricData, songId) {
+	$.ajax({
+		type : 'POST',
+		url : './LyricUploadServlet',
+		data : {
+			"JSONFormattedLyricData" : JSONFormattedLyricData,
+			"songId" : currentSongId
+		},
+		success : function(text) {
+			successfullySavedLyrics(text);
+		},
+		error : function(xhr) {
+			alert("An error occured: " + xhr.status + " " + xhr.statusText);
+		}
+	});
+	function successfullySavedLyrics(text) {
+		console.log("Woohoo:" + text);
+	}
 }

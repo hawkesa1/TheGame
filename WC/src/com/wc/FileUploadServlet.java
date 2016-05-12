@@ -87,11 +87,8 @@ public class FileUploadServlet extends HttpServlet {
 	}
 
 	private static final String RESOURCES_FOLDER = "C:\\Users\\Hawkes\\git\\WC\\WebContent\\resources";
-
+	
 	private String processUploadedFile(FileItem item, String currentTime) throws IOException, UnsupportedAudioFileException {
-
-		
-
 		String filePath1 = RESOURCES_FOLDER + "\\originalUpload\\" + currentTime + ".mp3";
 		String filePath2 = RESOURCES_FOLDER + "\\generatedWav\\" + currentTime + ".wav";
 		String filePath3 = RESOURCES_FOLDER + "\\wavForm\\" + currentTime + ".txt";
