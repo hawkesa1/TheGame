@@ -39,36 +39,10 @@ $(function() {
 					});
 });
 
-function lineArrayToLRC()
-{
-	// [mm:ss.xx] <mm:ss.xx>-<mm:ss.xx> line 1 word 1
-	// <mm:ss.xx>-<mm:ss.xx> line 1 word 2
-
-	var aLineObject;
-	var aWordObject;
-	var lineText = "";
-	for (var i = 0; i < lineArray.length; i++) {
-		aLineObject = lineArray[i];
-		lineText += "["
-				+ millisecondsToISOMinutesSecondsMilliseconds(aLineObject.startTime * 1000)
-				+ "]";
-		for (var j = 0; j < aLineObject.words.length; j++) {
-			aWordObject = aLineObject.words[j];
-			lineText += " <"
-					+ millisecondsToISOMinutesSecondsMilliseconds(aWordObject.startTime * 10)
-					+ "> " + aWordObject.word;
-		}
-		lineText += "\n";
-	}
-	console.log(lineText);
-}
-
 function lineArrayToJSON()
 {
 	console.log($.toJSON(lineArray));
 }
-
-
 
 function millisecondsToISOMinutesSecondsMilliseconds(milliseconds) {
 	if (!milliseconds) {
@@ -93,7 +67,6 @@ $(function() {
 								wordClicked(event.target.id);
 							});
 						});
-
 						currentLineIndex = 0;
 						currentWordIndex = 0;
 						var aLineObject = lineArray[currentLineIndex];
@@ -104,10 +77,10 @@ $(function() {
 										/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ""));
 						$('#wordInfoStartTime')
 								.val(
-										millisecondsToISOMinutesSecondsMilliseconds(aWordObject.startTime * 10));
+										millisecondsToISOMinutesSecondsMilliseconds(aWordObject.startTime));
 						$('#wordInfoEndTime')
 								.val(
-										millisecondsToISOMinutesSecondsMilliseconds(aWordObject.endTime * 10));
+										millisecondsToISOMinutesSecondsMilliseconds(aWordObject.endTime));
 						$('.word').removeClass("wordSelected");
 						$('#word_' + currentLineIndex + "_" + currentWordIndex)
 								.addClass("wordSelected");
@@ -120,9 +93,9 @@ $(function() {
 		var aLineObject = lineArray[currentLineIndex];
 		var aWordObject = aLineObject.words[currentWordIndex];
 		var vid = document.getElementById("audio");
-		vid.currentTime = aWordObject.startTime / 100;
+		vid.currentTime = aWordObject.startTime / 1000;
 		vid.play();
-		stopAtTime = aWordObject.endTime * 10;
+		stopAtTime = aWordObject.endTime;
 	});
 });
 
@@ -135,17 +108,17 @@ $(function() {
 					function() {
 						var aLineObject = lineArray[currentLineIndex];
 						var aWordObject = aLineObject.words[currentWordIndex];
-						aWordObject.startTime = $("#audio").prop("currentTime") * 100;
+						aWordObject.startTime = $("#audio").prop("currentTime") * 1000;
 						if (currentWordIndex == 0) {
 							aLineObject.startTime = $("#audio").prop(
-									"currentTime");
+									"currentTime"*1000);
 						}
 						$('#wordInfoWord').val(
 								aWordObject.word.replace(
 										/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ""));
 						$('#wordInfoStartTime')
 								.val(
-										millisecondsToISOMinutesSecondsMilliseconds(aWordObject.startTime * 10));
+										millisecondsToISOMinutesSecondsMilliseconds(aWordObject.startTime));
 						$('#wordInfoEndTime').val("");
 						$('.word').removeClass("wordSelected");
 						$('#word_' + currentLineIndex + "_" + currentWordIndex)
@@ -158,15 +131,15 @@ $(function() {
 					function() {
 						var aLineObject = lineArray[currentLineIndex];
 						var aWordObject = aLineObject.words[currentWordIndex];
-						aWordObject.endTime = $("#audio").prop("currentTime") * 100;
+						aWordObject.endTime = $("#audio").prop("currentTime") * 1000;
 						$('#wordInfoEndTime')
 								.val(
-										millisecondsToISOMinutesSecondsMilliseconds(aWordObject.endTime * 10));
+										millisecondsToISOMinutesSecondsMilliseconds(aWordObject.endTime));
 						currentWordIndex++;
 						if (currentWordIndex >= aLineObject.words.length) {
 							currentWordIndex = 0;
 							aLineObject.endTime = $("#audio").prop(
-									"currentTime") * 100;
+									"currentTime") * 1000;
 							currentLineIndex++;
 						}
 						aLineObject = lineArray[currentLineIndex];
@@ -186,17 +159,17 @@ function wordClicked(wordId) {
 			aWordObject.word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ""));
 	$('#wordInfoStartTime')
 			.val(
-					millisecondsToISOMinutesSecondsMilliseconds(aWordObject.startTime * 10));
+					millisecondsToISOMinutesSecondsMilliseconds(aWordObject.startTime));
 	$('#wordInfoEndTime')
 			.val(
-					millisecondsToISOMinutesSecondsMilliseconds(aWordObject.endTime * 10));
+					millisecondsToISOMinutesSecondsMilliseconds(aWordObject.endTime));
 	$('.word').removeClass("wordSelected");
 	$('#' + wordId).addClass("wordSelected");
 
 	var vid = document.getElementById("audio");
-	vid.currentTime = aWordObject.startTime / 100;
+	vid.currentTime = aWordObject.startTime / 1000;
 	vid.play();
-	stopAtTime = aWordObject.endTime * 10;
+	stopAtTime = aWordObject.endTime;
 
 }
 

@@ -159,15 +159,17 @@ WaveForm.prototype.draw = function(time, ctx) {
 
 	for (var i = 0; i < onlyWordsArray.length; i++) {
 		aWord = onlyWordsArray[i];
+		
 		if (aWord.startTime) {
-			var endTime = aWord.endTime;
-			if (!endTime && aWord.startTime<this.startTime) {
+			var startTime=aWord.startTime/10;
+			var endTime = aWord.endTime/10;
+			if (!endTime && startTime<this.startTime) {
 				endTime = this.startTime;
 			}
-			if (aWord.startTime + (endTime - aWord.startTime) + 100 > this.startTime) {
-				var topLeft = (((aWord.startTime - this.startTime) + 100) * this.pointSpacing)
+			if (startTime + (endTime - startTime) + 100 > this.startTime) {
+				var topLeft = (((startTime - this.startTime) + 100) * this.pointSpacing)
 						+ this.xShift;
-				var width = ((endTime - aWord.startTime)) * this.pointSpacing;
+				var width = ((endTime - startTime)) * this.pointSpacing;
 				ctx.rect(topLeft, 250.5, width, 50);
 				ctx.fillStyle = 'yellow';
 				ctx.fill();
