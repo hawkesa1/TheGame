@@ -23,8 +23,14 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
+import org.farng.mp3.MP3File;
+import org.farng.mp3.TagException;
+import org.farng.mp3.id3.AbstractID3v2;
+import org.farng.mp3.id3.ID3v1;
 import org.mp3transform.test.Alex;
 import org.mp3transform.wav.Coordinate;
+
+import com.google.gson.Gson;
 
 /**
  * Servlet implementation class FileUploadServlet
@@ -53,7 +59,7 @@ public class FileUploadServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		String currentTime = Long.toString(System.currentTimeMillis());
-		String wavFormFile = null;
+		MP3MetaData mp3MetaData = null;
 		try {
 			List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
 			for (FileItem item : items) {
@@ -64,7 +70,7 @@ public class FileUploadServlet extends HttpServlet {
 					String fieldvalue = item.getString();
 					// ... (do your job here)
 				} else {
-					wavFormFile = processUploadedFile(item, currentTime);
+					mp3MetaData = processUploadedFile(item, currentTime);
 				}
 			}
 		} catch (FileUploadException e) {
@@ -80,27 +86,55 @@ public class FileUploadServlet extends HttpServlet {
 		// Actual logic goes here.
 		PrintWriter out = response.getWriter();
 
-		//out.println("<h1>" + wavFormFile + "</h1>");
-		
-		 response.sendRedirect("lyricRecorderUpload.html?trackId="+currentTime+"&trackName="+currentTime);
+		// out.println("<h1>" + wavFormFile + "</h1>");
+
+		response.sendRedirect("lyricRecorderUpload.html?trackId=" + mp3MetaData.getUniqueId() + "&trackTitle="
+				+ mp3MetaData.getTitle() + "&trackAlbum=" + mp3MetaData.getAlbum() + "&trackArtist="
+				+ mp3MetaData.getArtist());
 
 	}
 
 	private static final String RESOURCES_FOLDER = "C:\\Users\\Hawkes\\git\\WC\\WebContent\\resources";
-	
-	private String processUploadedFile(FileItem item, String currentTime) throws IOException, UnsupportedAudioFileException {
+
+	private MP3MetaData processUploadedFile(FileItem item, String currentTime)
+			throws IOException, UnsupportedAudioFileException {
 		String filePath1 = RESOURCES_FOLDER + "\\originalUpload\\" + currentTime + ".mp3";
 		String filePath2 = RESOURCES_FOLDER + "\\generatedWav\\" + currentTime + ".wav";
 		String filePath3 = RESOURCES_FOLDER + "\\wavForm\\" + currentTime + ".txt";
-
 		writeUploadedFileToDisk(item, filePath1);
-
 		Alex alex = new Alex();
 		Vector<Coordinate> coordinates = alex.convertMP3ToWAV(filePath1, filePath2);
-
 		writeCoordinatesToFile(filePath3, coordinates);
+		MP3MetaData mp3MetaData = readMP3MetaData(currentTime);
+		return mp3MetaData;
+	}
 
-		return currentTime + ".wav";
+	private MP3MetaData readMP3MetaData(String currentTime) {
+		String filePath = RESOURCES_FOLDER + "\\originalUpload\\" + currentTime + ".mp3";
+		MP3MetaData mp3MetaData = new MP3MetaData();
+		try {
+			MP3File mp3file = new MP3File(filePath);
+			ID3v1 tagv1 = mp3file.getID3v1Tag();
+			AbstractID3v2 tagv2 = mp3file.getID3v2Tag();
+
+			if (tagv1 == null) {
+				mp3MetaData.setTitle(tagv2.getSongTitle());
+				mp3MetaData.setAlbum(tagv2.getAlbumTitle());
+				mp3MetaData.setArtist(tagv2.getLeadArtist());
+			} else {
+				mp3MetaData.setTitle(tagv1.getTitle());
+				mp3MetaData.setAlbum(tagv1.getAlbum());
+				mp3MetaData.setArtist(tagv1.getArtist());
+			}
+			mp3MetaData.setUniqueId(currentTime);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TagException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return mp3MetaData;
 	}
 
 	private void writeCoordinatesToFile(String filePath, Vector<Coordinate> coordinates) throws IOException {
@@ -126,6 +160,7 @@ public class FileUploadServlet extends HttpServlet {
 	static final String newLineChar = System.getProperty("line.separator");
 
 	private void writeUploadedFileToDisk(FileItem item, String filePath) throws IOException {
+
 		// Process form file field (input type="file").
 		String fieldname = item.getFieldName();
 		String filename = FilenameUtils.getName(item.getName());
