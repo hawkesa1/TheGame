@@ -30,8 +30,6 @@ import org.farng.mp3.id3.ID3v1;
 import org.mp3transform.test.Alex;
 import org.mp3transform.wav.Coordinate;
 
-import com.google.gson.Gson;
-
 /**
  * Servlet implementation class FileUploadServlet
  */
@@ -59,18 +57,24 @@ public class FileUploadServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		String currentTime = Long.toString(System.currentTimeMillis());
+		String userId=null;
 		MP3MetaData mp3MetaData = null;
 		try {
 			List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
 			for (FileItem item : items) {
 				if (item.isFormField()) {
-					// Process regular form field (input
-					// type="text|radio|checkbox|etc", select, etc).
-					String fieldname = item.getFieldName();
-					String fieldvalue = item.getString();
-					// ... (do your job here)
+					String fieldName = item.getFieldName();
+					String fieldValue = item.getString();
+					if (fieldName.equals("userId")) {
+						userId = fieldValue;
+					}
+
 				} else {
 					mp3MetaData = processUploadedFile(item, currentTime);
+					MP3MetaData.writeMP3MetaDataToDisk(mp3MetaData);
+					User user = User.readUserFromDisk(userId);
+					user.addTrackId(mp3MetaData.getUniqueId());
+					user.writeUserToDisk();
 				}
 			}
 		} catch (FileUploadException e) {

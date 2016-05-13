@@ -21,7 +21,8 @@ $(document).ready(function($) {
 	$('#canvasContainer').html(canvas1);
 	// bindCanvasTouchControls();
 
-	//loadTrack();
+	// loadTrack();
+	loadUser();
 });
 
 /*
@@ -82,7 +83,6 @@ $(function() {
 					});
 });
 
-
 function lyricsTextToObjects(lyricsText) {
 	lyricsText = lyricsText.replace(/\\r\\n/g, '\n');
 	var lines = lyricsText.split('\n');
@@ -116,9 +116,6 @@ function addClickToLyrics() {
 		});
 	});
 }
-
-
-
 
 $(function() {
 	$("#wordInfoPlay").click(function() {
@@ -284,4 +281,24 @@ function saveLyrics(JSONFormattedLyricData, songId) {
 	function successfullySavedLyrics(text) {
 		console.log("Woohoo:" + text);
 	}
+}
+
+function loadUser(JSONFormattedLyricData, songId) {
+	$.ajax({
+		type : 'GET',
+		url : './GetAvailableTracks',
+		data : {
+			"userId" : "hawkesa",
+		},
+		success : function(text) {
+			console.log(text);
+			for (var i = 0; i < text.mp3MetaDatas.length; i++) {
+				addTrack(text.mp3MetaDatas[i].uniqueId,text.mp3MetaDatas[i].title)
+			}
+
+		},
+		error : function(xhr) {
+			alert("An error occured: " + xhr.status + " " + xhr.statusText);
+		}
+	});
 }
