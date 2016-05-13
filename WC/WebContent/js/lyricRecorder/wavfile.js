@@ -178,7 +178,6 @@ WaveForm.prototype.draw = function(time, ctx) {
 
 	for (var i = 0; i < onlyWordsArray.length; i++) {
 		aWord = onlyWordsArray[i];
-		
 		if (aWord.startTime) {
 			var startTime=aWord.startTime/10;
 			var endTime = aWord.endTime/10;
@@ -192,27 +191,16 @@ WaveForm.prototype.draw = function(time, ctx) {
 				ctx.rect(topLeft, 250.5, width, 50);
 				ctx.fillStyle = 'yellow';
 				ctx.fill();
-				ctx.stroke();
+				//ctx.stroke();
 				ctx.fillStyle = 'black';
+				//ctx.font="12px Arial";
+				ctx.fillText(aWord.word+"3", topLeft, 280)
+				ctx.stroke();
 			}
 		}
 
 	}
-
-	for (var i = 0; i < words.length; i++) {
-		// aWord=words[i];
-		// if(aWord.startTime+(aWord.endTime-aWord.startTime)+100>this.startTime)
-		// {
-		// var aPoint = (((aWord.startTime - this.startTime)+100) *
-		// this.pointSpacing) + this.xShift;
-		// ctx.rect(aPoint, 250.5, aWord.endTime-aWord.startTime, 50);
-		// ctx.fillStyle = 'yellow';
-		// ctx.fill();
-		// ctx.stroke();
-		// ctx.fillStyle = 'black';
-		// }
-	}
-
+	
 	for (var i = this.startTime; i < (this.startTime + (this.drawTime)); i++) {
 		if (firstPass) {
 			console.log(i);

@@ -45,28 +45,42 @@
 								playing.</div> <audio id="audio" controls> <source
 								id="audioSrc" type="audio/mpeg"> Your browser does not
 							support the audio element. </audio> <BR><BR>
-		<div id="lyrics"></div>
+									<div id="lyrics"></div>
 
-		<div id="wordInfo">
-			Word <input id="wordInfoWord" type="text"><BR> Start
-					Time <input id="wordInfoStartTime" type="text"><BR>
-							End Time <input id="wordInfoEndTime" type="text"><BR>
-									<input id="wordInfoPlay" value="Play this Word" type="button">
-										<input id="wordInfoUpdate" value="Update Word" type="button">
-		</div>
-		<BR> <BR>
-		<div id="canvasContainer"></div>
-		<BR> <BR>
+									<div id="wordInfo">
+										Word <input class="wordInfo" id="wordInfoWord" type="text"><BR>
 
-				<div class="instructionText">Step 4: Add each word in time
-					with the audio lyrics</div>
-		<input type="button" value="Add Current Word" id="addCurrentWord">
-			<BR><BR>
-		<div class="instructionText">Step 5: Save the results</div>
-		<input id="save" value="Save" type="button"><select
-			id="loadTrack">
-			<option value="1462964351852">If I fell</option>
-		</select> <input type="button" value="load" onclick="loadTrack()"></input> <BR><BR>
+												<input type="hidden" id="wordInfoId" value="">
+													Start <input class="wordInfo" id="wordInfoStartTime"
+													type="text"><input type="button" value="-10ms"
+											onmousedown="changeStart(-10)"><input type="button"
+											value="-100ms" onmousedown="changeStart(-100)"> <input
+											type="button" value="+10ms" onmousedown="changeStart(+10)">
+												<input type="button" value="+100ms"
+												onmousedown="changeStart(+100)"><BR> End <input
+											class="wordInfo" id="wordInfoEndTime" type="text"> <input
+											type="button" value="-10ms" onmousedown="changeEnd(-10)">
+												<input type="button" value="-100ms"
+												onmousedown="changeEnd(-100)"> <input type="button"
+													value="+10ms" onmousedown="changeEnd(+10)"> <input
+														type="button" value="+100ms" onmousedown="changeEnd(+100)"><BR><input
+											id="wordInfoPlay" value="Play this Word" type="button">
+											<input
+											id="wordInfoClearThisWord" value="Clear This Word" type="button">
+											<input
+											id="wordInfoClearAll" value="Clear All" type="button">
+											
+									</div> <BR> <BR>
+											<div id="canvasContainer"></div> <BR> <BR>
+
+													<div class="instructionText">Step 4: Add each word in
+														time with the audio lyrics</div> <input type="button"
+													value="Add Current Word" id="addCurrentWord"> <BR><BR>
+																<div class="instructionText">Step 5: Save the
+																	results</div> <input id="save" value="Save" type="button"><select
+																	id="loadTrack">
+																</select> <input type="button" value="load" onclick="loadTrack()"></input>
+																	<BR><BR>
 	</div>
 
 

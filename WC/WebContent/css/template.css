@@ -45,6 +45,12 @@ body {
 	padding-bottom: 50px;
 }
 
+input.wordInfo
+{
+	
+	width:50px;
+}
+
 .instructionText {Show all color:rgb(51, 51, 51);
 	font-family: Rosario, sans-serif;
 	font-size: 21px;

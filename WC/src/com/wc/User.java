@@ -16,7 +16,6 @@ public class User {
 	public static void main(String[] args) throws IOException {
 		User user = new User();
 		user.setUserId("hawkesa");
-		user.addTrackId("1463126345904");
 		user.writeUserToDisk();
 		User user1 = User.readUserFromDisk("hawkesa");
 		System.out.println(user1.toJSON());

@@ -67,6 +67,10 @@ $(function() {
 						var aLineObject = lineArray[currentLineIndex];
 						var aWordObject = aLineObject.words[currentWordIndex];
 
+						$('#wordInfoId').val(
+								"word_" + currentLineIndex + "_"
+										+ currentWordIndex);
+
 						$('#wordInfoWord').val(
 								aWordObject.word.replace(
 										/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ""));
@@ -119,26 +123,95 @@ function addClickToLyrics() {
 
 $(function() {
 	$("#wordInfoPlay").click(function() {
+		var wordId = $('#wordInfoId').val();
+		var lineIndex = wordId.split('_')[1];
+		var wordIndex = wordId.split('_')[2];
 		var aLineObject = lineArray[currentLineIndex];
 		var aWordObject = aLineObject.words[currentWordIndex];
+
 		var vid = document.getElementById("audio");
-		vid.currentTime = aWordObject.startTime / 1000;
-		vid.play();
-		stopAtTime = aWordObject.endTime;
+
+		if (aWordObject.startTime &&  aWordObject.startTime>= 0) {
+			vid.currentTime = aWordObject.startTime / 1000;
+			vid.play();
+			stopAtTime = aWordObject.endTime;
+		}
 	});
 });
 
+function changeStart(timeInMs) {
+	var wordId = $('#wordInfoId').val();
+	var lineIndex = wordId.split('_')[1];
+	var wordIndex = wordId.split('_')[2];
+
+	var aLineObject = lineArray[currentLineIndex];
+	var aWordObject = aLineObject.words[currentWordIndex];
+	aWordObject.startTime = aWordObject.startTime + timeInMs;
+
+	$('#wordInfoStartTime').val(
+			millisecondsToISOMinutesSecondsMilliseconds(aWordObject.startTime));
+	$('#wordInfoEndTime').val(
+			millisecondsToISOMinutesSecondsMilliseconds(aWordObject.endTime));
+
+}
+function changeEnd(timeInMs) {
+	var wordId = $('#wordInfoId').val();
+	var lineIndex = wordId.split('_')[1];
+	var wordIndex = wordId.split('_')[2];
+
+	var aLineObject = lineArray[currentLineIndex];
+	var aWordObject = aLineObject.words[currentWordIndex];
+	aWordObject.endTime = aWordObject.endTime + timeInMs;
+
+	$('#wordInfoStartTime').val(
+			millisecondsToISOMinutesSecondsMilliseconds(aWordObject.startTime));
+	$('#wordInfoEndTime').val(
+			millisecondsToISOMinutesSecondsMilliseconds(aWordObject.endTime));
+
+}
+
 $(function() {
-	$("#wordInfoUpdate").click(function() {
-		var aLineObject = lineArray[currentLineIndex];
-		var aWordObject = aLineObject.words[currentWordIndex];
-		console.log(aWordObject.word + " "+ aWordObject.startTime);
-		aWordObject.startTime=aWordObject.startTime+1000;
-		aWordObject.endTime=aWordObject.endTime+1000;
-		console.log(aWordObject.word + " "+ aWordObject.startTime);
-		console.log("DoneIt");
-		
-	});
+	$("#wordInfoClearAll")
+			.click(
+					function() {
+						for (var i = 0; i < onlyWordsArray.length; i++) {
+							onlyWordsArray[i].startTime = null;
+							onlyWordsArray[i].endTime = null;
+							currentLineIndex = 0;
+							currentWordIndex = 0;
+
+							$('#wordInfoStartTime')
+									.val(
+											millisecondsToISOMinutesSecondsMilliseconds(aWordObject.startTime));
+							$('#wordInfoEndTime')
+									.val(
+											millisecondsToISOMinutesSecondsMilliseconds(aWordObject.endTime));
+						}
+
+					});
+});
+
+$(function() {
+	$("#wordInfoClearThisWord")
+			.click(
+					function() {
+						var wordId = $('#wordInfoId').val();
+						var lineIndex = wordId.split('_')[1];
+						var wordIndex = wordId.split('_')[2];
+
+						var aLineObject = lineArray[currentLineIndex];
+						var aWordObject = aLineObject.words[currentWordIndex];
+						aWordObject.startTime = null;
+						aWordObject.endTime = null;
+
+						$('#wordInfoStartTime')
+								.val(
+										millisecondsToISOMinutesSecondsMilliseconds(aWordObject.startTime));
+						$('#wordInfoEndTime')
+								.val(
+										millisecondsToISOMinutesSecondsMilliseconds(aWordObject.endTime));
+
+					});
 });
 
 var currentLineIndex = 0;
@@ -155,6 +228,11 @@ $(function() {
 							aLineObject.startTime = $("#audio").prop(
 									"currentTime" * 1000);
 						}
+
+						$('#wordInfoId').val(
+								"word_" + currentLineIndex + "_"
+										+ currentWordIndex);
+
 						$('#wordInfoWord').val(
 								aWordObject.word.replace(
 										/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ""));
@@ -197,6 +275,8 @@ function wordClicked(wordId) {
 	currentWordIndex = wordIndex;
 	var aLineObject = lineArray[lineIndex];
 	var aWordObject = aLineObject.words[wordIndex];
+
+	$('#wordInfoId').val("word_" + currentLineIndex + "_" + currentWordIndex);
 	$('#wordInfoWord').val(
 			aWordObject.word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ""));
 	$('#wordInfoStartTime').val(
@@ -207,9 +287,12 @@ function wordClicked(wordId) {
 	$('#' + wordId).addClass("wordSelected");
 
 	var vid = document.getElementById("audio");
-	vid.currentTime = aWordObject.startTime / 1000;
-	vid.play();
-	stopAtTime = aWordObject.endTime;
+
+	if (!aWordObject.startTime <= 0) {
+		vid.currentTime = aWordObject.startTime / 1000;
+		vid.play();
+		stopAtTime = aWordObject.endTime;
+	}
 
 }
 
@@ -306,7 +389,8 @@ function loadUser(JSONFormattedLyricData, songId) {
 		success : function(text) {
 			console.log(text);
 			for (var i = 0; i < text.mp3MetaDatas.length; i++) {
-				addTrack(text.mp3MetaDatas[i].uniqueId,text.mp3MetaDatas[i].title)
+				addTrack(text.mp3MetaDatas[i].uniqueId,
+						text.mp3MetaDatas[i].title)
 			}
 
 		},
