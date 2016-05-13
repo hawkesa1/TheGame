@@ -128,6 +128,19 @@ $(function() {
 	});
 });
 
+$(function() {
+	$("#wordInfoUpdate").click(function() {
+		var aLineObject = lineArray[currentLineIndex];
+		var aWordObject = aLineObject.words[currentWordIndex];
+		console.log(aWordObject.word + " "+ aWordObject.startTime);
+		aWordObject.startTime=aWordObject.startTime+1000;
+		aWordObject.endTime=aWordObject.endTime+1000;
+		console.log(aWordObject.word + " "+ aWordObject.startTime);
+		console.log("DoneIt");
+		
+	});
+});
+
 var currentLineIndex = 0;
 var currentWordIndex = 0;
 
