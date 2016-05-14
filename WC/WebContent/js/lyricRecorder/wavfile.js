@@ -36,24 +36,22 @@ function loadWaveForm(wavFormFile) {
 	}
 }
 
-
 function loadLyricsData(wavFormFile) {
 	$.ajax({
 		type : 'GET',
 		url : './resources/lyricData/' + wavFormFile + '.json',
 		data : null,
-		cache: false,
+		cache : false,
 		success : function(text) {
 			generateLyricData(text);
 		}
 	});
 	function generateLyricData(text) {
-		lineArray=text;
+		lineArray = text;
 		$('#lyrics').html(generateLyrics(lineArray));
 		addClickToLyrics();
 	}
 }
-
 
 function calculateDrawTime() {
 	return (windowWidth / POINT_SPACING) - (X_MOVE);
@@ -102,16 +100,14 @@ var firstPass = true;
 var aWord;
 
 // Receives the currentTimeof the audio file and the context of the canvas
+
 WaveForm.prototype.draw = function(time, ctx) {
-	
-	if(time>stopAtTime)
-	{
+	if (time > stopAtTime) {
 		var vid = document.getElementById("audio");
 		vid.pause();
-		stopAtTime=999999;
+		stopAtTime = 999999;
 	}
-	
-	
+
 	// The wav file has 1 entry per WAV_FILE_TIME_GAP (usually 10ms)
 	this.startTime = Math.round((time) / WAV_FILE_TIME_GAP);
 
@@ -178,29 +174,35 @@ WaveForm.prototype.draw = function(time, ctx) {
 
 	for (var i = 0; i < onlyWordsArray.length; i++) {
 		aWord = onlyWordsArray[i];
+		//only interested in words that have a start time set
 		if (aWord.startTime) {
-			var startTime=aWord.startTime/10;
-			var endTime = aWord.endTime/10;
-			if (!endTime && startTime<this.startTime) {
-				endTime = this.startTime;
+			var startTime = aWord.startTime / 10;
+			// only interested in words that are less than 4 seconds in the future
+			if (startTime < this.startTime+400) {
+				
+				// the word currently being drawn
+				var endTime = aWord.endTime / 10;
+				if (!endTime && startTime < this.startTime) {
+					endTime = this.startTime;
+				}
+				//only interested in words whose end time is less than a second in the past
+				if (startTime + (endTime - startTime) + 100 > this.startTime) {
+					var topLeft = (((startTime - this.startTime) + 100) * this.pointSpacing)
+							+ this.xShift;
+					var width = ((endTime - startTime)) * this.pointSpacing;
+					ctx.rect(topLeft, 250.5, width, 50);
+					ctx.fillStyle = 'yellow';
+					ctx.fill();
+					ctx.stroke();
+					ctx.fillStyle = 'black';
+					ctx.fillText(aWord.word, topLeft, 312)
+				}
 			}
-			if (startTime + (endTime - startTime) + 100 > this.startTime) {
-				var topLeft = (((startTime - this.startTime) + 100) * this.pointSpacing)
-						+ this.xShift;
-				var width = ((endTime - startTime)) * this.pointSpacing;
-				ctx.rect(topLeft, 250.5, width, 50);
-				ctx.fillStyle = 'yellow';
-				ctx.fill();
-				//ctx.stroke();
-				ctx.fillStyle = 'black';
-				//ctx.font="12px Arial";
-				ctx.fillText(aWord.word+"3", topLeft, 280)
-				ctx.stroke();
-			}
+
 		}
 
 	}
-	
+
 	for (var i = this.startTime; i < (this.startTime + (this.drawTime)); i++) {
 		if (firstPass) {
 			console.log(i);

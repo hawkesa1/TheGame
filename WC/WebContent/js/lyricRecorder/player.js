@@ -15,7 +15,7 @@ $(document).ready(function($) {
 	windowHeight = $(document).height();
 	canvas1 = document.createElement('canvas');
 	canvas1.width = 800;
-	canvas1.height = 301;
+	canvas1.height = 315;
 	canvas1.id = "canvas1";
 	context1 = canvas1.getContext('2d');
 	$('#canvasContainer').html(canvas1);
@@ -182,10 +182,10 @@ $(function() {
 
 							$('#wordInfoStartTime')
 									.val(
-											millisecondsToISOMinutesSecondsMilliseconds(aWordObject.startTime));
+											millisecondsToISOMinutesSecondsMilliseconds(onlyWordsArray[i].startTime));
 							$('#wordInfoEndTime')
 									.val(
-											millisecondsToISOMinutesSecondsMilliseconds(aWordObject.endTime));
+											millisecondsToISOMinutesSecondsMilliseconds(onlyWordsArray[i].endTime));
 						}
 
 					});
@@ -334,13 +334,26 @@ function addTrack(trackId, trackName) {
 			$("<option></option>").attr("value", trackId).text(trackName));
 }
 
+var lastDrawTime=0;
+var lastDrawPrintTime=1;
+var frame=0;
+
 function animate() {
 	requestAnimationFrame(animate);
 	audioTime = $("#audio").prop("currentTime") * 1000;
+	frame++;
+	if(audioTime-lastDrawPrintTime>1000)
+		{
+			lastDrawPrintTime=audioTime;
+			$('#fps').html(frame+" fps");
+			frame=0;
+		}
+	lastDrawTime=audioTime;
 	draw(audioTime);
 }
 
 function draw(time) {
+	
 	context1.clearRect(0, 0, canvas1.width, canvas1.height);
 	$('#canvas1').css("background-color", $('#backgroundColor').val());
 	waveForm.draw(time, context1);
