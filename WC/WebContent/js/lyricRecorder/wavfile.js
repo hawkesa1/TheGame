@@ -63,17 +63,6 @@ function WavePoint(time, yLow, yHigh) {
 	this.yLow = yLow;
 }
 
-var words = [];
-var word1 = new Word(40, 300, "Hello");
-var word2 = new Word(400, 600, "How");
-var word3 = new Word(600, 900, "Are");
-var word4 = new Word(1000, 1100, "You");
-
-words[0] = word1;
-words[1] = word2;
-words[2] = word3;
-words[3] = word4;
-
 function Word(startTime, endTime, text) {
 	this.startTime = startTime;
 	this.endTime = endTime;
@@ -98,12 +87,14 @@ function WaveForm(drawTime, pointHeight, xShift, yShift, currentLine,
 }
 var firstPass = true;
 var aWord;
-
+var tenths = 0;
 // Receives the currentTimeof the audio file and the context of the canvas
 
 WaveForm.prototype.draw = function(time, ctx) {
 	if (time > stopAtTime) {
 		var vid = document.getElementById("audio");
+		// Because it misses and looks messy
+		document.getElementById("audio").currentTime = stopAtTime / 1000;
 		vid.pause();
 		stopAtTime = 999999;
 	}
@@ -174,26 +165,59 @@ WaveForm.prototype.draw = function(time, ctx) {
 
 	for (var i = 0; i < onlyWordsArray.length; i++) {
 		aWord = onlyWordsArray[i];
-		//only interested in words that have a start time set
+		// only interested in words that have a start time set
 		if (aWord.startTime) {
 			var startTime = aWord.startTime / 10;
-			// only interested in words that are less than 4 seconds in the future
-			if (startTime < this.startTime+400) {
-				
+			// only interested in words that are less than 3 seconds in the
+			// future
+			if (startTime < this.startTime + 300) {
+
 				// the word currently being drawn
 				var endTime = aWord.endTime / 10;
 				if (!endTime && startTime < this.startTime) {
 					endTime = this.startTime;
 				}
-				//only interested in words whose end time is less than a second in the past
+				// only interested in words whose end time is less than a second
+				// in the past
 				if (startTime + (endTime - startTime) + 100 > this.startTime) {
 					var topLeft = (((startTime - this.startTime) + 100) * this.pointSpacing)
 							+ this.xShift;
 					var width = ((endTime - startTime)) * this.pointSpacing;
 					ctx.rect(topLeft, 250.5, width, 50);
-					ctx.fillStyle = 'yellow';
-					ctx.fill();
-					ctx.stroke();
+
+					// Set the word currently being played
+					if (startTime < this.startTime && endTime > this.startTime) {
+						if (currentPlayingWordId != aWord.id) {
+							currentPlayingWordId = aWord.id;
+							changeCurrentPlayingWordId();
+						}
+					}
+
+					if (clickedWhilePausedX > 0) {
+						if (clickedWhilePausedX > topLeft
+								&& clickedWhilePausedX < topLeft + width) {
+							console.log("You clicked: " + aWord.word);
+							clickedWhilePausedX = 0;
+
+							currentSelectedWordId = aWord.id;
+							changeCurrentSelectedWord();
+						}
+					}
+
+					if (aWord.id == currentSelectedWordId) {
+						ctx.fillStyle = 'blue';
+						ctx.fill();
+						ctx.stroke();
+						ctx.closePath();
+						ctx.beginPath();
+					} else {
+						ctx.fillStyle = 'orange';
+						ctx.fill();
+						ctx.stroke();
+						ctx.closePath();
+						ctx.beginPath();
+					}
+
 					ctx.fillStyle = 'black';
 					ctx.fillText(aWord.word, topLeft, 312)
 				}
@@ -222,9 +246,18 @@ WaveForm.prototype.draw = function(time, ctx) {
 		} else {
 			point = 0;
 		}
+		tenths++;
+
+		if (i % 10 == 0 && tenths != 0 && tenths != 100) {
+			ctx.fillText("|", this.pointX - 2, 260);
+			ctx.fillText("|", this.pointX - 2, 45);
+
+		}
+
 		if (i % 100 == 0) {
 			ctx.fillText(secondsToTime((i / 100) - 1), this.pointX - 2, 260);
 			ctx.fillText(secondsToTime((i / 100) - 1), this.pointX - 2, 45);
+			tenths = 0;
 		}
 	}
 

@@ -1,47 +1,66 @@
 var screenPressed = false;
 var startX = 0;
+var veryStartX = 0;
 var clickStartTime = 0;
-
-
-
+var wasPaused = true;
+var clickedWhilePausedX=0;
 
 function bindCanvasTouchControls() {
 	console.log("Binding Controls");
-	$("#controls").bind("mousedown", function(e) {
+	$("#canvas1").bind("mousedown", function(e) {
+		updateLog("Mouse Down");
 		e.preventDefault();
-		screenPressed = true;
-		var audioElm = document.getElementById('audio');
-		var currentTime = audioElm.currentTime;
-
-		// audioElm.currentTime = currentTime - 1;
-
-		audioElm.pause();
+		
 		var offset = $(this).offset();
 		var clickX = e.clientX - offset.left;
-
-		startX = clickX;
-		clickStartTime = currentTime;
-		updateLog("Touch Event");
-
+		var clickY = e.clientY - offset.top;
+		if (clickY > -400) {
+			if (document.getElementById('audio').paused) {
+				clickedWhilePausedX=clickX;
+				console.log(clickedWhilePausedX);
+			}
+		}
+		else
+		{
+			screenPressed = true;
+			var audioElm = document.getElementById('audio');
+			var currentTime = audioElm.currentTime;
+			wasPaused = audioElm.paused;
+			audioElm.pause();
+			
+			startX = clickX;
+			veryStartX = clickX;
+			clickStartTime = currentTime;
+		}
+		
+		
 	});
 
-	$("#controls").bind("mouseup", function(e) {
+	$("#canvas1").bind("click", function(e) {
+		updateLog("Mouse Click");
+	});
+
+	$("#canvas1").bind("mouseup", function(e) {
+		updateLog("Mouse Up");
 		screenPressed = false;
 		var audioElm = document.getElementById('audio');
-		audioElm.play();
+		if (!wasPaused) {
+			audioElm.play();
+		}
 	});
-	$("#controls").bind(
+	$("#canvas1").bind(
 			"mousemove touchmove",
 			function(e) {
+				updateLog("Mouse Move");
 				if (screenPressed) {
 					var offset = $(this).offset();
 					var clickX = e.clientX - offset.left;
 					var distanceMoved = clickX - startX;
 					startX = clickX;
-					updateLog("Distance Moved=" + distanceMoved);
+					var a = clickX - veryStartX
 					var audioElm = document.getElementById('audio');
 					audioElm.currentTime = audioElm.currentTime
-							+ -((distanceMoved / 875) * 6);
+							+ -((distanceMoved) / 200);
 				}
 			});
 }
@@ -50,5 +69,3 @@ function updateLog(text1) {
 	console.log(text1);
 	$('#logMessages').text(" " + text1);
 }
-
-

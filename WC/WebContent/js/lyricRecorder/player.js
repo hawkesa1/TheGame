@@ -8,6 +8,8 @@ var lineArray = new Array();
 var onlyWordsArray = new Array();
 var stopAtTime;
 var currentSongId;
+var currentSelectedWordId = "";
+var currentPlayingWordId = "";
 
 $(document).ready(function($) {
 	console.log("Loaded Play Page1");
@@ -19,7 +21,7 @@ $(document).ready(function($) {
 	canvas1.id = "canvas1";
 	context1 = canvas1.getContext('2d');
 	$('#canvasContainer').html(canvas1);
-	// bindCanvasTouchControls();
+	bindCanvasTouchControls();
 
 	// loadTrack();
 	loadUser();
@@ -41,6 +43,36 @@ $(function() {
 
 function lineArrayToJSON() {
 	return $.toJSON(lineArray);
+}
+
+function changeCurrentPlayingWordId() {
+	$('.word').removeClass("wordPlaying");
+	$('#' +currentPlayingWordId).addClass(
+			"wordPlaying");
+}
+
+function changeCurrentSelectedWord() {
+	var lineIndex = currentSelectedWordId.split('_')[1];
+	var wordIndex = currentSelectedWordId.split('_')[2];
+
+	var aLineObject = lineArray[lineIndex];
+	var aWordObject = aLineObject.words[wordIndex];
+	
+	$('#wordInfoId').val(currentSelectedWordId);
+
+	$('#wordInfoWord').val(
+			aWordObject.word.replace(
+					/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ""));
+	$('#wordInfoStartTime')
+			.val(
+					millisecondsToISOMinutesSecondsMilliseconds(aWordObject.startTime));
+	$('#wordInfoEndTime')
+			.val(
+					millisecondsToISOMinutesSecondsMilliseconds(aWordObject.endTime));
+	$('.word').removeClass("wordSelected");
+	$('#word_' + lineIndex + "_" + wordIndex)
+			.addClass("wordSelected");
+
 }
 
 function millisecondsToISOMinutesSecondsMilliseconds(milliseconds) {
@@ -67,9 +99,8 @@ $(function() {
 						var aLineObject = lineArray[currentLineIndex];
 						var aWordObject = aLineObject.words[currentWordIndex];
 
-						$('#wordInfoId').val(
-								"word_" + currentLineIndex + "_"
-										+ currentWordIndex);
+						currentSelectedWordId = aWordObject.id;
+						$('#wordInfoId').val(currentSelectedWordId);
 
 						$('#wordInfoWord').val(
 								aWordObject.word.replace(
@@ -126,15 +157,33 @@ $(function() {
 		var wordId = $('#wordInfoId').val();
 		var lineIndex = wordId.split('_')[1];
 		var wordIndex = wordId.split('_')[2];
-		var aLineObject = lineArray[currentLineIndex];
-		var aWordObject = aLineObject.words[currentWordIndex];
+		var aLineObject = lineArray[lineIndex];
+		var aWordObject = aLineObject.words[wordIndex];
 
 		var vid = document.getElementById("audio");
 
-		if (aWordObject.startTime &&  aWordObject.startTime>= 0) {
+		if (aWordObject.startTime && aWordObject.startTime >= 0) {
 			vid.currentTime = aWordObject.startTime / 1000;
 			vid.play();
 			stopAtTime = aWordObject.endTime;
+		}
+	});
+});
+
+$(function() {
+	$("#wordInfoPlayLine").click(function() {
+		var wordId = $('#wordInfoId').val();
+		var lineIndex = wordId.split('_')[1];
+		var wordIndex = 0;
+		var aLineObject = lineArray[lineIndex];
+		var aWordObject = aLineObject.words[wordIndex];
+
+		var vid = document.getElementById("audio");
+
+		if (aWordObject.startTime && aWordObject.startTime >= 0) {
+			vid.currentTime = aWordObject.startTime / 1000;
+			vid.play();
+			stopAtTime = aLineObject.endTime;
 		}
 	});
 });
@@ -229,9 +278,8 @@ $(function() {
 									"currentTime" * 1000);
 						}
 
-						$('#wordInfoId').val(
-								"word_" + currentLineIndex + "_"
-										+ currentWordIndex);
+						currentSelectedWordId = aWordObject.id;
+						$('#wordInfoId').val(currentSelectedWordId)
 
 						$('#wordInfoWord').val(
 								aWordObject.word.replace(
@@ -276,7 +324,9 @@ function wordClicked(wordId) {
 	var aLineObject = lineArray[lineIndex];
 	var aWordObject = aLineObject.words[wordIndex];
 
-	$('#wordInfoId').val("word_" + currentLineIndex + "_" + currentWordIndex);
+	currentSelectedWordId = aWordObject.id;
+	$('#wordInfoId').val(currentSelectedWordId)
+
 	$('#wordInfoWord').val(
 			aWordObject.word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ""));
 	$('#wordInfoStartTime').val(
@@ -308,6 +358,7 @@ function generateLyrics(lines) {
 			onlyWordsArray[k] = words[j];
 			k++;
 			id = "word_" + i + "_" + j;
+			words[j].id = id;
 			html += "<span class='word' id='" + id + "'>" + words[j].word
 					+ "</span>" + " ";
 		}
@@ -334,26 +385,25 @@ function addTrack(trackId, trackName) {
 			$("<option></option>").attr("value", trackId).text(trackName));
 }
 
-var lastDrawTime=0;
-var lastDrawPrintTime=1;
-var frame=0;
+var lastDrawTime = 0;
+var lastDrawPrintTime = 1;
+var frame = 0;
 
 function animate() {
 	requestAnimationFrame(animate);
 	audioTime = $("#audio").prop("currentTime") * 1000;
 	frame++;
-	if(audioTime-lastDrawPrintTime>1000)
-		{
-			lastDrawPrintTime=audioTime;
-			$('#fps').html(frame+" fps");
-			frame=0;
-		}
-	lastDrawTime=audioTime;
+	if (audioTime - lastDrawPrintTime > 1000) {
+		lastDrawPrintTime = audioTime;
+		$('#fps').html(frame + " fps");
+		frame = 0;
+	}
+	lastDrawTime = audioTime;
 	draw(audioTime);
 }
 
 function draw(time) {
-	
+
 	context1.clearRect(0, 0, canvas1.width, canvas1.height);
 	$('#canvas1').css("background-color", $('#backgroundColor').val());
 	waveForm.draw(time, context1);
