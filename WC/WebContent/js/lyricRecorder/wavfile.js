@@ -133,6 +133,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 	// Draw Lower Line
 	ctx.moveTo(this.xShift, this.yShift + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.beginPath();
+
 	this.first = true;
 	for (var i = this.startTime; i < (this.startTime + this.drawTime); i++) {
 		this.pointX = ((i - this.startTime) * this.pointSpacing) + this.xShift;
@@ -156,7 +157,6 @@ WaveForm.prototype.draw = function(time, ctx) {
 	drawArc(this.pointX, this.pointY, arcRadius);
 	drawArc(this.xShift + this.currentLine, this.currentYPoint, arcRadius);
 
-	
 	for (var i = 0; i < onlyWordsArray.length; i++) {
 		aWord = onlyWordsArray[i];
 		// only interested in words that have a start time set
@@ -174,10 +174,10 @@ WaveForm.prototype.draw = function(time, ctx) {
 				// only interested in words whose end time is less than a second
 				// in the past
 				if (startTime + (endTime - startTime) + 100 > this.startTime) {
-					var topLeft = (((startTime - this.startTime) + 100) * this.pointSpacing)
+					var wordX = (((startTime - this.startTime) + 100) * this.pointSpacing)
 							+ this.xShift;
 					var width = ((endTime - startTime)) * this.pointSpacing;
-					ctx.rect(topLeft, 250.5, width, 50);
+					ctx.rect(wordX, 250.5, width, 50);
 
 					// Set the word currently being played
 					if (startTime < this.startTime && endTime > this.startTime) {
@@ -190,24 +190,48 @@ WaveForm.prototype.draw = function(time, ctx) {
 
 					// Allow a word to be selected if it is currently paused
 					if (clickedWhilePausedX > 0) {
-						if (clickedWhilePausedX > topLeft
-								&& clickedWhilePausedX < topLeft + width) {
+						if (clickedWhilePausedX > wordX
+								&& clickedWhilePausedX < wordX + width) {
 							console.log("You clicked: " + aWord.word);
+							if (clickedWhilePausedX > wordX
+									&& clickedWhilePausedX < wordX + 5) {
+								console.log("You clicked the start of: "
+										+ aWord.word);
+								startOfWordMouseDownX = wordX;
+								
+							} else if (clickedWhilePausedX > (wordX + width - 5)
+									&& clickedWhilePausedX < wordX + width) {
+								console.log("You clicked the end of: "
+										+ aWord.word);
+								endOfWordMouseDownX = wordX+width;
+							}
+
 							clickedWhilePausedX = 0;
 							currentSelectedWordId = aWord.id;
+							currentSelectedWord = aWord;
 							changeCurrentSelectedWord();
+
 						}
 					}
 					if (hoverWhilePausedX > 0
-							&& (hoverWhilePausedX > topLeft && hoverWhilePausedX < topLeft
+							&& (hoverWhilePausedX > wordX && hoverWhilePausedX < wordX
 									+ width)) {
 						console.log("You Hovered: " + aWord.word);
+						if (hoverWhilePausedX > 0
+								&& (hoverWhilePausedX > wordX && hoverWhilePausedX < wordX + 5)) {
+							console.log("You Hovered The Start Of: "
+									+ aWord.word);
+							hoverWhilePausedX = 0;
+							currentHoveredWordId = aWord.id;
+						}
+
 						hoverWhilePausedX = 0;
 						currentHoveredWordId = aWord.id;
+
 					}
 
 					if (doubleClickedWhilePausedX > 0
-							&& (doubleClickedWhilePausedX > topLeft && doubleClickedWhilePausedX < topLeft
+							&& (doubleClickedWhilePausedX > wordX && doubleClickedWhilePausedX < wordX
 									+ width)) {
 						console.log("You doubleClickedWhilePausedX: "
 								+ aWord.word);
@@ -222,7 +246,30 @@ WaveForm.prototype.draw = function(time, ctx) {
 						ctx.fill();
 						ctx.stroke();
 						ctx.closePath();
+
+						// Start
 						ctx.beginPath();
+						ctx.moveTo(wordX + 2, 250.5);
+
+						ctx.lineTo(wordX + 2, 300);
+						ctx.lineWidth = 5;
+						ctx.strokeStyle = '#ff0000';
+						ctx.stroke();
+						// and End Lines
+						ctx.beginPath();
+						ctx.moveTo(wordX + width - 2, 250.5);
+
+						ctx.lineTo(wordX + width - 2, 300);
+						ctx.lineWidth = 5;
+						ctx.strokeStyle = '#ff0000';
+						ctx.stroke();
+
+						ctx.lineWidth = 1;
+						ctx.closePath
+						ctx.beginPath();
+						// set line color
+						ctx.strokeStyle = 'black';
+
 					} else if ((aWord.id == currentHoveredWordId)) {
 						ctx.fillStyle = 'yellow';
 						ctx.fill();
@@ -238,12 +285,12 @@ WaveForm.prototype.draw = function(time, ctx) {
 					}
 
 					ctx.fillStyle = 'black';
-					ctx.fillText(aWord.word, topLeft, 312)
+					ctx.fillText(aWord.word, wordX, 312)
 				}
 			}
 
 		}
-		
+
 	}
 
 	for (var i = this.startTime; i < (this.startTime + (this.drawTime)); i++) {

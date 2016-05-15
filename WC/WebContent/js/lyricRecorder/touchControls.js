@@ -46,6 +46,8 @@ function bindCanvasTouchControls() {
 		if (!wasPaused) {
 			audioElm.play();
 		}
+		startOfWordMouseDownX=0;
+		endOfWordMouseDownX=0;
 	});
 	$("#canvas1").bind(
 			"mousemove touchmove",
@@ -66,6 +68,22 @@ function bindCanvasTouchControls() {
 				var clickY = e.pageY - offset.top;
 				if (clickY > 250) {
 					hoverWhilePausedX = clickX;
+					
+					if(startOfWordMouseDownX>0)
+					{
+						console.log(clickX-startOfWordMouseDownX);
+						currentSelectedWord.startTime=currentSelectedWord.startTime + ((clickX-startOfWordMouseDownX)*5);
+						startOfWordMouseDownX=clickX;
+						changeCurrentSelectedWord();
+					}
+					else if(endOfWordMouseDownX>0)
+					{
+						console.log(clickX-endOfWordMouseDownX);
+						currentSelectedWord.endTime=currentSelectedWord.endTime + ((clickX-endOfWordMouseDownX)*5);
+						endOfWordMouseDownX=clickX;
+						changeCurrentSelectedWord();
+					}	
+					
 				} else {
 					hoverWhilePausedX = 0;
 					currentHoveredWordId = "";
@@ -76,6 +94,7 @@ function bindCanvasTouchControls() {
 		updateLog("Mouse Out");
 		hoverWhilePausedX = 0;
 		currentHoveredWordId = "";
+		startOfWordMouseDownX=0;
 	});
 }
 

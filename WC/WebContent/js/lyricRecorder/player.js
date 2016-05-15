@@ -9,11 +9,15 @@ var onlyWordsArray = new Array();
 var stopAtTime;
 var currentSongId;
 var currentSelectedWordId = "";
+var currentSelectedWord;
 var currentPlayingWordId = "";
 var currentHoveredWordId = "";
 var currentDoubleClickedWordId = "";
 var currentPlayingWord;
 var wordCurrentlyPlaying = true;
+
+var startOfWordMouseDownX=0;
+var endOfWordMouseDownX=0;
 
 var WAV_FILE_TIME_GAP = 10;
 var DRAW_TIME_BY_PAGE_WIDTH = 0;
