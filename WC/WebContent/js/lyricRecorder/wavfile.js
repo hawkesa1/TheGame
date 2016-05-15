@@ -1,10 +1,3 @@
-var WAV_FILE_TIME_GAP = 10;
-var DRAW_TIME_BY_PAGE_WIDTH = 0;
-var POINT_SPACING = 2;
-var X_MOVE = 0;
-var arcRadius = 2;
-var SHIFT_TO_FIX_LINE_THICKNESS = 0.5;
-
 function loadWaveForm(wavFormFile) {
 	$.ajax({
 		type : 'GET',
@@ -163,6 +156,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 	drawArc(this.pointX, this.pointY, arcRadius);
 	drawArc(this.xShift + this.currentLine, this.currentYPoint, arcRadius);
 
+	
 	for (var i = 0; i < onlyWordsArray.length; i++) {
 		aWord = onlyWordsArray[i];
 		// only interested in words that have a start time set
@@ -189,23 +183,48 @@ WaveForm.prototype.draw = function(time, ctx) {
 					if (startTime < this.startTime && endTime > this.startTime) {
 						if (currentPlayingWordId != aWord.id) {
 							currentPlayingWordId = aWord.id;
+							currentPlayingWord = aWord;
 							changeCurrentPlayingWordId();
 						}
 					}
 
+					// Allow a word to be selected if it is currently paused
 					if (clickedWhilePausedX > 0) {
 						if (clickedWhilePausedX > topLeft
 								&& clickedWhilePausedX < topLeft + width) {
 							console.log("You clicked: " + aWord.word);
 							clickedWhilePausedX = 0;
-
 							currentSelectedWordId = aWord.id;
 							changeCurrentSelectedWord();
 						}
 					}
+					if (hoverWhilePausedX > 0
+							&& (hoverWhilePausedX > topLeft && hoverWhilePausedX < topLeft
+									+ width)) {
+						console.log("You Hovered: " + aWord.word);
+						hoverWhilePausedX = 0;
+						currentHoveredWordId = aWord.id;
+					}
 
+					if (doubleClickedWhilePausedX > 0
+							&& (doubleClickedWhilePausedX > topLeft && doubleClickedWhilePausedX < topLeft
+									+ width)) {
+						console.log("You doubleClickedWhilePausedX: "
+								+ aWord.word);
+						doubleClickedWhilePausedX = 0;
+						currentDoubleClickedWordId = aWord.id;
+						playWord(aWord);
+					}
+
+					// if this word has been selected
 					if (aWord.id == currentSelectedWordId) {
 						ctx.fillStyle = 'blue';
+						ctx.fill();
+						ctx.stroke();
+						ctx.closePath();
+						ctx.beginPath();
+					} else if ((aWord.id == currentHoveredWordId)) {
+						ctx.fillStyle = 'yellow';
 						ctx.fill();
 						ctx.stroke();
 						ctx.closePath();
@@ -224,7 +243,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 			}
 
 		}
-
+		
 	}
 
 	for (var i = this.startTime; i < (this.startTime + (this.drawTime)); i++) {

@@ -10,6 +10,26 @@ var stopAtTime;
 var currentSongId;
 var currentSelectedWordId = "";
 var currentPlayingWordId = "";
+var currentHoveredWordId = "";
+var currentDoubleClickedWordId = "";
+var currentPlayingWord;
+var wordCurrentlyPlaying = true;
+
+var WAV_FILE_TIME_GAP = 10;
+var DRAW_TIME_BY_PAGE_WIDTH = 0;
+var POINT_SPACING = 2;
+var X_MOVE = 0;
+var arcRadius = 2;
+var SHIFT_TO_FIX_LINE_THICKNESS = 0.5;
+
+var screenPressed = false;
+var startX = 0;
+var veryStartX = 0;
+var clickStartTime = 0;
+var wasPaused = true;
+var clickedWhilePausedX = 0;
+var hoverWhilePausedX = 0;
+var doubleClickedWhilePausedX = 0;
 
 $(document).ready(function($) {
 	console.log("Loaded Play Page1");
@@ -47,8 +67,14 @@ function lineArrayToJSON() {
 
 function changeCurrentPlayingWordId() {
 	$('.word').removeClass("wordPlaying");
-	$('#' +currentPlayingWordId).addClass(
-			"wordPlaying");
+	if (currentPlayingWord) {
+		$('#' + currentPlayingWordId).addClass("wordPlaying");
+		$('#currentWord').html(currentPlayingWord.word);
+	}
+	else
+	{
+		$('#currentWord').html("");
+	}
 }
 
 function changeCurrentSelectedWord() {
@@ -57,21 +83,17 @@ function changeCurrentSelectedWord() {
 
 	var aLineObject = lineArray[lineIndex];
 	var aWordObject = aLineObject.words[wordIndex];
-	
+
 	$('#wordInfoId').val(currentSelectedWordId);
 
 	$('#wordInfoWord').val(
-			aWordObject.word.replace(
-					/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ""));
-	$('#wordInfoStartTime')
-			.val(
-					millisecondsToISOMinutesSecondsMilliseconds(aWordObject.startTime));
-	$('#wordInfoEndTime')
-			.val(
-					millisecondsToISOMinutesSecondsMilliseconds(aWordObject.endTime));
+			aWordObject.word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ""));
+	$('#wordInfoStartTime').val(
+			millisecondsToISOMinutesSecondsMilliseconds(aWordObject.startTime));
+	$('#wordInfoEndTime').val(
+			millisecondsToISOMinutesSecondsMilliseconds(aWordObject.endTime));
 	$('.word').removeClass("wordSelected");
-	$('#word_' + lineIndex + "_" + wordIndex)
-			.addClass("wordSelected");
+	$('#word_' + lineIndex + "_" + wordIndex).addClass("wordSelected");
 
 }
 
@@ -79,7 +101,6 @@ function millisecondsToISOMinutesSecondsMilliseconds(milliseconds) {
 	if (!milliseconds) {
 		return "00:00.000";
 	}
-	console.log(milliseconds);
 	var date = new Date(null);
 	date.setMilliseconds(milliseconds);
 	return date.toISOString().substr(14, 9);
@@ -159,33 +180,37 @@ $(function() {
 		var wordIndex = wordId.split('_')[2];
 		var aLineObject = lineArray[lineIndex];
 		var aWordObject = aLineObject.words[wordIndex];
-
-		var vid = document.getElementById("audio");
-
-		if (aWordObject.startTime && aWordObject.startTime >= 0) {
-			vid.currentTime = aWordObject.startTime / 1000;
-			vid.play();
-			stopAtTime = aWordObject.endTime;
-		}
+		playWord(aWordObject);
 	});
 });
 
+function playWord(aWordObject) {
+	var vid = document.getElementById("audio");
+	if (aWordObject.startTime && aWordObject.startTime >= 0) {
+		vid.currentTime = aWordObject.startTime / 1000;
+		vid.play();
+		stopAtTime = aWordObject.endTime;
+	}
+}
+
 $(function() {
-	$("#wordInfoPlayLine").click(function() {
-		var wordId = $('#wordInfoId').val();
-		var lineIndex = wordId.split('_')[1];
-		var wordIndex = 0;
-		var aLineObject = lineArray[lineIndex];
-		var aWordObject = aLineObject.words[wordIndex];
+	$("#wordInfoPlayLine")
+			.click(
+					function() {
+						var wordId = $('#wordInfoId').val();
+						var lineIndex = wordId.split('_')[1];
+						var wordIndex = 0;
+						var aLineObject = lineArray[lineIndex];
+						var aWordObject = aLineObject.words[wordIndex];
 
-		var vid = document.getElementById("audio");
+						var vid = document.getElementById("audio");
 
-		if (aWordObject.startTime && aWordObject.startTime >= 0) {
-			vid.currentTime = aWordObject.startTime / 1000;
-			vid.play();
-			stopAtTime = aLineObject.endTime;
-		}
-	});
+						if (aWordObject.startTime && aWordObject.startTime >= 0) {
+							vid.currentTime = aWordObject.startTime / 1000;
+							vid.play();
+							stopAtTime = aLineObject.words[aLineObject.words.length - 1].endTime;
+						}
+					});
 });
 
 function changeStart(timeInMs) {
@@ -376,6 +401,10 @@ function LineObject() {
 
 }
 function SongObject() {
+
+}
+
+function CurrentlyDrawnWordObject() {
 
 }
 

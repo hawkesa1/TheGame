@@ -1,41 +1,40 @@
-var screenPressed = false;
-var startX = 0;
-var veryStartX = 0;
-var clickStartTime = 0;
-var wasPaused = true;
-var clickedWhilePausedX=0;
-
 function bindCanvasTouchControls() {
 	console.log("Binding Controls");
 	$("#canvas1").bind("mousedown", function(e) {
 		updateLog("Mouse Down");
 		e.preventDefault();
-		
 		var offset = $(this).offset();
-		var clickX = e.clientX - offset.left;
-		var clickY = e.clientY - offset.top;
-		if (clickY > -400) {
+		var clickX = e.pageX - offset.left;
+		var clickY = e.pageY - offset.top;
+		if (clickY > 250) {
 			if (document.getElementById('audio').paused) {
-				clickedWhilePausedX=clickX;
-				console.log(clickedWhilePausedX);
+				clickedWhilePausedX = clickX;
 			}
-		}
-		else
-		{
+		} else {
 			screenPressed = true;
 			var audioElm = document.getElementById('audio');
 			var currentTime = audioElm.currentTime;
 			wasPaused = audioElm.paused;
 			audioElm.pause();
-			
 			startX = clickX;
 			veryStartX = clickX;
 			clickStartTime = currentTime;
 		}
-		
-		
-	});
 
+	});
+	$("#canvas1").bind("dblclick", function(e) {
+		updateLog("DoubleClick");
+		console.log("Double Click");
+		e.preventDefault();
+		var offset = $(this).offset();
+		var clickX = e.pageX - offset.left;
+		var clickY = e.pageY - offset.top;
+		if (clickY > 250) {
+			if (document.getElementById('audio').paused) {
+				doubleClickedWhilePausedX = clickX;
+			}
+		}
+	});
 	$("#canvas1").bind("click", function(e) {
 		updateLog("Mouse Click");
 	});
@@ -52,20 +51,35 @@ function bindCanvasTouchControls() {
 			"mousemove touchmove",
 			function(e) {
 				updateLog("Mouse Move");
+				var offset = $(this).offset();
+				var clickX = e.clientX - offset.left;
 				if (screenPressed) {
-					var offset = $(this).offset();
-					var clickX = e.clientX - offset.left;
+
 					var distanceMoved = clickX - startX;
 					startX = clickX;
-					var a = clickX - veryStartX
+
 					var audioElm = document.getElementById('audio');
 					audioElm.currentTime = audioElm.currentTime
 							+ -((distanceMoved) / 200);
+
+				}
+				var clickY = e.pageY - offset.top;
+				if (clickY > 250) {
+					hoverWhilePausedX = clickX;
+				} else {
+					hoverWhilePausedX = 0;
+					currentHoveredWordId = "";
 				}
 			});
+
+	$("#canvas1").bind("mouseout", function(e) {
+		updateLog("Mouse Out");
+		hoverWhilePausedX = 0;
+		currentHoveredWordId = "";
+	});
 }
 
 function updateLog(text1) {
-	console.log(text1);
-	$('#logMessages').text(" " + text1);
+	// console.log(text1);
+	// $('#logMessages').text(" " + text1);
 }
