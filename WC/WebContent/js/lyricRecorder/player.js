@@ -232,6 +232,13 @@ function changeStart(timeInMs) {
 			millisecondsToISOMinutesSecondsMilliseconds(aWordObject.endTime));
 
 }
+
+function changePlayBackRate(playBackRate) {
+	var vid = document.getElementById("audio");
+	vid.playbackRate=playBackRate;
+
+}
+
 function changeEnd(timeInMs) {
 	var wordId = $('#wordInfoId').val();
 	var lineIndex = wordId.split('_')[1];
@@ -426,7 +433,10 @@ function animate() {
 	requestAnimationFrame(animate);
 	audioTime = $("#audio").prop("currentTime") * 1000;
 	frame++;
+	
+	console.log(audioTime +"  " + lastDrawPrintTime);
 	if (audioTime - lastDrawPrintTime > 1000) {
+		console.log("yaa");
 		lastDrawPrintTime = audioTime;
 		$('#fps').html(frame + " fps");
 		frame = 0;

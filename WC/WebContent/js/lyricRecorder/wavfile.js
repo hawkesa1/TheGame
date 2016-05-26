@@ -157,6 +157,8 @@ WaveForm.prototype.draw = function(time, ctx) {
 	drawArc(this.pointX, this.pointY, arcRadius);
 	drawArc(this.xShift + this.currentLine, this.currentYPoint, arcRadius);
 
+	var isAWordPlaying = false;
+
 	for (var i = 0; i < onlyWordsArray.length; i++) {
 		aWord = onlyWordsArray[i];
 		// only interested in words that have a start time set
@@ -181,6 +183,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 
 					// Set the word currently being played
 					if (startTime < this.startTime && endTime > this.startTime) {
+						isAWordPlaying = true;
 						if (currentPlayingWordId != aWord.id) {
 							currentPlayingWordId = aWord.id;
 							currentPlayingWord = aWord;
@@ -198,12 +201,12 @@ WaveForm.prototype.draw = function(time, ctx) {
 								console.log("You clicked the start of: "
 										+ aWord.word);
 								startOfWordMouseDownX = wordX;
-								
+
 							} else if (clickedWhilePausedX > (wordX + width - 5)
 									&& clickedWhilePausedX < wordX + width) {
 								console.log("You clicked the end of: "
 										+ aWord.word);
-								endOfWordMouseDownX = wordX+width;
+								endOfWordMouseDownX = wordX + width;
 							}
 
 							clickedWhilePausedX = 0;
@@ -291,6 +294,14 @@ WaveForm.prototype.draw = function(time, ctx) {
 
 		}
 
+		if (!isAWordPlaying) {
+			if (currentPlayingWord != null) {
+				currentPlayingWordId = "";
+				currentPlayingWord = null;
+				changeCurrentPlayingWordId();
+			}
+
+		}
 	}
 
 	for (var i = this.startTime; i < (this.startTime + (this.drawTime)); i++) {
