@@ -48,6 +48,7 @@ function bindCanvasTouchControls() {
 		}
 		startOfWordMouseDownX=0;
 		endOfWordMouseDownX=0;
+		middleOfWordMouseDownX=0;
 	});
 	$("#canvas1").bind(
 			"mousemove touchmove",
@@ -81,6 +82,14 @@ function bindCanvasTouchControls() {
 						console.log(clickX-endOfWordMouseDownX);
 						currentSelectedWord.endTime=currentSelectedWord.endTime + ((clickX-endOfWordMouseDownX)*5);
 						endOfWordMouseDownX=clickX;
+						changeCurrentSelectedWord();
+					}	
+					else if(middleOfWordMouseDownX>0)
+					{
+						console.log(clickX-middleOfWordMouseDownX);
+						currentSelectedWord.endTime=currentSelectedWord.endTime + ((clickX-middleOfWordMouseDownX)*5);
+						currentSelectedWord.startTime=currentSelectedWord.startTime + ((clickX-middleOfWordMouseDownX)*5);
+						middleOfWordMouseDownX=clickX;
 						changeCurrentSelectedWord();
 					}	
 					

@@ -196,6 +196,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 						if (clickedWhilePausedX > wordX
 								&& clickedWhilePausedX < wordX + width) {
 							console.log("You clicked: " + aWord.word);
+							
 							if (clickedWhilePausedX > wordX
 									&& clickedWhilePausedX < wordX + 5) {
 								console.log("You clicked the start of: "
@@ -207,6 +208,9 @@ WaveForm.prototype.draw = function(time, ctx) {
 								console.log("You clicked the end of: "
 										+ aWord.word);
 								endOfWordMouseDownX = wordX + width;
+							}else
+							{
+								middleOfWordMouseDownX = wordX +(width/2);
 							}
 
 							clickedWhilePausedX = 0;

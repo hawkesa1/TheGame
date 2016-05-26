@@ -18,6 +18,7 @@ var wordCurrentlyPlaying = true;
 
 var startOfWordMouseDownX = 0;
 var endOfWordMouseDownX = 0;
+var middleOfWordMouseDownX = 0;
 
 var WAV_FILE_TIME_GAP = 10;
 var DRAW_TIME_BY_PAGE_WIDTH = 0;
