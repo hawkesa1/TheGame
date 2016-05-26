@@ -191,6 +191,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 						}
 					}
 
+					//
 					// Allow a word to be selected if it is currently paused
 					if (clickedWhilePausedX > 0) {
 						if (clickedWhilePausedX > wordX
