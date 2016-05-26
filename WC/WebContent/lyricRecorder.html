@@ -25,26 +25,15 @@
 
 
 	<div id="mainContainer">
-		<div id="pageTitle">Lyric Recorder</div>
-		<div class="instructionText">Step 1: Upload an audio file (mp3)
-		</div>
+		
 
 
-		<iframe src="lyricRecorderUpload.html" width="100%" height="30px"
-			frameBorder="0"> </iframe>
-
-		<div class="instructionText">Step 2: Copy and paste some lyrics
-			in to the box below, then click convert and they will be created as
-			individually clickable words</div>
-
-		<textarea id="lyricText" rows="4" cols="50">
-</textarea>
-		<BR><BR> <input id="lyricTextButton" value="Convert"
-				type="button"><BR><BR>
-							<div class="instructionText">Step 3: Start the audio
-								playing.</div> <audio id="audio" controls> <source
+				
+							<audio id="audio" controls> <source
 								id="audioSrc" type="audio/mpeg"> Your browser does not
-							support the audio element. </audio>  
+							support the audio element. </audio> <BR><BR>  <select
+								id="loadTrack">
+							</select> <input type="button" value="load" onclick="loadTrack()"></input>
 							
 							
 							
@@ -58,8 +47,7 @@
 									<div id="lyrics"></div>
 
 									<div id="wordInfo">
-										Word <input class="wordInfo" id="wordInfoWord" type="text"><BR>
-
+										Word <input class="wordInfo" id="wordInfoWord" type="text"></input><br>
 												<input type="hidden" id="wordInfoId" value=""> Start
 													<input class="wordInfo" id="wordInfoStartTime" type="text"><input
 														type="button" value="-10ms" onmousedown="changeStart(-10)"><input
@@ -87,22 +75,39 @@
 																											<input id="wordInfoClearAll"
 																											value="Clear All" type="button">
 									</div> <BR> <BR>
+									
+	
+									
+									
+									
 											<div id="canvasContainer"></div>
 											
 		<BR> <BR>
-<div id="fps">0fps</div>
-<div id="currentWord">0fps</div>
-				<div class="instructionText">Step 4: Add each word in time
-					with the audio lyrics</div> <input type="button" value="Add Current Word"
+
+
+				 <input type="button" value="Add Current Word"
 				id="addCurrentWord"> <BR><BR>
-							<div class="instructionText">Step 5: Save the results</div> <input
-							id="save" value="Save" type="button"><select
-								id="loadTrack">
-							</select> <input type="button" value="load" onclick="loadTrack()"></input>
-								<BR><BR>
+							<input
+							id="save" value="Save" type="button">
+								
+								
+								
+								
+								
+										<div id="uploadArea">
+		<iframe src="lyricRecorderUpload.html" width="100%" height="30px"
+			frameBorder="0"> </iframe>
+		<textarea id="lyricText" rows="4" cols="50">
+</textarea>
+		<BR><BR> <input id="lyricTextButton" value="Convert"
+				type="button">
+</div>
+								
+								
 	</div>
 
 
-
+<div id="currentWord"></div>
+<div id="fps">0fps</div>
 </body>
 </html>

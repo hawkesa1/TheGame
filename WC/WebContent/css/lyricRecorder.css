@@ -19,20 +19,21 @@ iframe
 
 #lyrics
 {
-	height:200px;
-	width:400px;
 	border: 1px solid black;
+	width:800px;
+	height:100px;
+	font-size:30px;
+	background-color:red;
+	opacity:0.5;
 	overflow-y:scroll;
+	
+	
 }
 #wordInfo
 {
 	width:400px;
 	height:200px;
 	border:1px solid black;
-	position:relative;
-	top:-202px;
-	left:405px;
-	margin-bottom: -202px;
 }
 #canvasContainer
 {
@@ -40,4 +41,28 @@ iframe
 	width:800px;
 	height:315px;
 }
+
+
+
+
+#currentWord
+{
+	
+	border: 2px solid blue;
+	width:200px;
+	height:200px;
+	position:absolute;
+	top:150px;
+	left:300px;
+	font-size:30px;
+	background-color:red;
+	opacity:0.5;
+	
+}
+
+#uploadArea
+{
+	display:none;
+}
+
 

@@ -16,8 +16,8 @@ var currentDoubleClickedWordId = "";
 var currentPlayingWord;
 var wordCurrentlyPlaying = true;
 
-var startOfWordMouseDownX=0;
-var endOfWordMouseDownX=0;
+var startOfWordMouseDownX = 0;
+var endOfWordMouseDownX = 0;
 
 var WAV_FILE_TIME_GAP = 10;
 var DRAW_TIME_BY_PAGE_WIDTH = 0;
@@ -74,9 +74,17 @@ function changeCurrentPlayingWordId() {
 	if (currentPlayingWord) {
 		$('#' + currentPlayingWordId).addClass("wordPlaying");
 		$('#currentWord').html(currentPlayingWord.word);
-	}
-	else
-	{
+		
+		var container = $('#lyrics')
+		var scrollTo = $('#' + currentPlayingWordId);
+		
+		container.scrollTop(scrollTo.offset().top - container.offset().top
+				+ container.scrollTop() -((container.height()/2)-15));
+
+		
+		
+		
+	} else {
 		$('#currentWord').html("");
 	}
 }
@@ -98,7 +106,6 @@ function changeCurrentSelectedWord() {
 			millisecondsToISOMinutesSecondsMilliseconds(aWordObject.endTime));
 	$('.word').removeClass("wordSelected");
 	$('#word_' + lineIndex + "_" + wordIndex).addClass("wordSelected");
-
 }
 
 function millisecondsToISOMinutesSecondsMilliseconds(milliseconds) {
@@ -217,6 +224,22 @@ $(function() {
 					});
 });
 
+
+function playLine(lineIndex)
+{
+	var wordIndex = 0;
+	var aLineObject = lineArray[lineIndex];
+	var aWordObject = aLineObject.words[wordIndex];
+
+	var vid = document.getElementById("audio");
+
+	if (aWordObject.startTime && aWordObject.startTime >= 0) {
+		vid.currentTime = aWordObject.startTime / 1000;
+		vid.play();
+		stopAtTime = aLineObject.words[aLineObject.words.length - 1].endTime;
+	}
+}
+
 function changeStart(timeInMs) {
 	var wordId = $('#wordInfoId').val();
 	var lineIndex = wordId.split('_')[1];
@@ -235,7 +258,7 @@ function changeStart(timeInMs) {
 
 function changePlayBackRate(playBackRate) {
 	var vid = document.getElementById("audio");
-	vid.playbackRate=playBackRate;
+	vid.playbackRate = playBackRate;
 
 }
 
@@ -390,6 +413,8 @@ function generateLyrics(lines) {
 	for (var i = 0; i < lines.length; i++) {
 		words = lines[i].words;
 		html += "<div class='line'>";
+		html+= "<input type=\"button\" class=\"playLineButton\" value=\"L\" onclick='playLine("+i+")'> </input>";
+		
 		for (var j = 0; j < words.length; j++) {
 			onlyWordsArray[k] = words[j];
 			k++;
@@ -433,10 +458,7 @@ function animate() {
 	requestAnimationFrame(animate);
 	audioTime = $("#audio").prop("currentTime") * 1000;
 	frame++;
-	
-	console.log(audioTime +"  " + lastDrawPrintTime);
 	if (audioTime - lastDrawPrintTime > 1000) {
-		console.log("yaa");
 		lastDrawPrintTime = audioTime;
 		$('#fps').html(frame + " fps");
 		frame = 0;

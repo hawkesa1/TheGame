@@ -243,9 +243,13 @@ WaveForm.prototype.draw = function(time, ctx) {
 						playWord(aWord);
 					}
 
-					// if this word has been selected
 					if (aWord.id == currentSelectedWordId) {
-						ctx.fillStyle = 'blue';
+
+						if (aWord.id == currentPlayingWordId) {
+							ctx.fillStyle = 'green';
+						} else {
+							ctx.fillStyle = 'blue';
+						}
 						ctx.fill();
 						ctx.stroke();
 						ctx.closePath();
@@ -274,13 +278,21 @@ WaveForm.prototype.draw = function(time, ctx) {
 						ctx.strokeStyle = 'black';
 
 					} else if ((aWord.id == currentHoveredWordId)) {
-						ctx.fillStyle = 'yellow';
+						if (aWord.id == currentPlayingWordId) {
+							ctx.fillStyle = 'green';
+						} else {
+							ctx.fillStyle = 'yellow';
+						}
 						ctx.fill();
 						ctx.stroke();
 						ctx.closePath();
 						ctx.beginPath();
 					} else {
-						ctx.fillStyle = 'orange';
+						if (aWord.id == currentPlayingWordId) {
+							ctx.fillStyle = 'green';
+						} else {
+							ctx.fillStyle = 'orange';
+						}
 						ctx.fill();
 						ctx.stroke();
 						ctx.closePath();
@@ -373,6 +385,19 @@ WaveForm.prototype.draw = function(time, ctx) {
 	ctx.moveTo(this.xShift, 300 + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.lineTo(windowWidth - (X_MOVE), 300 + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.stroke();
+
+	ctx.closePath();
+	ctx.beginPath();
+
+	ctx.globalAlpha = 0.2;
+	ctx.fillStyle = 'gray';
+	ctx.rect(0, 0, 200, 315);
+	ctx.fill();
+	ctx.stroke();
+	ctx.closePath();
+	ctx.beginPath();
+	ctx.fillStyle = 'black';
+	ctx.globalAlpha = 1;
 
 	function drawArc(xPosition, yPosition, radius) {
 		ctx.fillStyle = $('#circleColor').val();
