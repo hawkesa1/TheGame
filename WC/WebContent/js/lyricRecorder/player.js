@@ -100,28 +100,43 @@ function changeCurrentSelectedWord() {
 
 	// get the previous word
 	if (wordIndex == 0 && lineIndex == 0) {
-		//current word is first word
+		// current word is first word
 		currentSelectedWordPreviousWord = null;
 	} else {
 		if (wordIndex > 0) {
-			//current word is not the first word in a line
+			// current word is not the first word in a line
 			currentSelectedWordPreviousWordLineIndex = lineIndex;
 			currentSelectedWordPreviousWordWordIndex = wordIndex - 1;
 			currentSelectedWordPreviousWord = lineArray[currentSelectedWordPreviousWordLineIndex].words[currentSelectedWordPreviousWordWordIndex];
-		}
-		else
-		{
-			//current word is the first word on the line
-			currentSelectedWordPreviousWordLineIndex = lineIndex-1;
-			currentSelectedWordPreviousWordWordIndex =lineArray[currentSelectedWordPreviousWordLineIndex].words.length-1;
+		} else {
+			// current word is the first word on the line
+			currentSelectedWordPreviousWordLineIndex = lineIndex - 1;
+			currentSelectedWordPreviousWordWordIndex = lineArray[currentSelectedWordPreviousWordLineIndex].words.length - 1;
 			currentSelectedWordPreviousWord = lineArray[currentSelectedWordPreviousWordLineIndex].words[currentSelectedWordPreviousWordWordIndex];
-		}	
+		}
 	}
 
-	//get the next word
+	// get the next word
 	// TO_DO
 	
-	
+	if (currentSelectedWord.wordIndex === 0) {
+		currentSelectedWordPreviousWord = null;
+	} else {
+		currentSelectedWordPreviousWord = onlyWordsArray[currentSelectedWord.wordIndex - 1];
+	}
+	if (currentSelectedWord.wordIndex > onlyWordsArray.length - 1) {
+		var aNewWord=new Word();
+		aNewWord.startTime=500000;
+		currentSelectedWordNextWord = aNewWord;
+	} else {
+		currentSelectedWordNextWord = onlyWordsArray[currentSelectedWord.wordIndex + 1]
+		if(!currentSelectedWordNextWord.startTime)
+		{
+			var aNewWord=new Word();
+			aNewWord.startTime=500000;
+			currentSelectedWordNextWord = aNewWord;
+		}
+	}
 	
 	// get the next word
 
@@ -194,7 +209,7 @@ function lyricsTextToObjects(lyricsText) {
 			aWordObject = new WordObject();
 			aWordObject.word = words[j];
 			wordsArray[j] = aWordObject;
-
+			aWordObject.wordIndex = k;
 			onlyWordsArray[k] = aWordObject;
 			k++;
 		}
@@ -443,6 +458,7 @@ function generateLyrics(lines) {
 				+ i + ")'> </input>";
 
 		for (var j = 0; j < words.length; j++) {
+			words[j].wordIndex = k;
 			onlyWordsArray[k] = words[j];
 			k++;
 			id = "word_" + i + "_" + j;

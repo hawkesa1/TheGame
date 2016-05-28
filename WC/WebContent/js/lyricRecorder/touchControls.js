@@ -89,16 +89,21 @@ function bindCanvasTouchControls() {
 								changeCurrentSelectedWord();
 							} else if (endOfWordMouseDownX > 0) {
 								if (currentSelectedWord.endTime
-										+ ((clickX - endOfWordMouseDownX) * 5) > (currentSelectedWord.startTime + 20)) {
+										+ ((clickX - endOfWordMouseDownX) * 5) > (currentSelectedWord.startTime + 20) && currentSelectedWord.endTime
+										+ ((clickX - endOfWordMouseDownX) * 5) < currentSelectedWordNextWord.startTime-10) {
 									currentSelectedWord.endTime = currentSelectedWord.endTime
 											+ ((clickX - endOfWordMouseDownX) * 5);
 								}
 								endOfWordMouseDownX = clickX;
 								changeCurrentSelectedWord();
-							} else if (middleOfWordMouseDownX > 0) {
+							} 
+							
+							
+							else if (middleOfWordMouseDownX > 0) {
 								if (currentSelectedWordPreviousWord != null
 										&& currentSelectedWord.startTime
-												+ ((clickX - middleOfWordMouseDownX) * 5) > (currentSelectedWordPreviousWord.endTime + 10)) {
+												+ ((clickX - middleOfWordMouseDownX) * 5) > (currentSelectedWordPreviousWord.endTime + 10)  && currentSelectedWord.endTime
+												+ ((clickX - middleOfWordMouseDownX) * 5) <currentSelectedWordNextWord.startTime-10) {
 									currentSelectedWord.endTime = currentSelectedWord.endTime
 											+ ((clickX - middleOfWordMouseDownX) * 5);
 									currentSelectedWord.startTime = currentSelectedWord.startTime
@@ -106,7 +111,8 @@ function bindCanvasTouchControls() {
 
 								} else if (currentSelectedWordPreviousWord == null
 										&& currentSelectedWord.startTime
-												+ ((clickX - middleOfWordMouseDownX) * 5) > 0) {
+												+ ((clickX - middleOfWordMouseDownX) * 5) > 0 && currentSelectedWord.endTime
+												+ ((clickX - middleOfWordMouseDownX) * 5) <currentSelectedWordNextWord.startTime-10) {
 									currentSelectedWord.endTime = currentSelectedWord.endTime
 											+ ((clickX - middleOfWordMouseDownX) * 5);
 									currentSelectedWord.startTime = currentSelectedWord.startTime
