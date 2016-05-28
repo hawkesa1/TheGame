@@ -197,52 +197,40 @@ WaveForm.prototype.draw = function(time, ctx) {
 						if (clickedWhilePausedX > wordX
 								&& clickedWhilePausedX < wordX + width) {
 							console.log("You clicked: " + aWord.word);
-							
+							// start
 							if (clickedWhilePausedX > wordX
 									&& clickedWhilePausedX < wordX + 5) {
-								console.log("You clicked the start of: "
-										+ aWord.word);
-								startOfWordMouseDownX = clickedWhilePausedX;
-
+									startOfWordMouseDownX = clickedWhilePausedX;
+								// end
 							} else if (clickedWhilePausedX > (wordX + width - 5)
 									&& clickedWhilePausedX < wordX + width) {
-								console.log("You clicked the end of: "
-										+ aWord.word);
+
 								endOfWordMouseDownX = clickedWhilePausedX;
-							}else
-							{
+							} else {
+								// middle
 								middleOfWordMouseDownX = clickedWhilePausedX;
 							}
-
 							clickedWhilePausedX = 0;
 							currentSelectedWordId = aWord.id;
-							currentSelectedWord = aWord;
+							currentSelectedWord = aWord;							
 							changeCurrentSelectedWord();
-
 						}
 					}
 					if (hoverWhilePausedX > 0
 							&& (hoverWhilePausedX > wordX && hoverWhilePausedX < wordX
 									+ width)) {
-						console.log("You Hovered: " + aWord.word);
 						if (hoverWhilePausedX > 0
 								&& (hoverWhilePausedX > wordX && hoverWhilePausedX < wordX + 5)) {
-							console.log("You Hovered The Start Of: "
-									+ aWord.word);
 							hoverWhilePausedX = 0;
 							currentHoveredWordId = aWord.id;
 						}
-
 						hoverWhilePausedX = 0;
 						currentHoveredWordId = aWord.id;
-
 					}
 
 					if (doubleClickedWhilePausedX > 0
 							&& (doubleClickedWhilePausedX > wordX && doubleClickedWhilePausedX < wordX
 									+ width)) {
-						console.log("You doubleClickedWhilePausedX: "
-								+ aWord.word);
 						doubleClickedWhilePausedX = 0;
 						currentDoubleClickedWordId = aWord.id;
 						playWord(aWord);
@@ -264,7 +252,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 						ctx.moveTo(wordX + 2, 250.5);
 
 						ctx.lineTo(wordX + 2, 300);
-						ctx.lineWidth = 5;
+						ctx.lineWidth = 2;
 						ctx.strokeStyle = '#ff0000';
 						ctx.stroke();
 						// and End Lines
@@ -272,7 +260,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 						ctx.moveTo(wordX + width - 2, 250.5);
 
 						ctx.lineTo(wordX + width - 2, 300);
-						ctx.lineWidth = 5;
+						ctx.lineWidth = 2;
 						ctx.strokeStyle = '#ff0000';
 						ctx.stroke();
 

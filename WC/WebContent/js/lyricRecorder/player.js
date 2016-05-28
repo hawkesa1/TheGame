@@ -10,6 +10,10 @@ var stopAtTime;
 var currentSongId;
 var currentSelectedWordId = "";
 var currentSelectedWord;
+
+var currentSelectedWordNextWord = null;
+var currentSelectedWordPreviousWord = null;
+
 var currentPlayingWordId = "";
 var currentHoveredWordId = "";
 var currentDoubleClickedWordId = "";
@@ -75,16 +79,12 @@ function changeCurrentPlayingWordId() {
 	if (currentPlayingWord) {
 		$('#' + currentPlayingWordId).addClass("wordPlaying");
 		$('#currentWord').html(currentPlayingWord.word);
-		
+
 		var container = $('#lyrics')
 		var scrollTo = $('#' + currentPlayingWordId);
-		
-		container.scrollTop(scrollTo.offset().top - container.offset().top
-				+ container.scrollTop() -((container.height()/2)-15));
 
-		
-		
-		
+		container.scrollTop(scrollTo.offset().top - container.offset().top
+				+ container.scrollTop() - ((container.height() / 2) - 15));
 	} else {
 		$('#currentWord').html("");
 	}
@@ -93,12 +93,39 @@ function changeCurrentPlayingWordId() {
 function changeCurrentSelectedWord() {
 	var lineIndex = currentSelectedWordId.split('_')[1];
 	var wordIndex = currentSelectedWordId.split('_')[2];
-
 	var aLineObject = lineArray[lineIndex];
 	var aWordObject = aLineObject.words[wordIndex];
+	var currentSelectedWordPreviousWordLineIndex = 0;
+	var currentSelectedWordPreviousWordWordIndex = 0;
+
+	// get the previous word
+	if (wordIndex == 0 && lineIndex == 0) {
+		//current word is first word
+		currentSelectedWordPreviousWord = null;
+	} else {
+		if (wordIndex > 0) {
+			//current word is not the first word in a line
+			currentSelectedWordPreviousWordLineIndex = lineIndex;
+			currentSelectedWordPreviousWordWordIndex = wordIndex - 1;
+			currentSelectedWordPreviousWord = lineArray[currentSelectedWordPreviousWordLineIndex].words[currentSelectedWordPreviousWordWordIndex];
+		}
+		else
+		{
+			//current word is the first word on the line
+			currentSelectedWordPreviousWordLineIndex = lineIndex-1;
+			currentSelectedWordPreviousWordWordIndex =lineArray[currentSelectedWordPreviousWordLineIndex].words.length-1;
+			currentSelectedWordPreviousWord = lineArray[currentSelectedWordPreviousWordLineIndex].words[currentSelectedWordPreviousWordWordIndex];
+		}	
+	}
+
+	//get the next word
+	// TO_DO
+	
+	
+	
+	// get the next word
 
 	$('#wordInfoId').val(currentSelectedWordId);
-
 	$('#wordInfoWord').val(
 			aWordObject.word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ""));
 	$('#wordInfoStartTime').val(
@@ -225,9 +252,7 @@ $(function() {
 					});
 });
 
-
-function playLine(lineIndex)
-{
+function playLine(lineIndex) {
 	var wordIndex = 0;
 	var aLineObject = lineArray[lineIndex];
 	var aWordObject = aLineObject.words[wordIndex];
@@ -414,8 +439,9 @@ function generateLyrics(lines) {
 	for (var i = 0; i < lines.length; i++) {
 		words = lines[i].words;
 		html += "<div class='line'>";
-		html+= "<input type=\"button\" class=\"playLineButton\" value=\"L\" onclick='playLine("+i+")'> </input>";
-		
+		html += "<input type=\"button\" class=\"playLineButton\" value=\"L\" onclick='playLine("
+				+ i + ")'> </input>";
+
 		for (var j = 0; j < words.length; j++) {
 			onlyWordsArray[k] = words[j];
 			k++;

@@ -24,7 +24,6 @@ function bindCanvasTouchControls() {
 	});
 	$("#canvas1").bind("dblclick", function(e) {
 		updateLog("DoubleClick");
-		console.log("Double Click");
 		e.preventDefault();
 		var offset = $(this).offset();
 		var clickX = e.pageX - offset.left;
@@ -46,64 +45,90 @@ function bindCanvasTouchControls() {
 		if (!wasPaused) {
 			audioElm.play();
 		}
-		startOfWordMouseDownX=0;
-		endOfWordMouseDownX=0;
-		middleOfWordMouseDownX=0;
+		startOfWordMouseDownX = 0;
+		endOfWordMouseDownX = 0;
+		middleOfWordMouseDownX = 0;
 	});
-	$("#canvas1").bind(
-			"mousemove touchmove",
-			function(e) {
-				updateLog("Mouse Move");
-				var offset = $(this).offset();
-				var clickX = e.clientX - offset.left;
-				if (screenPressed) {
+	$("#canvas1")
+			.bind(
+					"mousemove touchmove",
+					function(e) {
+						updateLog("Mouse Move");
+						var offset = $(this).offset();
+						var clickX = e.clientX - offset.left;
+						if (screenPressed) {
 
-					var distanceMoved = clickX - startX;
-					startX = clickX;
+							var distanceMoved = clickX - startX;
+							startX = clickX;
 
-					var audioElm = document.getElementById('audio');
-					audioElm.currentTime = audioElm.currentTime
-							+ -((distanceMoved) / 200);
+							var audioElm = document.getElementById('audio');
+							audioElm.currentTime = audioElm.currentTime
+									+ -((distanceMoved) / 200);
 
-				}
-				var clickY = e.pageY - offset.top;
-				if (clickY > 250) {
-					hoverWhilePausedX = clickX;
-					
-					if(startOfWordMouseDownX>0)
-					{
-						console.log(clickX-startOfWordMouseDownX);
-						currentSelectedWord.startTime=currentSelectedWord.startTime + ((clickX-startOfWordMouseDownX)*5);
-						startOfWordMouseDownX=clickX;
-						changeCurrentSelectedWord();
-					}
-					else if(endOfWordMouseDownX>0)
-					{
-						console.log(clickX-endOfWordMouseDownX);
-						currentSelectedWord.endTime=currentSelectedWord.endTime + ((clickX-endOfWordMouseDownX)*5);
-						endOfWordMouseDownX=clickX;
-						changeCurrentSelectedWord();
-					}	
-					else if(middleOfWordMouseDownX>0)
-					{
-						console.log(clickX-middleOfWordMouseDownX);
-						currentSelectedWord.endTime=currentSelectedWord.endTime + ((clickX-middleOfWordMouseDownX)*5);
-						currentSelectedWord.startTime=currentSelectedWord.startTime + ((clickX-middleOfWordMouseDownX)*5);
-						middleOfWordMouseDownX=clickX;
-						changeCurrentSelectedWord();
-					}	
-					
-				} else {
-					hoverWhilePausedX = 0;
-					currentHoveredWordId = "";
-				}
-			});
+						}
+						var clickY = e.pageY - offset.top;
+						if (clickY > 250) {
+							hoverWhilePausedX = clickX;
+
+							if (startOfWordMouseDownX > 0) {
+								if (currentSelectedWord.startTime
+										+ ((clickX - startOfWordMouseDownX) * 5) < (currentSelectedWord.endTime - 50)) {
+									if (currentSelectedWordPreviousWord != null
+											&& currentSelectedWord.startTime
+													+ ((clickX - startOfWordMouseDownX) * 5) > (currentSelectedWordPreviousWord.endTime + 10)) {
+										currentSelectedWord.startTime = currentSelectedWord.startTime
+												+ ((clickX - startOfWordMouseDownX) * 5);
+									} else if (currentSelectedWordPreviousWord == null
+											&& currentSelectedWord.startTime
+													+ ((clickX - startOfWordMouseDownX) * 5) > 0) {
+										currentSelectedWord.startTime = currentSelectedWord.startTime
+												+ ((clickX - startOfWordMouseDownX) * 5);
+									}
+								}
+								startOfWordMouseDownX = clickX;
+								changeCurrentSelectedWord();
+							} else if (endOfWordMouseDownX > 0) {
+								if (currentSelectedWord.endTime
+										+ ((clickX - endOfWordMouseDownX) * 5) > (currentSelectedWord.startTime + 20)) {
+									currentSelectedWord.endTime = currentSelectedWord.endTime
+											+ ((clickX - endOfWordMouseDownX) * 5);
+								}
+								endOfWordMouseDownX = clickX;
+								changeCurrentSelectedWord();
+							} else if (middleOfWordMouseDownX > 0) {
+								if (currentSelectedWordPreviousWord != null
+										&& currentSelectedWord.startTime
+												+ ((clickX - middleOfWordMouseDownX) * 5) > (currentSelectedWordPreviousWord.endTime + 10)) {
+									currentSelectedWord.endTime = currentSelectedWord.endTime
+											+ ((clickX - middleOfWordMouseDownX) * 5);
+									currentSelectedWord.startTime = currentSelectedWord.startTime
+											+ ((clickX - middleOfWordMouseDownX) * 5);
+
+								} else if (currentSelectedWordPreviousWord == null
+										&& currentSelectedWord.startTime
+												+ ((clickX - middleOfWordMouseDownX) * 5) > 0) {
+									currentSelectedWord.endTime = currentSelectedWord.endTime
+											+ ((clickX - middleOfWordMouseDownX) * 5);
+									currentSelectedWord.startTime = currentSelectedWord.startTime
+											+ ((clickX - middleOfWordMouseDownX) * 5);
+
+								}
+
+								middleOfWordMouseDownX = clickX;
+								changeCurrentSelectedWord();
+							}
+
+						} else {
+							hoverWhilePausedX = 0;
+							currentHoveredWordId = "";
+						}
+					});
 
 	$("#canvas1").bind("mouseout", function(e) {
 		updateLog("Mouse Out");
 		hoverWhilePausedX = 0;
 		currentHoveredWordId = "";
-		startOfWordMouseDownX=0;
+		startOfWordMouseDownX = 0;
 	});
 }
 
