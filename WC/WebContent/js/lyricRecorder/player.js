@@ -74,6 +74,39 @@ function lineArrayToJSON() {
 	return $.toJSON(lineArray);
 }
 
+function loadCreateTab() {
+	$('#currentTab').removeClass('visibleTab');
+	$('#loadTab').removeClass('visibleTab');
+	$('#currentTab').addClass('hiddenTab');
+	$('#loadTab').addClass('hiddenTab');
+
+	$('#newTab').removeClass('hiddenTab');
+	$('#newTab').addClass('visibleTab');
+	console.log("Yo")
+}
+function loadCurrentTab() {
+	$('#newTab').removeClass('visibleTab');
+	$('#loadTab').removeClass('visibleTab');
+	$('#newTab').addClass('hiddenTab');
+	$('#loadTab').addClass('hiddenTab');
+
+	$('#currentTab').removeClass('hiddenTab');
+	$('#currentTab').addClass('visibleTab');
+	console.log("Yo")
+}
+function loadLoadTab() {
+	$('#currentTab').removeClass('visibleTab');
+	$('#newTab').removeClass('visibleTab');
+	$('#currentTab').addClass('hiddenTab');
+	$('#newTab').addClass('hiddenTab');
+
+	$('#loadTab').removeClass('hiddenTab');
+	$('#loadTab').addClass('visibleTab');
+	console.log("Yo")
+}
+
+
+
 function changeCurrentPlayingWordId() {
 	$('.word').removeClass("wordPlaying");
 	if (currentPlayingWord) {
@@ -118,26 +151,25 @@ function changeCurrentSelectedWord() {
 
 	// get the next word
 	// TO_DO
-	
+
 	if (currentSelectedWord.wordIndex === 0) {
 		currentSelectedWordPreviousWord = null;
 	} else {
 		currentSelectedWordPreviousWord = onlyWordsArray[currentSelectedWord.wordIndex - 1];
 	}
 	if (currentSelectedWord.wordIndex > onlyWordsArray.length - 1) {
-		var aNewWord=new Word();
-		aNewWord.startTime=500000;
+		var aNewWord = new Word();
+		aNewWord.startTime = 500000;
 		currentSelectedWordNextWord = aNewWord;
 	} else {
 		currentSelectedWordNextWord = onlyWordsArray[currentSelectedWord.wordIndex + 1]
-		if(!currentSelectedWordNextWord.startTime)
-		{
-			var aNewWord=new Word();
-			aNewWord.startTime=500000;
+		if (!currentSelectedWordNextWord.startTime) {
+			var aNewWord = new Word();
+			aNewWord.startTime = 500000;
 			currentSelectedWordNextWord = aNewWord;
 		}
 	}
-	
+
 	// get the next word
 
 	$('#wordInfoId').val(currentSelectedWordId);
@@ -347,12 +379,10 @@ $(function() {
 						var wordId = $('#wordInfoId').val();
 						var lineIndex = wordId.split('_')[1];
 						var wordIndex = wordId.split('_')[2];
-
 						var aLineObject = lineArray[currentLineIndex];
 						var aWordObject = aLineObject.words[currentWordIndex];
 						aWordObject.startTime = null;
 						aWordObject.endTime = null;
-
 						$('#wordInfoStartTime')
 								.val(
 										millisecondsToISOMinutesSecondsMilliseconds(aWordObject.startTime));

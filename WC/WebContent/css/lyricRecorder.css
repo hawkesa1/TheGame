@@ -34,6 +34,7 @@ iframe
 	width:400px;
 	height:200px;
 	border:1px solid black;
+	display:none;
 }
 #canvasContainer
 {
@@ -47,22 +48,40 @@ iframe
 
 #currentWord
 {
-	
+	display:none;
 	border: 2px solid blue;
 	width:200px;
 	height:200px;
-	position:absolute;
-	top:150px;
-	left:300px;
 	font-size:30px;
 	background-color:red;
 	opacity:0.5;
 	
 }
-
-#uploadArea
+#fps
 {
 	display:none;
+}
+
+.hiddenTab
+{
+	display:none;
+}
+.visibleTab
+{
+	display:block;
+}
+
+#newTab
+{
+	
+}
+#currentTab
+{
+	
+}
+#loadTab
+{
+	
 }
 
 
