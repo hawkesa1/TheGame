@@ -23,7 +23,7 @@ function loadWaveForm(wavFormFile) {
 			yHigh = ((tempLines[i].split(',')[2]));
 			wavePoints[wp++] = new WavePoint(time, yLow, yHigh);
 		}
-		waveForm = new WaveForm(500, 1, X_MOVE, 150, 200, POINT_SPACING,
+		waveForm = new WaveForm(500, 1, X_MOVE, 200, 200, POINT_SPACING,
 				wavePoints);
 		animate();
 	}
@@ -179,7 +179,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 					var wordX = (((startTime - this.startTime) + 100) * this.pointSpacing)
 							+ this.xShift;
 					var width = ((endTime - startTime)) * this.pointSpacing;
-					ctx.rect(wordX, 250.5, width, 50);
+					ctx.rect(wordX, 300.5, width, 50);
 
 					// Set the word currently being played
 					if (startTime < this.startTime && endTime > this.startTime) {
@@ -249,17 +249,17 @@ WaveForm.prototype.draw = function(time, ctx) {
 
 						// Start
 						ctx.beginPath();
-						ctx.moveTo(wordX + 2, 250.5);
+						ctx.moveTo(wordX + 2, 300.5);
 
-						ctx.lineTo(wordX + 2, 300);
+						ctx.lineTo(wordX + 2, 350);
 						ctx.lineWidth = 2;
 						ctx.strokeStyle = '#ff0000';
 						ctx.stroke();
 						// and End Lines
 						ctx.beginPath();
-						ctx.moveTo(wordX + width - 2, 250.5);
+						ctx.moveTo(wordX + width - 2, 300.5);
 
-						ctx.lineTo(wordX + width - 2, 300);
+						ctx.lineTo(wordX + width - 2, 350);
 						ctx.lineWidth = 2;
 						ctx.strokeStyle = '#ff0000';
 						ctx.stroke();
@@ -293,7 +293,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 					}
 
 					ctx.fillStyle = 'black';
-					ctx.fillText(aWord.word, wordX, 312)
+					ctx.fillText(aWord.word, wordX, 362)
 				}
 			}
 
@@ -331,26 +331,19 @@ WaveForm.prototype.draw = function(time, ctx) {
 		tenths++;
 
 		if (i % 10 == 0 && tenths != 0 && tenths != 100) {
-			ctx.fillText("|", this.pointX - 2, 260);
-			ctx.fillText("|", this.pointX - 2, 45);
+			ctx.fillText("|", this.pointX - 2, 310);
+			ctx.fillText("|", this.pointX - 2, 95);
 
 		}
 
 		if (i % 100 == 0) {
-			ctx.fillText(secondsToTime((i / 100) - 1), this.pointX - 2, 260);
-			ctx.fillText(secondsToTime((i / 100) - 1), this.pointX - 2, 45);
+			ctx.fillText(secondsToTime((i / 100) - 1), this.pointX - 2, 310);
+			ctx.fillText(secondsToTime((i / 100) - 1), this.pointX - 2, 95);
 			tenths = 0;
 		}
 	}
 
-	// Draw vertical line
-	ctx.beginPath();
-	ctx
-			.moveTo(this.xShift + this.currentLine,
-					50 + SHIFT_TO_FIX_LINE_THICKNESS);
-	ctx.lineTo(this.xShift + this.currentLine,
-			450 + SHIFT_TO_FIX_LINE_THICKNESS);
-	ctx.stroke();
+	
 
 	// Draw Horizontal Line
 	ctx.beginPath();
@@ -366,6 +359,66 @@ WaveForm.prototype.draw = function(time, ctx) {
 			+ SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.stroke();
 
+	
+	
+	// Draw The Tracking Area
+	ctx.beginPath();
+	ctx.moveTo(this.xShift, 25 + SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx.lineTo(windowWidth - (X_MOVE), 25
+			+ SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx.stroke();
+	
+	ctx.globalAlpha = 0.2;
+	ctx.fillStyle = 'gray';
+	
+	trackingSquareX=((this.startTime/trackDuration) *(canvas1Width-226))+ 203;
+	
+	ctx.rect(trackingSquareX, 2, 20, 20);
+	ctx.fill();
+	ctx.stroke();
+	ctx.closePath();
+	ctx.beginPath();
+	ctx.fillStyle = 'black';
+	ctx.globalAlpha = 1;
+	
+	///BOOOOO
+	if (trackingClicked > 0) {
+		if (trackingClicked > trackingSquareX
+				&& trackingClicked < trackingSquareX + 20) {
+			trackingMouseDownX=trackingClicked;
+		}
+	}
+	
+	
+	if (clickedWhilePausedX > 0) {
+		if (clickedWhilePausedX > wordX
+				&& clickedWhilePausedX < wordX + width) {
+			console.log("You clicked: " + aWord.word);
+			// start
+			if (clickedWhilePausedX > wordX
+					&& clickedWhilePausedX < wordX + 5) {
+					startOfWordMouseDownX = clickedWhilePausedX;
+				// end
+			} else if (clickedWhilePausedX > (wordX + width - 5)
+					&& clickedWhilePausedX < wordX + width) {
+
+				endOfWordMouseDownX = clickedWhilePausedX;
+			} else {
+				// middle
+				middleOfWordMouseDownX = clickedWhilePausedX;
+			}
+			clickedWhilePausedX = 0;
+			currentSelectedWordId = aWord.id;
+			currentSelectedWord = aWord;							
+			changeCurrentSelectedWord();
+		}
+	}
+	
+	
+	
+	
+	
+	
 	// Draw Bottom Line
 	ctx.beginPath();
 	ctx.moveTo(this.xShift, this.yShift - 100 + SHIFT_TO_FIX_LINE_THICKNESS);
@@ -375,8 +428,8 @@ WaveForm.prototype.draw = function(time, ctx) {
 
 	// Draw Bottom Line
 	ctx.beginPath();
-	ctx.moveTo(this.xShift, 300 + SHIFT_TO_FIX_LINE_THICKNESS);
-	ctx.lineTo(windowWidth - (X_MOVE), 300 + SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx.moveTo(this.xShift, 350 + SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx.lineTo(windowWidth - (X_MOVE), 350 + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.stroke();
 
 	ctx.closePath();
@@ -384,7 +437,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 
 	ctx.globalAlpha = 0.2;
 	ctx.fillStyle = 'gray';
-	ctx.rect(0, 0, 200, 315);
+	ctx.rect(0, 0, 200, canvas1Height);
 	ctx.fill();
 	ctx.stroke();
 	ctx.closePath();

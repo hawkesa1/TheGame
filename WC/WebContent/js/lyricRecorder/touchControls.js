@@ -6,10 +6,13 @@ function bindCanvasTouchControls() {
 		var offset = $(this).offset();
 		var clickX = e.pageX - offset.left;
 		var clickY = e.pageY - offset.top;
-		if (clickY > 250) {
+		if (clickY > 300) {
 			if (document.getElementById('audio').paused) {
 				clickedWhilePausedX = clickX;
 			}
+		} else if (clickY < 25 && clickX > 200) {
+			console.log(clickX);
+			trackingClicked = clickX;
 		} else {
 			screenPressed = true;
 			var audioElm = document.getElementById('audio');
@@ -28,7 +31,7 @@ function bindCanvasTouchControls() {
 		var offset = $(this).offset();
 		var clickX = e.pageX - offset.left;
 		var clickY = e.pageY - offset.top;
-		if (clickY > 250) {
+		if (clickY > 300) {
 			if (document.getElementById('audio').paused) {
 				doubleClickedWhilePausedX = clickX;
 			}
@@ -48,6 +51,8 @@ function bindCanvasTouchControls() {
 		startOfWordMouseDownX = 0;
 		endOfWordMouseDownX = 0;
 		middleOfWordMouseDownX = 0;
+		trackingMouseDownX = 0
+		trackingClicked = 0;
 	});
 	$("#canvas1")
 			.bind(
@@ -57,17 +62,27 @@ function bindCanvasTouchControls() {
 						var offset = $(this).offset();
 						var clickX = e.clientX - offset.left;
 						if (screenPressed) {
-
 							var distanceMoved = clickX - startX;
 							startX = clickX;
-
 							var audioElm = document.getElementById('audio');
 							audioElm.currentTime = audioElm.currentTime
 									+ -((distanceMoved) / 200);
-
 						}
 						var clickY = e.pageY - offset.top;
-						if (clickY > 250) {
+
+						if (trackingMouseDownX > 0) {
+							
+							var audioElm = document.getElementById('audio');
+							
+		
+							
+							//console.log((clickX - trackingMouseDownX)/((canvas1Width-226)));
+							console.log(((clickX-200) / (canvas1Width-200))*audioElm.duration);
+							
+							audioElm.currentTime=((clickX-200) / (canvas1Width-200))*audioElm.duration;
+							trackingMouseDownX=clickX;
+							
+						} else if (clickY > 300) {
 							hoverWhilePausedX = clickX;
 
 							if (startOfWordMouseDownX > 0) {
@@ -89,21 +104,22 @@ function bindCanvasTouchControls() {
 								changeCurrentSelectedWord();
 							} else if (endOfWordMouseDownX > 0) {
 								if (currentSelectedWord.endTime
-										+ ((clickX - endOfWordMouseDownX) * 5) > (currentSelectedWord.startTime + 20) && currentSelectedWord.endTime
-										+ ((clickX - endOfWordMouseDownX) * 5) < currentSelectedWordNextWord.startTime-10) {
+										+ ((clickX - endOfWordMouseDownX) * 5) > (currentSelectedWord.startTime + 20)
+										&& currentSelectedWord.endTime
+												+ ((clickX - endOfWordMouseDownX) * 5) < currentSelectedWordNextWord.startTime - 10) {
 									currentSelectedWord.endTime = currentSelectedWord.endTime
 											+ ((clickX - endOfWordMouseDownX) * 5);
 								}
 								endOfWordMouseDownX = clickX;
 								changeCurrentSelectedWord();
-							} 
-							
-							
+							}
+
 							else if (middleOfWordMouseDownX > 0) {
 								if (currentSelectedWordPreviousWord != null
 										&& currentSelectedWord.startTime
-												+ ((clickX - middleOfWordMouseDownX) * 5) > (currentSelectedWordPreviousWord.endTime + 10)  && currentSelectedWord.endTime
-												+ ((clickX - middleOfWordMouseDownX) * 5) <currentSelectedWordNextWord.startTime-10) {
+												+ ((clickX - middleOfWordMouseDownX) * 5) > (currentSelectedWordPreviousWord.endTime + 10)
+										&& currentSelectedWord.endTime
+												+ ((clickX - middleOfWordMouseDownX) * 5) < currentSelectedWordNextWord.startTime - 10) {
 									currentSelectedWord.endTime = currentSelectedWord.endTime
 											+ ((clickX - middleOfWordMouseDownX) * 5);
 									currentSelectedWord.startTime = currentSelectedWord.startTime
@@ -111,8 +127,9 @@ function bindCanvasTouchControls() {
 
 								} else if (currentSelectedWordPreviousWord == null
 										&& currentSelectedWord.startTime
-												+ ((clickX - middleOfWordMouseDownX) * 5) > 0 && currentSelectedWord.endTime
-												+ ((clickX - middleOfWordMouseDownX) * 5) <currentSelectedWordNextWord.startTime-10) {
+												+ ((clickX - middleOfWordMouseDownX) * 5) > 0
+										&& currentSelectedWord.endTime
+												+ ((clickX - middleOfWordMouseDownX) * 5) < currentSelectedWordNextWord.startTime - 10) {
 									currentSelectedWord.endTime = currentSelectedWord.endTime
 											+ ((clickX - middleOfWordMouseDownX) * 5);
 									currentSelectedWord.startTime = currentSelectedWord.startTime
@@ -135,6 +152,8 @@ function bindCanvasTouchControls() {
 		hoverWhilePausedX = 0;
 		currentHoveredWordId = "";
 		startOfWordMouseDownX = 0;
+		trackingClicked = 0;
+		trackingMouseDownX=0;
 	});
 }
 

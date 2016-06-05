@@ -23,6 +23,7 @@ var wordCurrentlyPlaying = true;
 var startOfWordMouseDownX = 0;
 var endOfWordMouseDownX = 0;
 var middleOfWordMouseDownX = 0;
+var trackingMouseDownX=0;
 
 var WAV_FILE_TIME_GAP = 10;
 var DRAW_TIME_BY_PAGE_WIDTH = 0;
@@ -37,22 +38,29 @@ var veryStartX = 0;
 var clickStartTime = 0;
 var wasPaused = true;
 var clickedWhilePausedX = 0;
+var trackingClicked = 0;
+var trackingSquareX =0;
+
 var hoverWhilePausedX = 0;
 var doubleClickedWhilePausedX = 0;
+
+var canvas1Height=365;
+var canvas1Width=800;
+
+var trackDuration=0;
 
 $(document).ready(function($) {
 	console.log("Loaded Play Page1");
 	windowWidth = $(document).width();
 	windowHeight = $(document).height();
 	canvas1 = document.createElement('canvas');
-	canvas1.width = 800;
-	canvas1.height = 315;
+	canvas1.width = canvas1Width;
+	canvas1.height = canvas1Height;
 	canvas1.id = "canvas1";
 	context1 = canvas1.getContext('2d');
 	$('#canvasContainer').html(canvas1);
 	bindCanvasTouchControls();
-
-	// loadTrack();
+	loadATrack("1464881303207");
 	loadUser();
 });
 
@@ -548,9 +556,11 @@ function draw(time) {
 }
 
 function loadTrack() {
-	var selectedText = $('#loadTrack').find(":selected").text();
 	var selectedValue = $('#loadTrack').find(":selected").val();
-	console.log(selectedValue);
+	loadATrack(selectedValue);
+}
+function loadATrack(selectedValue)
+{
 	var audio = document.getElementById('audio');
 	var source = document.getElementById('audioSrc');
 	source.src = mp3Location + selectedValue + ".mp3";
@@ -558,6 +568,9 @@ function loadTrack() {
 	loadLyricsData(selectedValue);
 	currentSongId = selectedValue;
 	audio.load();
+	audio.addEventListener('loadedmetadata', function() {
+		trackDuration=document.getElementById('audio').duration*100;
+	});
 }
 
 function saveLyrics(JSONFormattedLyricData, songId) {
