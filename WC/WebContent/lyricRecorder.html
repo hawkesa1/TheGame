@@ -27,16 +27,16 @@
 		<div id="headerTitle">lyricRecorder.com</div>
 	</div>
 	<div id="menuContainer">
-	<div id="menuTitle">
-	<a id="loadCreateTab" href="javascript:void(0);" onclick="loadCreateTab()">Create New</a>&nbsp; &nbsp;
-			<a id="loadLoadTab" href="javascript:void(0);" onclick="loadLoadTab()">Load Existing</a>&nbsp; &nbsp;
-			<a id="loadCurrentTab" href="javascript:void(0);" onclick="loadCurrentTab()">Current</a>
-			</div>
+		<div id="menuTitle">
+			<a id="loadCreateTab" href="javascript:void(0);"
+				onclick="loadCreateTab()">Create New</a>&nbsp; &nbsp; <a
+				id="loadLoadTab" href="javascript:void(0);" onclick="loadLoadTab()">Load
+				Existing</a>&nbsp; &nbsp; <a id="loadCurrentTab"
+				href="javascript:void(0);" onclick="loadCurrentTab()">Current</a>
+		</div>
 	</div>
 
-	<div id="menuItems">
-		
-	</div>
+	<div id="menuItems"></div>
 
 
 
@@ -44,85 +44,95 @@
 
 
 		<div id="currentTab" class="visibleTab">
-<BR> <BR>
+			<BR> <BR> <audio id="audio" controls> <source
+						id="audioSrc" type="audio/mpeg"> Your browser does not
+					support the audio element. </audio>
 
-			<audio id="audio" controls> <source id="audioSrc"
-				type="audio/mpeg"> Your browser does not support the audio
-			element. </audio>
-			
-			
-									<div id="lyrics"></div>
-<input id="playPause" class="button" type="button" value="Play"
-				onmousedown="playPause()">
-			<input class="button" type="button" value="0.5"
-				onmousedown="changePlayBackRate(0.5)"> <input type="button" class="button"
-				value="1" onmousedown="changePlayBackRate(1)"> <input
-					type="button" class="button" value="2" onmousedown="changePlayBackRate(2)">
-						<input class="button" type="button" value="4" onmousedown="changePlayBackRate(2)"> <input class="button" id="save" value="Save"
-																type="button">
-																
 
-									<div id="wordInfo">
-										Word <input class="wordInfo" id="wordInfoWord" type="text"></input><br>
-											<input type="hidden" id="wordInfoId" value=""> Start
-												<input class="wordInfo" id="wordInfoStartTime" type="text"><input
-													type="button" value="-10ms" onmousedown="changeStart(-10)"><input
-														type="button" value="-100ms"
-														onmousedown="changeStart(-100)"> <input
-															type="button" value="+10ms"
-															onmousedown="changeStart(+10)"> <input
-																type="button" value="+100ms"
-																onmousedown="changeStart(+100)"><BR> End <input
-																		class="wordInfo" id="wordInfoEndTime" type="text">
-																			<input type="button" value="-10ms"
-																			onmousedown="changeEnd(-10)"> <input
-																				type="button" value="-100ms"
-																				onmousedown="changeEnd(-100)"> <input
-																					type="button" value="+10ms"
-																					onmousedown="changeEnd(+10)"> <input
-																						type="button" value="+100ms"
-																						onmousedown="changeEnd(+100)"><BR><input
-																								id="wordInfoPlay" value="Play this Word"
-																								type="button"> <input
-																									id="wordInfoPlayLine" value="Play this Line"
-																									type="button"><input
-																										id="wordInfoClearThisWord"
-																										value="Clear This Word" type="button">
-																											<input id="wordInfoClearAll"
-																											value="Clear All" type="button">
-									</div> 
+
+<input id="enableLyricTextView" onclick="enableLyricTextView()" class="button" value="Text" type="button">
+<input id="enableLyricScriptView" onclick="enableLyricScriptView()" class="button" value="Script" type="button"> 
+<input id="enableLyricWordView" onclick="enableLyricWordView()" class="button" value="Word" type="button"> <BR><BR>
 
 
 
 
+<div id="lyricsContainer">
+<textarea id="lyricText">
+</textarea> 
+<textarea id="lyricScript"></textarea> 
+<div id="lyrics"></div> 
+</div> 					
+					
+					
+					<input id="playPause" class="button"
+					type="button" value="Play" onmousedown="playPause()"> <input
+						class="button" type="button" value="0.5"
+						onmousedown="changePlayBackRate(0.5)"> <input
+							type="button" class="button" value="1"
+							onmousedown="changePlayBackRate(1)"> <input type="button"
+								class="button" value="2" onmousedown="changePlayBackRate(2)">
+									<input class="button" type="button" value="4"
+									onmousedown="changePlayBackRate(2)"> <input
+										class="button" id="save" value="Save" type="button">
 
-											<div id="canvasContainer"></div> 
-										<BR> <input
-													type="button" class="button" value="Add Current Word" id="addCurrentWord">
-														<BR><BR> 
 
-																	<div id="currentWord"></div>
-																	<div id="fps">0fps</div>
+											<div id="wordInfo">
+												Word <input class="wordInfo" id="wordInfoWord" type="text" onkeyup="changeCurrentWord()"></input><br><br>
+											
+											
+													<input type="hidden" id="wordInfoId" value="">
+														Start <input type="button" value="-10ms"
+															onmousedown="changeStart(-10)"><input
+																type="button" value="-100ms"
+																onmousedown="changeStart(-100)"> <input class="wordInfo" id="wordInfoStartTime"
+														type="text"><input
+																	type="button" value="+10ms"
+																	onmousedown="changeStart(+10)"> <input
+																		type="button" value="+100ms"
+																		onmousedown="changeStart(+100)">
+																		<BR> End
+																				 <input type="button"
+																					value="-10ms" onmousedown="changeEnd(-10)">
+																						<input type="button" value="-100ms"
+																						onmousedown="changeEnd(-100)"> <input class="wordInfo" id="wordInfoEndTime"
+																				type="text"><input
+																							type="button" value="+10ms"
+																							onmousedown="changeEnd(+10)"> <input
+																								type="button" value="+100ms"
+																								onmousedown="changeEnd(+100)"><BR><BR><input
+																										id="wordInfoPlay" value="Play this Word"
+																										type="button"> <input
+																											id="wordInfoPlayLine" value="Play this Line"
+																											type="button">
+																													
+																											
+																													
+											</div>
+
+
+
+
+
+											<div id="canvasContainer"></div> <BR> <input
+												type="button" class="button" value="Add Current Word"
+												id="addCurrentWord"> <BR><BR>
+
+															<div id="currentWord"></div>
+															<div id="fps">0fps</div>
 		</div>
 		<div id="loadTab" class="hiddenTab">
-		
-		<BR><BR>
-			<select id="loadTrack">
-			</select> <input type="button" value="load" onclick="loadTrack()"></input>
+
+			<BR><BR> <select id="loadTrack">
+				</select> <input type="button" value="load" onclick="loadTrack()"></input>
 		</div>
 
 
 		<div id="newTab" class="hiddenTab">
-		<BR><BR>
-			<iframe src="lyricRecorderUpload.html" width="100%" height="30px"
-				frameBorder="0"> </iframe>
-			
-			<BR><BR> 
-			
-			<textarea id="lyricText" rows="4" cols="50">
-</textarea>
-			<input id="lyricTextButton" value="Convert"
-					type="button">
+			<BR><BR> <iframe src="lyricRecorderUpload.html"
+						width="100%" height="30px" frameBorder="0"> </iframe> <BR><BR>
+
+							
 		</div>
 	</div>
 

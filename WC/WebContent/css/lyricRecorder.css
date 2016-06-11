@@ -1,24 +1,38 @@
 #canvas1 {
-	background-color:#FFFFFF;
-}
-iframe
-{
-	height:150px;
+	background-color: #FFFFFF;
 }
 
-.wordSelected
-{
-	color:green;
-	font-weight:bold;
+iframe {
+	height: 150px;
 }
-.wordPlaying
-{
+
+.wordSelected {
+	color: green;
+	font-weight: bold;
+}
+
+.wordPlaying {
 	text-decoration: underline;
 }
 
+#lyricsContainer {
+	border: 1px solid #117dbb;
+	width: 800px;
+	height: 150px;
+	overflow: none;
+}
 
-#lyrics
-{
+#lyricText {
+	overflow-y: scroll;
+	width: 800px;
+	height: 150px;
+	resize: none;
+	padding: 0px;
+	margin: 0px;
+	border: 0px;
+}
+
+#lyrics {
 	color: rgb(51, 51, 51);
 	font-family: Rosario, sans-serif;
 	font-size: 20px;
@@ -27,85 +41,84 @@ iframe
 	line-height: 30px;
 	text-rendering: optimizeLegibility;
 	color: rgb(51, 51, 51);
-	
-	border:1px solid #117dbb;
-	width:800px;
-	height:150px;
-	background-color:none;
-	opacity:0.5;
-	overflow-y:scroll;
-	
-	
-}
-#wordInfo
-{
-	width:400px;
-	height:200px;
-	border:1px solid black;
-	display:none;
-}
-#canvasContainer
-{
-	border:1px solid #117dbb;
-	width:800px;
-	height:365px;
+	background-color: none;
+	opacity: 0.5;
+	overflow-y: scroll;
+	width: 800px;
+	height: 150px;
+	padding: 0px;
+	margin: 0px;
+	border: 0px;
 }
 
+#lyricScript {
+	overflow-y: scroll;
+	width: 800px;
+	height: 150px;
+	padding: 0px;
+	margin: 0px;
+	border: 0px;
+}
 
+#wordInfo {
+	width: 400px;
+	height: 200px;
+	border: 1px solid black;
+	display: none;
+}
 
+#canvasContainer {
+	border: 1px solid #117dbb;
+	width: 800px;
+	height: 365px;
+}
 
-#currentWord
-{
-	display:none;
+#currentWord {
+	display: none;
 	border: 2px solid blue;
-	width:200px;
-	height:200px;
-	font-size:30px;
-	background-color:red;
-	opacity:0.5;
-	
-}
-#fps
-{
-	display:none;
+	width: 200px;
+	height: 200px;
+	font-size: 30px;
+	background-color: red;
+	opacity: 0.5;
 }
 
-.hiddenTab
-{
-	display:none;
-}
-.visibleTab
-{
-	display:block;
+#fps {
+	display: none;
 }
 
-#newTab
-{
+.hiddenTab {
+	display: none;
+}
+
+.visibleTab {
+	display: block;
+}
+
+#newTab {
 	
 }
-#currentTab
-{
+
+#currentTab {
 	
 }
-#loadTab
-{
+
+#loadTab {
 	
 }
-#audio
-{
-	display:none;
+
+#audio {
+	display: none;
 }
 
 .button {
-    background-color: white; /* Green */
-    border: 1px solid #117dbb;
-    color: #117dbb;
-   width:50px;
-   height:20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 10px;
+	background-color: white; /* Green */
+	border: 1px solid #117dbb;
+	color: #117dbb;
+	width: 50px;
+	height: 20px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 10px;
 }
-
-
