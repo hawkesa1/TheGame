@@ -343,6 +343,21 @@ function changePlayBackRate(playBackRate) {
 
 }
 
+function playPause() {
+	var vid = document.getElementById("audio");
+
+	if(vid.paused)
+	{
+		vid.play();
+		$('#playPause').val("Pause");
+	}	
+	else
+	{
+		vid.pause();
+		$('#playPause').val("Play");
+	}	
+}
+
 function changeEnd(timeInMs) {
 	var wordId = $('#wordInfoId').val();
 	var lineIndex = wordId.split('_')[1];
