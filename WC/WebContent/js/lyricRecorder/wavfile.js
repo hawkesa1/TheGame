@@ -110,7 +110,9 @@ WaveForm.prototype.draw = function(time, ctx) {
 	drawArc(this.xShift + this.currentLine, this.currentYPoint, arcRadius);
 
 	var isAWordPlaying = false;
-
+	isAWordHovered=false;
+	isAWordEdgeHovered=false;
+	
 	for (var i = 0; i < onlyWordsArray.length; i++) {
 		aWord = onlyWordsArray[i];
 		// only interested in words that have a start time set
@@ -171,12 +173,20 @@ WaveForm.prototype.draw = function(time, ctx) {
 					if (hoverWhilePausedX > 0
 							&& (hoverWhilePausedX > wordX && hoverWhilePausedX < wordX
 									+ width)) {
-						if (hoverWhilePausedX > 0
-								&& (hoverWhilePausedX > wordX && hoverWhilePausedX < wordX + 5)) {
-							hoverWhilePausedX = 0;
-							currentHoveredWordId = aWord.id;
+					
+						// start
+						if (hoverWhilePausedX > wordX
+								&& hoverWhilePausedX < wordX + 5) {
+							isAWordEdgeHovered=true;
+							// end
+						} else if (hoverWhilePausedX > (wordX + width - 5)
+								&& hoverWhilePausedX < wordX + width) {
+							isAWordEdgeHovered=true;
+							
+						} else {
+							// middle
+							isAWordHovered=true;
 						}
-						hoverWhilePausedX = 0;
 						currentHoveredWordId = aWord.id;
 					}
 
@@ -250,7 +260,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 			}
 
 		}
-
+	
 		if (!isAWordPlaying) {
 			if (currentPlayingWord != null) {
 				currentPlayingWordId = "";

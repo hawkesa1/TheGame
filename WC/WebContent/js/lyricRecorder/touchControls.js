@@ -58,6 +58,7 @@ function bindCanvasTouchControls() {
 			.bind(
 					"mousemove touchmove",
 					function(e) {
+
 						updateLog("Mouse Move");
 						var offset = $(this).offset();
 						var clickX = e.clientX - offset.left;
@@ -69,22 +70,14 @@ function bindCanvasTouchControls() {
 									+ -((distanceMoved) / 200);
 						}
 						var clickY = e.pageY - offset.top;
-
+						setCursor(clickX, clickY);
 						if (trackingMouseDownX > 0) {
-							
 							var audioElm = document.getElementById('audio');
-							
-		
-							
-							//console.log((clickX - trackingMouseDownX)/((canvas1Width-226)));
-							console.log(((clickX-200) / (canvas1Width-200))*audioElm.duration);
-							
-							audioElm.currentTime=((clickX-200) / (canvas1Width-200))*audioElm.duration;
-							trackingMouseDownX=clickX;
-							
+							audioElm.currentTime = ((clickX - 200) / (canvas1Width - 200))
+									* audioElm.duration;
+							trackingMouseDownX = clickX;
 						} else if (clickY > 300) {
 							hoverWhilePausedX = clickX;
-
 							if (startOfWordMouseDownX > 0) {
 								if (currentSelectedWord.startTime
 										+ ((clickX - startOfWordMouseDownX) * 5) < (currentSelectedWord.endTime - 50)) {
@@ -112,9 +105,7 @@ function bindCanvasTouchControls() {
 								}
 								endOfWordMouseDownX = clickX;
 								changeCurrentSelectedWord();
-							}
-
-							else if (middleOfWordMouseDownX > 0) {
+							} else if (middleOfWordMouseDownX > 0) {
 								if (currentSelectedWordPreviousWord != null
 										&& currentSelectedWord.startTime
 												+ ((clickX - middleOfWordMouseDownX) * 5) > (currentSelectedWordPreviousWord.endTime + 10)
@@ -136,13 +127,11 @@ function bindCanvasTouchControls() {
 											+ ((clickX - middleOfWordMouseDownX) * 5);
 
 								}
-
 								middleOfWordMouseDownX = clickX;
 								changeCurrentSelectedWord();
 							}
-
 						} else {
-							hoverWhilePausedX = 0;
+							//hoverWhilePausedX = 0;
 							currentHoveredWordId = "";
 						}
 					});
@@ -153,8 +142,43 @@ function bindCanvasTouchControls() {
 		currentHoveredWordId = "";
 		startOfWordMouseDownX = 0;
 		trackingClicked = 0;
-		trackingMouseDownX=0;
+		trackingMouseDownX = 0;
 	});
+}
+
+
+var currentMouseHoverX=hoverX;
+var currentMouseHoverX=hoverY;
+
+function setCursor(hoverX, hoverY) {
+	if (hoverY > 0 && hoverY < 25) {
+		$("#canvas1").css("cursor", "default");
+	} else if (hoverY > 25 && hoverY < 300) {
+		$("#canvas1").css("cursor", "pointer");
+	} else if (hoverY > 300 && hoverY < 350) {
+		//console.log("Is a word hovered:" + isAWordHovered);
+		if(isAWordHovered)
+		{
+			$("#canvas1").css("cursor", "move");
+		}
+		else if(isAWordEdgeHovered)
+		{
+			$("#canvas1").css("cursor", "e-resize");
+		}
+		else
+		{
+			$("#canvas1").css("cursor", "default");
+		}	
+	} else {
+		$("#canvas1").css("cursor", "default");
+	}
+
+	console.log("Set Pointer: " + hoverX + " " + hoverY);
+
+	if (screenPressed) {
+
+	}
+
 }
 
 function updateLog(text1) {

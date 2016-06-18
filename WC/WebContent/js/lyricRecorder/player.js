@@ -51,6 +51,10 @@ var trackDuration = 0;
 
 var currentLyricView = "";
 
+var isAWordHovered=false;
+var isAWordEdgeHovered=false;
+
+
 $(document).ready(function($) {
 	windowWidth = $(document).width();
 	windowHeight = $(document).height();
