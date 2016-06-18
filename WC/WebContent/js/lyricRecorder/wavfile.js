@@ -109,10 +109,10 @@ WaveForm.prototype.draw = function(time, ctx) {
 	drawArc(this.pointX, this.pointY, arcRadius);
 	drawArc(this.xShift + this.currentLine, this.currentYPoint, arcRadius);
 
-	var isAWordPlaying = false;
-	isAWordHovered=false;
-	isAWordEdgeHovered=false;
-	
+	isAWordPlaying = false;
+	isAWordHovered = false;
+	isAWordEdgeHovered = false;
+
 	for (var i = 0; i < onlyWordsArray.length; i++) {
 		aWord = onlyWordsArray[i];
 		// only interested in words that have a start time set
@@ -154,7 +154,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 							// start
 							if (clickedWhilePausedX > wordX
 									&& clickedWhilePausedX < wordX + 5) {
-									startOfWordMouseDownX = clickedWhilePausedX;
+								startOfWordMouseDownX = clickedWhilePausedX;
 								// end
 							} else if (clickedWhilePausedX > (wordX + width - 5)
 									&& clickedWhilePausedX < wordX + width) {
@@ -166,26 +166,26 @@ WaveForm.prototype.draw = function(time, ctx) {
 							}
 							clickedWhilePausedX = 0;
 							currentSelectedWordId = aWord.id;
-							currentSelectedWord = aWord;							
+							currentSelectedWord = aWord;
 							changeCurrentSelectedWord();
 						}
 					}
 					if (hoverWhilePausedX > 0
 							&& (hoverWhilePausedX >= wordX && hoverWhilePausedX <= wordX
 									+ width)) {
-					
+
 						// start
 						if (hoverWhilePausedX > wordX
 								&& hoverWhilePausedX <= wordX + 5) {
-							isAWordEdgeHovered=true;
+							isAWordEdgeHovered = true;
 							// end
 						} else if (hoverWhilePausedX >= (wordX + width - 5)
 								&& hoverWhilePausedX <= wordX + width) {
-							isAWordEdgeHovered=true;
-							
+							isAWordEdgeHovered = true;
+
 						} else {
 							// middle
-							isAWordHovered=true;
+							isAWordHovered = true;
 						}
 						currentHoveredWordId = aWord.id;
 					}
@@ -260,14 +260,15 @@ WaveForm.prototype.draw = function(time, ctx) {
 			}
 
 		}
-	
-		if (!isAWordPlaying) {
-			if (currentPlayingWord != null) {
-				currentPlayingWordId = "";
-				currentPlayingWord = null;
-				changeCurrentPlayingWordId();
-			}
 
+	}
+
+	if (!isAWordPlaying) {
+		if (currentPlayingWordId != "") {
+			console.log("No Word Playing");
+			currentPlayingWordId = "";
+			currentPlayingWord = null;
+			changeCurrentPlayingWordId();
 		}
 	}
 
@@ -305,8 +306,6 @@ WaveForm.prototype.draw = function(time, ctx) {
 		}
 	}
 
-	
-
 	// Draw Horizontal Line
 	ctx.beginPath();
 	ctx.moveTo(this.xShift, this.yShift + SHIFT_TO_FIX_LINE_THICKNESS);
@@ -321,20 +320,17 @@ WaveForm.prototype.draw = function(time, ctx) {
 			+ SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.stroke();
 
-	
-	
 	// Draw The Tracking Area
 	ctx.beginPath();
 	ctx.moveTo(this.xShift, 25 + SHIFT_TO_FIX_LINE_THICKNESS);
-	ctx.lineTo(windowWidth - (X_MOVE), 25
-			+ SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx.lineTo(windowWidth - (X_MOVE), 25 + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.stroke();
-	
+
 	ctx.globalAlpha = 0.2;
 	ctx.fillStyle = 'gray';
-	
-	trackingSquareX=((this.startTime/trackDuration) *(canvas1Width-226))+ 203;
-	
+
+	trackingSquareX = ((this.startTime / trackDuration) * (canvas1Width - 226)) + 203;
+
 	ctx.rect(trackingSquareX, 2, 20, 20);
 	ctx.fill();
 	ctx.stroke();
@@ -342,24 +338,21 @@ WaveForm.prototype.draw = function(time, ctx) {
 	ctx.beginPath();
 	ctx.fillStyle = 'black';
 	ctx.globalAlpha = 1;
-	
-	///BOOOOO
+
+	// /BOOOOO
 	if (trackingClicked > 0) {
 		if (trackingClicked > trackingSquareX
 				&& trackingClicked < trackingSquareX + 20) {
-			trackingMouseDownX=trackingClicked;
+			trackingMouseDownX = trackingClicked;
 		}
 	}
-	
-	
+
 	if (clickedWhilePausedX > 0) {
-		if (clickedWhilePausedX > wordX
-				&& clickedWhilePausedX < wordX + width) {
+		if (clickedWhilePausedX > wordX && clickedWhilePausedX < wordX + width) {
 			console.log("You clicked: " + aWord.word);
 			// start
-			if (clickedWhilePausedX > wordX
-					&& clickedWhilePausedX < wordX + 5) {
-					startOfWordMouseDownX = clickedWhilePausedX;
+			if (clickedWhilePausedX > wordX && clickedWhilePausedX < wordX + 5) {
+				startOfWordMouseDownX = clickedWhilePausedX;
 				// end
 			} else if (clickedWhilePausedX > (wordX + width - 5)
 					&& clickedWhilePausedX < wordX + width) {
@@ -371,16 +364,11 @@ WaveForm.prototype.draw = function(time, ctx) {
 			}
 			clickedWhilePausedX = 0;
 			currentSelectedWordId = aWord.id;
-			currentSelectedWord = aWord;							
+			currentSelectedWord = aWord;
 			changeCurrentSelectedWord();
 		}
 	}
-	
-	
-	
-	
-	
-	
+
 	// Draw Bottom Line
 	ctx.beginPath();
 	ctx.moveTo(this.xShift, this.yShift - 100 + SHIFT_TO_FIX_LINE_THICKNESS);

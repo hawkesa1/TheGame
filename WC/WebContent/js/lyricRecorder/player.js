@@ -53,7 +53,8 @@ var currentLyricView = "";
 
 var isAWordHovered=false;
 var isAWordEdgeHovered=false;
-
+var isAWordPlaying=false;
+var previousPlayingWordId="";
 
 $(document).ready(function($) {
 	windowWidth = $(document).width();
@@ -82,10 +83,17 @@ function changeCurrentPlayingWordId() {
 	if (currentPlayingWord) {
 		$('#' + currentPlayingWordId).addClass("wordPlaying");
 		$('#currentWord').html(currentPlayingWord.word);
+		
+		
 		var container = $('#lyrics')
+		var scrollTo = $('#' + currentPlayingWordId);
+		container.scrollTop((scrollTo.offset().top )
+				- container.offset().top
+				+ container.scrollTop());
 	} else {
 		$('#currentWord').html("");
 	}
+	console.log("Hello Alex");
 }
 
 function changeCurrentSelectedWord() {
