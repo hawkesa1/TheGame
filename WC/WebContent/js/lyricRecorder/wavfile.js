@@ -171,16 +171,16 @@ WaveForm.prototype.draw = function(time, ctx) {
 						}
 					}
 					if (hoverWhilePausedX > 0
-							&& (hoverWhilePausedX > wordX && hoverWhilePausedX < wordX
+							&& (hoverWhilePausedX >= wordX && hoverWhilePausedX <= wordX
 									+ width)) {
 					
 						// start
 						if (hoverWhilePausedX > wordX
-								&& hoverWhilePausedX < wordX + 5) {
+								&& hoverWhilePausedX <= wordX + 5) {
 							isAWordEdgeHovered=true;
 							// end
-						} else if (hoverWhilePausedX > (wordX + width - 5)
-								&& hoverWhilePausedX < wordX + width) {
+						} else if (hoverWhilePausedX >= (wordX + width - 5)
+								&& hoverWhilePausedX <= wordX + width) {
 							isAWordEdgeHovered=true;
 							
 						} else {
@@ -211,18 +211,18 @@ WaveForm.prototype.draw = function(time, ctx) {
 
 						// Start
 						ctx.beginPath();
-						ctx.moveTo(wordX + 2, 300.5);
+						ctx.moveTo(wordX + 3.5, 300.5);
 
-						ctx.lineTo(wordX + 2, 350);
-						ctx.lineWidth = 2;
+						ctx.lineTo(wordX + 3.5, 350);
+						ctx.lineWidth = 5;
 						ctx.strokeStyle = '#ff0000';
 						ctx.stroke();
 						// and End Lines
 						ctx.beginPath();
-						ctx.moveTo(wordX + width - 2, 300.5);
+						ctx.moveTo(wordX + width - 2.5, 300.5);
 
-						ctx.lineTo(wordX + width - 2, 350);
-						ctx.lineWidth = 2;
+						ctx.lineTo(wordX + width - 2.5, 350);
+						ctx.lineWidth = 5;
 						ctx.strokeStyle = '#ff0000';
 						ctx.stroke();
 
