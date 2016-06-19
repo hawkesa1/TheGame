@@ -232,7 +232,7 @@ $(function() {
 
 							
 							$('#playLine_'+currentLineIndex).removeClass('disabledButton');
-							$('#playLineFrom_'+currentLineIndex).removeClass('disabledButton');
+							$('#playFromLine_'+currentLineIndex).removeClass('disabledButton');
 							
 							$('.word').removeClass("nextWordToAdd");
 							$(
