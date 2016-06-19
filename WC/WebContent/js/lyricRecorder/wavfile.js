@@ -150,7 +150,6 @@ WaveForm.prototype.draw = function(time, ctx) {
 					if (clickedWhilePausedX > 0) {
 						if (clickedWhilePausedX > wordX
 								&& clickedWhilePausedX < wordX + width) {
-							console.log("You clicked: " + aWord.word);
 							// start
 							if (clickedWhilePausedX > wordX
 									&& clickedWhilePausedX < wordX + 5) {
@@ -265,7 +264,6 @@ WaveForm.prototype.draw = function(time, ctx) {
 
 	if (!isAWordPlaying) {
 		if (currentPlayingWordId != "") {
-			console.log("No Word Playing");
 			currentPlayingWordId = "";
 			currentPlayingWord = null;
 			changeCurrentPlayingWordId();
@@ -274,7 +272,6 @@ WaveForm.prototype.draw = function(time, ctx) {
 
 	for (var i = this.startTime; i < (this.startTime + (this.drawTime)); i++) {
 		if (firstPass) {
-			console.log(i);
 			firstPass = false;
 		}
 	}
@@ -349,7 +346,6 @@ WaveForm.prototype.draw = function(time, ctx) {
 
 	if (clickedWhilePausedX > 0) {
 		if (clickedWhilePausedX > wordX && clickedWhilePausedX < wordX + width) {
-			console.log("You clicked: " + aWord.word);
 			// start
 			if (clickedWhilePausedX > wordX && clickedWhilePausedX < wordX + 5) {
 				startOfWordMouseDownX = clickedWhilePausedX;

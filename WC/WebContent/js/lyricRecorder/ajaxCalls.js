@@ -46,7 +46,6 @@ function loadUser(JSONFormattedLyricData, songId) {
 			"userId" : "hawkesa",
 		},
 		success : function(text) {
-			console.log(text);
 			for (var i = 0; i < text.mp3MetaDatas.length; i++) {
 				addTrack(text.mp3MetaDatas[i].uniqueId,
 						text.mp3MetaDatas[i].title)

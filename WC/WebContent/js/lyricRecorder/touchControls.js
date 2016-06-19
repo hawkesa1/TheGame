@@ -11,7 +11,6 @@ function bindCanvasTouchControls() {
 				clickedWhilePausedX = clickX;
 			}
 		} else if (clickY < 25 && clickX > 200) {
-			console.log(clickX);
 			trackingClicked = clickX;
 		} else {
 			screenPressed = true;
@@ -103,6 +102,13 @@ function bindCanvasTouchControls() {
 									currentSelectedWord.endTime = currentSelectedWord.endTime
 											+ ((clickX - endOfWordMouseDownX) * 5);
 								}
+								
+								if(currentSelectedWord.id==lastAddedWordId)
+								{
+									highestEndTime=currentSelectedWord.endTime;
+									console.log("Highest end time changed to: "+ highestEndTime);
+								}	
+								
 								endOfWordMouseDownX = clickX;
 								changeCurrentSelectedWord();
 							} else if (middleOfWordMouseDownX > 0) {
@@ -127,6 +133,13 @@ function bindCanvasTouchControls() {
 											+ ((clickX - middleOfWordMouseDownX) * 5);
 
 								}
+								
+								if(currentSelectedWord.id==lastAddedWordId)
+								{
+									highestEndTime=currentSelectedWord.endTime;
+									console.log("Highest end time changed to: "+ highestEndTime);
+								}	
+								
 								middleOfWordMouseDownX = clickX;
 								changeCurrentSelectedWord();
 							}
@@ -147,16 +160,12 @@ function bindCanvasTouchControls() {
 }
 
 
-var currentMouseHoverX=hoverX;
-var currentMouseHoverX=hoverY;
-
 function setCursor(hoverX, hoverY) {
 	if (hoverY > 0 && hoverY < 25) {
 		$("#canvas1").css("cursor", "default");
 	} else if (hoverY > 25 && hoverY < 300) {
 		$("#canvas1").css("cursor", "pointer");
 	} else if (hoverY > 300 && hoverY < 350) {
-		//console.log("Is a word hovered:" + isAWordHovered);
 		if(isAWordHovered)
 		{
 			$("#canvas1").css("cursor", "move");
@@ -172,13 +181,6 @@ function setCursor(hoverX, hoverY) {
 	} else {
 		$("#canvas1").css("cursor", "default");
 	}
-
-	console.log("Set Pointer: " + hoverX + " " + hoverY);
-
-	if (screenPressed) {
-
-	}
-
 }
 
 function updateLog(text1) {

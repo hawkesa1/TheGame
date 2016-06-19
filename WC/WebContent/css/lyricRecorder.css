@@ -7,12 +7,25 @@ iframe {
 }
 
 .wordSelected {
-	color: green;
-	font-weight: bold;
+	
 }
 
 .wordPlaying {
 	text-decoration: underline;
+}
+
+.wordBeingAdded {
+	color:#7FFF00;
+	font-weight:bold;
+}
+
+.wordHasTime {
+	color:orange;
+	cursor: pointer;
+}
+.nextWordToAdd{
+	color: DarkGreen;
+	font-weight:bold;
 }
 
 #lyricsContainer {
