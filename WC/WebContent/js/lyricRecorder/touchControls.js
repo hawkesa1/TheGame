@@ -6,7 +6,7 @@ function bindCanvasTouchControls() {
 		var offset = $(this).offset();
 		var clickX = e.pageX - offset.left;
 		var clickY = e.pageY - offset.top;
-		if (clickY > 300) {
+		if (clickY > 256) {
 			if (document.getElementById('audio').paused) {
 				clickedWhilePausedX = clickX;
 			}
@@ -30,7 +30,7 @@ function bindCanvasTouchControls() {
 		var offset = $(this).offset();
 		var clickX = e.pageX - offset.left;
 		var clickY = e.pageY - offset.top;
-		if (clickY > 300) {
+		if (clickY > 256) {
 			if (document.getElementById('audio').paused) {
 				doubleClickedWhilePausedX = clickX;
 			}
@@ -75,7 +75,7 @@ function bindCanvasTouchControls() {
 							audioElm.currentTime = ((clickX - 200) / (canvas1Width - 200))
 									* audioElm.duration;
 							trackingMouseDownX = clickX;
-						} else if (clickY > 300) {
+						} else if (clickY > 256) {
 							hoverWhilePausedX = clickX;
 							if (startOfWordMouseDownX > 0) {
 								if (currentSelectedWord.startTime
@@ -144,7 +144,7 @@ function bindCanvasTouchControls() {
 								changeCurrentSelectedWord();
 							}
 						} else {
-							//hoverWhilePausedX = 0;
+							hoverWhilePausedX = 0;
 							currentHoveredWordId = "";
 						}
 					});
@@ -163,9 +163,9 @@ function bindCanvasTouchControls() {
 function setCursor(hoverX, hoverY) {
 	if (hoverY > 0 && hoverY < 25) {
 		$("#canvas1").css("cursor", "default");
-	} else if (hoverY > 25 && hoverY < 300) {
+	} else if (hoverY > 25 && hoverY < 256) {
 		$("#canvas1").css("cursor", "pointer");
-	} else if (hoverY > 300 && hoverY < 350) {
+	} else if (hoverY > 256 && hoverY <= 315) {
 		if(isAWordHovered)
 		{
 			$("#canvas1").css("cursor", "move");

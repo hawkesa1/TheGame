@@ -83,7 +83,7 @@ function loadWaveForm(wavFormFile) {
 			yHigh = ((tempLines[i].split(',')[2]));
 			wavePoints[wp++] = new WavePoint(time, yLow, yHigh);
 		}
-		waveForm = new WaveForm(500, 1, X_MOVE, 200, 200, POINT_SPACING,
+		waveForm = new WaveForm(500, 1, X_MOVE, 140, 200, POINT_SPACING,
 				wavePoints);
 		animate();
 	}

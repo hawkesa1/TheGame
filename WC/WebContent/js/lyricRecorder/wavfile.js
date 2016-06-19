@@ -1,3 +1,11 @@
+
+var wordSelectedColour="#4C314F";
+var wordHoveredColour="#BD16CF";
+var wordPlayingColour="#48084F";
+var wordStandardColour="#DB5EE8";
+var wordEdgeColour="#8E109C";
+
+
 function calculateDrawTime() {
 	return (windowWidth / POINT_SPACING) - (X_MOVE);
 }
@@ -133,7 +141,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 					var wordX = (((startTime - this.startTime) + 100) * this.pointSpacing)
 							+ this.xShift;
 					var width = ((endTime - startTime)) * this.pointSpacing;
-					ctx.rect(wordX, 300.5, width, 50);
+					
 
 					// Set the word currently being played
 					if (startTime < this.startTime && endTime > this.startTime) {
@@ -188,6 +196,10 @@ WaveForm.prototype.draw = function(time, ctx) {
 						}
 						currentHoveredWordId = aWord.id;
 					}
+					else
+					{
+						currentHoveredWordId=""
+					}	
 
 					if (doubleClickedWhilePausedX > 0
 							&& (doubleClickedWhilePausedX > wordX && doubleClickedWhilePausedX < wordX
@@ -200,61 +212,85 @@ WaveForm.prototype.draw = function(time, ctx) {
 					if (aWord.id == currentSelectedWordId) {
 
 						if (aWord.id == currentPlayingWordId) {
-							ctx.fillStyle = 'green';
+							ctx.fillStyle = wordPlayingColour;
 						} else {
-							ctx.fillStyle = 'blue';
+							ctx.fillStyle = wordSelectedColour;
 						}
-						ctx.fill();
-						ctx.stroke();
-						ctx.closePath();
-
+						
+						ctx.save();
+						ctx.shadowBlur=5;
+						ctx.shadowColor="black";
+						ctx.fillRect(wordX, 260.5, width, 50);
+						ctx.globalAlpha=0.5;
+						ctx.restore();
+						
 						// Start
 						ctx.beginPath();
-						ctx.moveTo(wordX + 3.5, 300.5);
-
-						ctx.lineTo(wordX + 3.5, 350);
+						ctx.moveTo(wordX + 3.5, 260.5);
+						ctx.lineTo(wordX + 3.5, 309);
 						ctx.lineWidth = 5;
-						ctx.strokeStyle = '#ff0000';
+						ctx.strokeStyle = wordEdgeColour;
 						ctx.stroke();
+						
 						// and End Lines
 						ctx.beginPath();
-						ctx.moveTo(wordX + width - 2.5, 300.5);
-
-						ctx.lineTo(wordX + width - 2.5, 350);
+						ctx.moveTo(wordX + width - 2.5, 260.5);
+						ctx.lineTo(wordX + width - 2.5, 309);
 						ctx.lineWidth = 5;
-						ctx.strokeStyle = '#ff0000';
+						ctx.strokeStyle = wordEdgeColour;
+						
+						
+						ctx.save();
+						ctx.shadowBlur=5;
+						ctx.shadowColor="black";
 						ctx.stroke();
+						ctx.restore();
+						
+						
+						
 
 						ctx.lineWidth = 1;
-						ctx.closePath
-						ctx.beginPath();
-						// set line color
-						ctx.strokeStyle = 'black';
+						
+						
 
 					} else if ((aWord.id == currentHoveredWordId)) {
 						if (aWord.id == currentPlayingWordId) {
-							ctx.fillStyle = 'green';
+							ctx.fillStyle = wordPlayingColour;
+							ctx.strokeStyle = wordPlayingColour;
 						} else {
-							ctx.fillStyle = 'yellow';
+							ctx.fillStyle = wordHoveredColour;
+							ctx.strokeStyle = wordHoveredColour;
 						}
-						ctx.fill();
-						ctx.stroke();
-						ctx.closePath();
-						ctx.beginPath();
+					
+						ctx.save();
+						ctx.shadowBlur=5;
+						ctx.shadowColor="black";
+						ctx.fillRect(wordX, 260.5, width, 50);
+						ctx.globalAlpha=0.5;
+						ctx.restore();
+						
 					} else {
 						if (aWord.id == currentPlayingWordId) {
-							ctx.fillStyle = 'green';
+							ctx.fillStyle = wordPlayingColour;
+							ctx.strokeStyle = wordPlayingColour;
 						} else {
-							ctx.fillStyle = 'orange';
+							ctx.fillStyle = wordStandardColour;
+							ctx.strokeStyle = wordStandardColour;
 						}
-						ctx.fill();
-						ctx.stroke();
-						ctx.closePath();
-						ctx.beginPath();
+						
+						ctx.save();
+						ctx.shadowBlur=5;
+						ctx.shadowColor="black";
+						ctx.fillRect(wordX, 260.5, width, 50);
+						ctx.globalAlpha=0.5;
+						ctx.restore();
+						
 					}
 
+				
+					ctx.strokeStyle = 'black';
 					ctx.fillStyle = 'black';
-					ctx.fillText(aWord.word, wordX, 362)
+					ctx.fillText(aWord.word, wordX, 328)
 				}
 			}
 
@@ -289,16 +325,14 @@ WaveForm.prototype.draw = function(time, ctx) {
 			point = 0;
 		}
 		tenths++;
-
 		if (i % 10 == 0 && tenths != 0 && tenths != 100) {
-			ctx.fillText("|", this.pointX - 2, 310);
-			ctx.fillText("|", this.pointX - 2, 95);
+			ctx.fillText("|", this.pointX - 2, 251);
+			ctx.fillText("|", this.pointX - 2, 37);
 
 		}
-
 		if (i % 100 == 0) {
-			ctx.fillText(secondsToTime((i / 100) - 1), this.pointX - 2, 310);
-			ctx.fillText(secondsToTime((i / 100) - 1), this.pointX - 2, 95);
+			ctx.fillText(secondsToTime((i / 100) - 1), this.pointX - 2, 251);
+			ctx.fillText(secondsToTime((i / 100) - 1), this.pointX - 2, 37);
 			tenths = 0;
 		}
 	}
@@ -310,14 +344,25 @@ WaveForm.prototype.draw = function(time, ctx) {
 			+ SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.stroke();
 
-	// Draw Top Line
+	// Draw Top Time Line
 	ctx.beginPath();
 	ctx.moveTo(this.xShift, this.yShift + 100 + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.lineTo(windowWidth - (X_MOVE), this.yShift + 100
 			+ SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.stroke();
 
+	// Draw Bottom Time Line
+	ctx.beginPath();
+	ctx.moveTo(this.xShift, this.yShift + 115 + SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx.lineTo(windowWidth - (X_MOVE), this.yShift + 115
+			+ SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx.stroke();
+
+	
+	
+	
 	// Draw The Tracking Area
+	//Bottom Line
 	ctx.beginPath();
 	ctx.moveTo(this.xShift, 25 + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.lineTo(windowWidth - (X_MOVE), 25 + SHIFT_TO_FIX_LINE_THICKNESS);
@@ -325,9 +370,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 
 	ctx.globalAlpha = 0.2;
 	ctx.fillStyle = 'gray';
-
 	trackingSquareX = ((this.startTime / trackDuration) * (canvas1Width - 226)) + 203;
-
 	ctx.rect(trackingSquareX, 2, 20, 20);
 	ctx.fill();
 	ctx.stroke();
@@ -336,7 +379,6 @@ WaveForm.prototype.draw = function(time, ctx) {
 	ctx.fillStyle = 'black';
 	ctx.globalAlpha = 1;
 
-	// /BOOOOO
 	if (trackingClicked > 0) {
 		if (trackingClicked > trackingSquareX
 				&& trackingClicked < trackingSquareX + 20) {
@@ -374,10 +416,9 @@ WaveForm.prototype.draw = function(time, ctx) {
 
 	// Draw Bottom Line
 	ctx.beginPath();
-	ctx.moveTo(this.xShift, 350 + SHIFT_TO_FIX_LINE_THICKNESS);
-	ctx.lineTo(windowWidth - (X_MOVE), 350 + SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx.moveTo(this.xShift, 315 + SHIFT_TO_FIX_LINE_THICKNESS);
+	ctx.lineTo(windowWidth - (X_MOVE), 315 + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.stroke();
-
 	ctx.closePath();
 	ctx.beginPath();
 
