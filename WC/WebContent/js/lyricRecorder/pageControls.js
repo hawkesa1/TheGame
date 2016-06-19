@@ -230,6 +230,10 @@ $(function() {
 							aWordObject = aLineObject.words[currentWordIndex];
 							nextWordToAddId = aWordObject.id;
 
+							
+							$('#playLine_'+currentLineIndex).removeClass('disabledButton');
+							$('#playLineFrom_'+currentLineIndex).removeClass('disabledButton');
+							
 							$('.word').removeClass("nextWordToAdd");
 							$(
 									'#word_' + currentLineIndex + "_"

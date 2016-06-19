@@ -350,26 +350,42 @@ function generateLyrics(lines) {
 	highestEndTime = 0;
 	lastAddedWordId = "";
 
-	console.log(lines);
-	
 	for (var i = 0; i < lines.length; i++) {
 		words = lines[i].words;
 		html += "<div class='line'>";
-		html += "<input type=\"button\" class=\"playLineButton\" value=\"L\" onclick='playLine("
-				+ i + ")'> </input>";
-		html += "<input type=\"button\" class=\"playLineButton\" value=\"F\" onclick='playFromLine("
-				+ i + ")'> </input>";
+
 		for (var j = 0; j < words.length; j++) {
+
+			if (j === 0) {
+				if (words[j].endTime) {
+					html += "<input id='playLine_"
+							+ i
+							+ "' type=\"button\" class=\"playLineButton\" value=\"L\" onclick='playLine("
+							+ i + ")'> </input>";
+					html += "<input id='playFromLine_"
+							+ i
+							+ "' type=\"button\" class=\"playLineButton\" value=\"F\" onclick='playFromLine("
+							+ i + ")'> </input>";
+				} else {
+					html += "<input id='playLine_"
+							+ i
+							+ "' type=\"button\" class=\"playLineButton disabledButton\" value=\"L\" onclick='playLine("
+							+ i + ")'> </input>";
+					html += "<input id='playFromLine_"
+							+ i
+							+ "' type=\"button\" class=\"playLineButton disabledButton\" value=\"F\" onclick='playFromLine("
+							+ i + ")'> </input>";
+				}
+			}
+
 			words[j].wordIndex = k;
 			onlyWordsArray[k] = words[j];
 			k++;
 			id = "word_" + i + "_" + j;
 			words[j].id = id;
 			if (words[j].startTime && words[j].endTime) {
-				
 				html += "<span class='word wordHasTime' id='" + id + "'>"
 						+ words[j].word + "</span>" + " ";
-				
 				highestEndTime = words[j].endTime;
 				lastAddedWordId = id;
 
