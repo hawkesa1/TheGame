@@ -1,10 +1,15 @@
 
-var wordSelectedColour="#4C314F";
-var wordHoveredColour="#BD16CF";
-var wordPlayingColour="#48084F";
-var wordStandardColour="#DB5EE8";
-var wordEdgeColour="#8E109C";
-
+var wordSelectedColour="green";
+var wordHoveredColour="#ffff00";
+var wordPlayingColour="#00ff00";
+var wordStandardColour='#ccf5ff';
+var wordEdgeColour="#33cc33";
+var trackingSquareColour='#9E9E9E'
+var beforeTimeCoverColour='#9E9E9E';
+var wavLineColour='#9E9E9E';
+var shadowColour='#9E9E9E';
+var shadowSize='1';
+var dividerLineColour='#9E9E9E';
 
 function calculateDrawTime() {
 	return (windowWidth / POINT_SPACING) - (X_MOVE);
@@ -57,6 +62,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 
 	ctx.moveTo(this.xShift, this.yShift + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.beginPath();
+	ctx.strokeStyle=wavLineColour;
 	this.first = true;
 
 	// Draw Upper Line
@@ -91,9 +97,10 @@ WaveForm.prototype.draw = function(time, ctx) {
 	drawArc(this.xShift + this.currentLine, this.currentYPoint, arcRadius);
 
 	// Draw Lower Line
+	
 	ctx.moveTo(this.xShift, this.yShift + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.beginPath();
-
+	
 	this.first = true;
 	for (var i = this.startTime; i < (this.startTime + this.drawTime); i++) {
 		this.pointX = ((i - this.startTime) * this.pointSpacing) + this.xShift;
@@ -113,6 +120,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 			this.currentYPoint = this.pointY;
 		}
 	}
+	
 	ctx.stroke();
 	drawArc(this.pointX, this.pointY, arcRadius);
 	drawArc(this.xShift + this.currentLine, this.currentYPoint, arcRadius);
@@ -218,8 +226,8 @@ WaveForm.prototype.draw = function(time, ctx) {
 						}
 						
 						ctx.save();
-						ctx.shadowBlur=5;
-						ctx.shadowColor="black";
+						ctx.shadowBlur=shadowSize;
+						ctx.shadowColor=shadowColour;
 						ctx.fillRect(wordX, 260.5, width, 50);
 						ctx.globalAlpha=0.5;
 						ctx.restore();
@@ -241,8 +249,8 @@ WaveForm.prototype.draw = function(time, ctx) {
 						
 						
 						ctx.save();
-						ctx.shadowBlur=5;
-						ctx.shadowColor="black";
+						ctx.shadowBlur=shadowSize;
+						ctx.shadowColor=shadowColour;
 						ctx.stroke();
 						ctx.restore();
 						
@@ -263,8 +271,8 @@ WaveForm.prototype.draw = function(time, ctx) {
 						}
 					
 						ctx.save();
-						ctx.shadowBlur=5;
-						ctx.shadowColor="black";
+						ctx.shadowBlur=shadowSize;
+						ctx.shadowColor=shadowColour;
 						ctx.fillRect(wordX, 260.5, width, 50);
 						ctx.globalAlpha=0.5;
 						ctx.restore();
@@ -279,10 +287,10 @@ WaveForm.prototype.draw = function(time, ctx) {
 						}
 						
 						ctx.save();
-						ctx.shadowBlur=5;
-						ctx.shadowColor="black";
-						ctx.fillRect(wordX, 260.5, width, 50);
+						ctx.shadowBlur=shadowSize;
+						ctx.shadowColor=shadowColour;
 						ctx.globalAlpha=0.5;
+						ctx.fillRect(wordX, 260.5, width, 50);
 						ctx.restore();
 						
 					}
@@ -338,14 +346,15 @@ WaveForm.prototype.draw = function(time, ctx) {
 	}
 
 	// Draw Horizontal Line
-	ctx.beginPath();
-	ctx.moveTo(this.xShift, this.yShift + SHIFT_TO_FIX_LINE_THICKNESS);
-	ctx.lineTo(windowWidth - (X_MOVE), this.yShift
-			+ SHIFT_TO_FIX_LINE_THICKNESS);
-	ctx.stroke();
+	//ctx.beginPath();
+	//ctx.moveTo(this.xShift, this.yShift + SHIFT_TO_FIX_LINE_THICKNESS);
+	//ctx.lineTo(windowWidth - (X_MOVE), this.yShift
+	//		+ SHIFT_TO_FIX_LINE_THICKNESS);
+	//ctx.stroke();
 
 	// Draw Top Time Line
 	ctx.beginPath();
+	ctx.strokeStyle=dividerLineColour;
 	ctx.moveTo(this.xShift, this.yShift + 100 + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.lineTo(windowWidth - (X_MOVE), this.yShift + 100
 			+ SHIFT_TO_FIX_LINE_THICKNESS);
@@ -353,6 +362,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 
 	// Draw Bottom Time Line
 	ctx.beginPath();
+	ctx.strokeStyle=dividerLineColour;
 	ctx.moveTo(this.xShift, this.yShift + 115 + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.lineTo(windowWidth - (X_MOVE), this.yShift + 115
 			+ SHIFT_TO_FIX_LINE_THICKNESS);
@@ -364,14 +374,17 @@ WaveForm.prototype.draw = function(time, ctx) {
 	// Draw The Tracking Area
 	//Bottom Line
 	ctx.beginPath();
+	ctx.strokeStyle=dividerLineColour;
 	ctx.moveTo(this.xShift, 25 + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.lineTo(windowWidth - (X_MOVE), 25 + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.stroke();
 
 	ctx.globalAlpha = 0.2;
-	ctx.fillStyle = 'gray';
+	ctx.fillStyle = trackingSquareColour;
 	trackingSquareX = ((this.startTime / trackDuration) * (canvas1Width - 226)) + 203;
 	ctx.rect(trackingSquareX, 2, 20, 20);
+	
+	
 	ctx.fill();
 	ctx.stroke();
 	ctx.closePath();
@@ -409,6 +422,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 
 	// Draw Bottom Line
 	ctx.beginPath();
+	ctx.strokeStyle=dividerLineColour;
 	ctx.moveTo(this.xShift, this.yShift - 100 + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.lineTo(windowWidth - (X_MOVE), this.yShift - 100
 			+ SHIFT_TO_FIX_LINE_THICKNESS);
@@ -416,6 +430,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 
 	// Draw Bottom Line
 	ctx.beginPath();
+	ctx.strokeStyle=dividerLineColour;
 	ctx.moveTo(this.xShift, 315 + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.lineTo(windowWidth - (X_MOVE), 315 + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.stroke();
@@ -423,7 +438,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 	ctx.beginPath();
 
 	ctx.globalAlpha = 0.2;
-	ctx.fillStyle = 'gray';
+	ctx.fillStyle = beforeTimeCoverColour;
 	ctx.rect(0, 0, 200, canvas1Height);
 	ctx.fill();
 	ctx.stroke();
