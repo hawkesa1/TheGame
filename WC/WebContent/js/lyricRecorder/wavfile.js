@@ -1,5 +1,5 @@
 
-var wordSelectedColour="green";
+var wordSelectedColour="#ccffcc";
 var wordHoveredColour="#ffff00";
 var wordPlayingColour="#00ff00";
 var wordStandardColour='#ccf5ff';
@@ -378,6 +378,10 @@ WaveForm.prototype.draw = function(time, ctx) {
 	ctx.moveTo(this.xShift, 25 + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.lineTo(windowWidth - (X_MOVE), 25 + SHIFT_TO_FIX_LINE_THICKNESS);
 	ctx.stroke();
+	
+	
+	
+	
 
 	ctx.globalAlpha = 0.2;
 	ctx.fillStyle = trackingSquareColour;

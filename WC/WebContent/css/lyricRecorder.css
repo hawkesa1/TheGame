@@ -13,11 +13,11 @@ iframe {
 .word
 {
 	font-family: Rosario, sans-serif;
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: 20;
-	height: 20px;
+	height: 18px;
 	letter-spacing: -1px;
-	line-height: 20px;
+	line-height: 18px;
 	text-rendering: optimizeLegibility;	
 }
 
@@ -34,7 +34,7 @@ iframe {
 }
 
 .wordHasTime {
-	color: #0066ff;
+	color: black;
 	cursor: pointer;
 }
 .wordPlaying {
