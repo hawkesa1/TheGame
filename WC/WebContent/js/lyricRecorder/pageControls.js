@@ -179,6 +179,7 @@ $(function() {
 									"wordSelected");
 							
 							$('.word').removeClass("nextWordToAdd");
+							$('.word').removeClass("wordBeingAdded");
 							$('#' + aWordObject.id).addClass("wordBeingAdded");
 							
 							console.log("Adding: " +  aWordObject.id);
