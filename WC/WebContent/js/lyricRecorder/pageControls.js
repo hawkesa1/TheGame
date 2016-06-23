@@ -88,6 +88,7 @@ $(function() {
 	$("#playPauseButton").click(function(e) {
 		e.preventDefault();
 		var vid = document.getElementById("audio");
+		vid.playbackRate = 1;
 		if (vid.paused) {
 			vid.play();
 			$('#playPauseButton').text("Pause");
