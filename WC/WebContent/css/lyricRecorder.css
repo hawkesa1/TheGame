@@ -121,13 +121,14 @@ iframe {
 }
 
 #currentWord {
-	display: none;
+	
 	border: 2px solid blue;
 	width: 200px;
-	height: 200px;
+	height: 50px;
 	font-size: 30px;
 	background-color: red;
 	opacity: 0.5;
+	align:center;
 }
 
 #fps {
