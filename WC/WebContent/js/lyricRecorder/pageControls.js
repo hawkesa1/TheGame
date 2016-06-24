@@ -274,7 +274,7 @@ $(function() {
 								var container = $('#lyrics')
 								var scrollTo = $('#' + currentSelectedWordId);
 								container
-										.scrollTop((scrollTo.offset().top + 30)
+										.scrollTop((scrollTo.offset().top -8)
 												- container.offset().top
 												+ container.scrollTop());
 							}

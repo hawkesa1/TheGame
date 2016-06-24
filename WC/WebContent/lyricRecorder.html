@@ -28,16 +28,14 @@
 
 	<div id="headerContainer">
 		<div id="headerTitle">lyricRecorder.com</div>
+
+		<a id="loadCreateTab" href="javascript:void(0);"
+			onclick="loadCreateTab()">Create New</a>&nbsp; &nbsp; <a
+			id="loadLoadTab" href="javascript:void(0);" onclick="loadLoadTab()">Load
+			Existing</a>&nbsp; &nbsp; <a id="loadCurrentTab"
+			href="javascript:void(0);" onclick="loadCurrentTab()">Current</a>
 	</div>
-	<div id="menuContainer">
-		<div id="menuTitle">
-			<a id="loadCreateTab" href="javascript:void(0);"
-				onclick="loadCreateTab()">Create New</a>&nbsp; &nbsp; <a
-				id="loadLoadTab" href="javascript:void(0);" onclick="loadLoadTab()">Load
-				Existing</a>&nbsp; &nbsp; <a id="loadCurrentTab"
-				href="javascript:void(0);" onclick="loadCurrentTab()">Current</a>
-		</div>
-	</div>
+
 
 	<div id="menuItems"></div>
 
@@ -50,31 +48,83 @@
 			<BR> <BR> <audio id="audio" controls> <source
 						id="audioSrc" type="audio/mpeg"> Your browser does not
 					support the audio element. </audio>
-					
-						<div id="currentWord"></div>
-					
-					 <input id="enableLyricTextView"
+
+					<div id="currentWord"></div> <input id="enableLyricTextView"
 					onclick="enableLyricTextView()" class="button" value="Text"
 					type="button"> <input id="enableLyricScriptView"
 						onclick="enableLyricScriptView()" class="button" value="Script"
 						type="button"> <input id="enableLyricWordView"
 							onclick="enableLyricWordView()" class="button" value="Word"
 							type="button"> <BR><BR>
-
-
-
-
-										<div id="lyricsContainer">
-											<textarea id="lyricText">
+			<div id="canvasContainer"></div>
+			<div id="lyricsContainer">
+				<textarea id="lyricText">
 </textarea>
-											<textarea id="lyricScript"></textarea>
-											<div id="lyrics"></div>
-										</div>
+				<textarea id="lyricScript"></textarea>
+				<div id="lyrics"></div>
+			</div>
+
+
+			<div class="controlButtonsContainer">
+				<div class="buttonType1ContainerLarge">
+					<a href="#" class="buttonType1" id="removePreviousWord">Remove
+						Word</a>
+				</div>
+
+				<div class="buttonType1ContainerLarge">
+					<a href="#" class="buttonType1" id="addCurrentWord">Add Word</a>
+				</div>
+
+				<div class="buttonType1ContainerSmall">
+					<a href="#" class="buttonType1" id="skipBack5Button">-5</a>
+				</div>
+				<div class="buttonType1ContainerSmall">
+					<a href="#" class="buttonType1" id="playSlowButton">Slow</a>
+				</div>
+				<div class="buttonType1ContainerMedium">
+					<a href="#" class="buttonType1" id="playPauseButton">Play</a>
+				</div>
+				<div class="buttonType1ContainerSmall">
+					<a href="#" class="buttonType1" id="playFastButton">Fast</a>
+				</div>
+				<div class="buttonType1ContainerSmall">
+					<a href="#" class="buttonType1" id="skipForward5Button">+5</a>
+				</div>
+				
+			<!--  	
+				<div class="buttonType1ContainerSmall">
+					<a href="#" class="buttonType1" id="save">Save</a>
+				</div>
+			-->
+			</div>
 
 
 
 
-										<div id="wordInfo">
+
+			<div id="fps">0fps</div>
+		</div>
+		<div id="loadTab" class="hiddenTab">
+
+			<BR><BR> <select id="loadTrack">
+				</select> <input id="loadButton" type="button" value="load"></input>
+		</div>
+
+
+		<div id="newTab" class="hiddenTab">
+			<BR><BR> <iframe src="lyricRecorderUpload.html"
+						width="100%" height="30px" frameBorder="0"> </iframe> <BR><BR>
+		</div>
+	</div>
+</body>
+</html>
+
+
+
+
+
+
+<!-- <div id="wordInfo">
 											Word <input class="wordInfo" id="wordInfoWord" type="text"
 												onkeyup="changeCurrentWord()"></input><br><br> <input
 													type="hidden" id="wordInfoId" value=""> Start <input
@@ -99,71 +149,4 @@
 																											type="button"> <input
 																												id="wordInfoPlayLine" value="Play this Line"
 																												type="button">
-										</div>
-
-
-
-
-
-										<div id="canvasContainer"></div> 
-
-
-
-																								<div class="controlButtonsContainer">
-																									<div class="buttonType1ContainerSmall">
-																										<a href="#" class="buttonType1"
-																											id="skipBack5Button">-5</a>
-																									</div>
-																									<div class="buttonType1ContainerSmall">
-																										<a href="#" class="buttonType1"
-																											id="playSlowButton">Slow</a>
-																									</div>
-																									<div class="buttonType1ContainerMedium">
-																										<a href="#" class="buttonType1"
-																											id="playPauseButton">Play</a>
-																									</div>
-																									<div class="buttonType1ContainerSmall">
-																										<a href="#" class="buttonType1"
-																											id="playFastButton">Fast</a>
-																									</div>
-																									<div class="buttonType1ContainerSmall">
-																										<a href="#" class="buttonType1"
-																											id="skipForward5Button">+5</a>
-																									</div>
-																								</div>
-																								
-																								<div class="controlButtonsContainer">
-																									
-																									<div class="buttonType1ContainerLarge">
-																										<a href="#" class="buttonType1"
-																											id="removePreviousWord">Remove Word</a>
-																									</div>
-																									
-																									<div class="buttonType1ContainerLarge">
-																										<a href="#" class="buttonType1"
-																											id="addCurrentWord">Add Word</a>
-																									</div>
-																									
-																								</div>
-																								
-			<BR><BR>
-
-
-
-				
-					<div id="fps">0fps</div>
-		</div>
-		<div id="loadTab" class="hiddenTab">
-
-			<BR><BR> <select id="loadTrack">
-				</select> <input id="loadButton" type="button" value="load"></input>
-		</div>
-
-
-		<div id="newTab" class="hiddenTab">
-			<BR><BR> <iframe src="lyricRecorderUpload.html"
-						width="100%" height="30px" frameBorder="0"> </iframe> <BR><BR>
-		</div>
-	</div>
-</body>
-</html>
+										</div> -->

@@ -10,9 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class MP3MetaData {
-	
-	
-	
+
 	private String title;
 	private String artist;
 	private String album;
@@ -21,7 +19,7 @@ public class MP3MetaData {
 	public MP3MetaData() {
 		super();
 	}
-	
+
 	public MP3MetaData(String title, String artist, String album, String uniqueId) {
 		super();
 		this.title = title;
@@ -61,13 +59,11 @@ public class MP3MetaData {
 	public void setUniqueId(String uniqueId) {
 		this.uniqueId = uniqueId;
 	}
-	
-	
-	
+
 	public static MP3MetaData readMP3MetaDataFromDisk(String uniqueId) throws FileNotFoundException {
 		Gson gson = new Gson();
 		BufferedReader br = new BufferedReader(
-				new FileReader("C:\\Users\\Hawkes\\git\\WC\\WebContent\\resources\\mp3MetaData\\" + uniqueId + ".json"));
+				new FileReader(RESOURCES_FOLDER + "\\mp3MetaData\\" + uniqueId + ".json"));
 		MP3MetaData mp3MetaData = gson.fromJson(br, MP3MetaData.class);
 		return mp3MetaData;
 	}
@@ -75,13 +71,15 @@ public class MP3MetaData {
 	public static void writeMP3MetaDataToDisk(MP3MetaData mp3MetaData) throws IOException {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		String json = gson.toJson(mp3MetaData);
-		FileWriter writer = new FileWriter(
-				"C:\\Users\\Hawkes\\git\\WC\\WebContent\\resources\\mp3MetaData\\" + mp3MetaData.getUniqueId() + ".json");
+		FileWriter writer = new FileWriter(RESOURCES_FOLDER + "\\mp3MetaData\\" + mp3MetaData.getUniqueId() + ".json");
 		writer.write(json);
 		writer.close();
 	}
+
 	public String toJSON() {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		return gson.toJson(this);
 	}
+
+	private static String RESOURCES_FOLDER = System.getProperty("RESOURCES_FOLDER");
 }

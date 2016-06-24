@@ -298,6 +298,8 @@ WaveForm.prototype.draw = function(time, ctx) {
 				
 					ctx.strokeStyle = 'black';
 					ctx.fillStyle = 'black';
+					ctx.font="10px Arial";
+					
 					ctx.fillText(aWord.word, wordX, 328)
 				}
 			}

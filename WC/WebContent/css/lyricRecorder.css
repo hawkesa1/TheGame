@@ -14,18 +14,17 @@ iframe {
 {
 	font-family: Rosario, sans-serif;
 	font-size: 18px;
-	font-weight: 20;
 	height: 18px;
 	letter-spacing: -1px;
 	line-height: 18px;
 	text-rendering: optimizeLegibility;	
+	color:#818c8a;
 }
 
 
 
 .wordBeingAdded {
 	color: #7FFF00;
-	font-weight: bold;
 }
 
 .disabledButton {
@@ -34,7 +33,7 @@ iframe {
 }
 
 .wordHasTime {
-	color: black;
+	color: #7892c2;
 	cursor: pointer;
 }
 .wordPlaying {
@@ -43,21 +42,10 @@ iframe {
 }
 
 .nextWordToAdd {
-	color: DarkGreen;
-	font-weight: bold;
+	color: orange;
 }
 
-#lyricsContainer {
-	//-webkit-border-radius: 20px 0px 0px 20px;
-	//-moz-border-radius: 20px 0px 0px 20px;
-	//border-radius: 20px 0px 0px 20px;
-		border: 1px solid #9E9E9E;
-	-webkit-box-shadow: #9E9E9E 5px 5px 5px;
-	-moz-box-shadow: #9E9E9E 5px 5px 5px;
-	box-shadow: #9E9E9E 5px 5px 5px;
-	width:800px;
-	overflow: none;
-}
+
 
 #lyricText {
 	overflow-y: scroll;
@@ -70,16 +58,15 @@ iframe {
 }
 
 #lyrics {
-	color: rgb(51, 51, 51);
-	font-family: Rosario, sans-serif;
+	font-family: Arial;
 	font-size: 20px;
-	font-weight: 300;
+	
 	letter-spacing: -1px;
 	line-height: 30px;
 	text-rendering: optimizeLegibility;
-	color: rgb(51, 51, 51);
+	
 	background-color: none;
-	opacity: 0.5;
+	
 	overflow-y: scroll;
 	width: 800px;
 	height: 150px;
@@ -103,7 +90,23 @@ iframe {
 	border: 1px solid black;
 	display: none;
 }
-
+#lyricsContainer {
+	//-webkit-border-radius: 20px 0px 0px 20px;
+	//-moz-border-radius: 20px 0px 0px 20px;
+	//border-radius: 20px 0px 0px 20px;
+	border-top: 1px solid #9E9E9E;
+	border-left: 1px solid #9E9E9E;
+	border-right: 1px solid #9E9E9E;
+	border-bottom: 1px solid #9E9E9E;
+	
+	//-webkit-box-shadow: #9E9E9E 2px 2px 2px;
+	//-moz-box-shadow: #9E9E9E 2px 2px 2px;
+	//box-shadow: #9E9E9E 2px 2px 2px;
+	width:800px;
+	overflow: none;
+	
+	
+}
 #canvasContainer {
 	
 	width: 800px;
@@ -113,10 +116,16 @@ iframe {
 	//-webkit-border-radius: 20px;
 	//-moz-border-radius: 20px;
 	//border-radius: 20px;
-	border: 1px solid #9E9E9E;
-	-webkit-box-shadow: #9E9E9E 5px 5px 5px;
-	-moz-box-shadow: #9E9E9E 5px 5px 5px;
-	box-shadow: #9E9E9E 5px 5px 5px;
+	border-top: 1px solid #9E9E9E;
+	border-bottom: 0px solid #9E9E9E;
+	border-left: 1px solid #9E9E9E;
+	border-right: 1px solid #9E9E9E;
+	
+	
+	
+	//-webkit-box-shadow: #9E9E9E 2px 2px 2px;
+	//-moz-box-shadow: #9E9E9E 2px 5px 2px;
+	//box-shadow: #9E9E9E 2px 2px 2px;
 	
 }
 

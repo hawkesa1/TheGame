@@ -66,6 +66,6 @@ public class LyricUploadServlet extends HttpServlet {
 		return gson.toJson(je);
 	}
 
-	private static final String RESOURCES_FOLDER = "C:\\Users\\Hawkes\\git\\WC\\WebContent\\resources";
+	private static String  RESOURCES_FOLDER = System.getProperty("RESOURCES_FOLDER");
 
 }

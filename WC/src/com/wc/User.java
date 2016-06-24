@@ -66,7 +66,7 @@ public class User {
 	public static User readUserFromDisk(String userId) throws FileNotFoundException {
 		Gson gson = new Gson();
 		BufferedReader br = new BufferedReader(
-				new FileReader("C:\\Users\\Hawkes\\git\\WC\\WebContent\\resources\\user\\" + userId + ".json"));
+				new FileReader(RESOURCES_FOLDER+"\\user\\" + userId + ".json"));
 		User user = gson.fromJson(br, User.class);
 		return user;
 	}
@@ -75,7 +75,7 @@ public class User {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		String json = gson.toJson(this);
 		FileWriter writer = new FileWriter(
-				"C:\\Users\\Hawkes\\git\\WC\\WebContent\\resources\\user\\" + this.getUserId() + ".json");
+				RESOURCES_FOLDER+"\\user\\" + this.getUserId() + ".json");
 		writer.write(json);
 		writer.close();
 	}
@@ -85,4 +85,5 @@ public class User {
 		return gson.toJson(this);
 	}
 
+	private static String RESOURCES_FOLDER = System.getProperty("RESOURCES_FOLDER");
 }

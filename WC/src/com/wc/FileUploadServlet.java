@@ -98,13 +98,21 @@ public class FileUploadServlet extends HttpServlet {
 
 	}
 
-	private static final String RESOURCES_FOLDER = "C:\\Users\\Hawkes\\git\\WC\\WebContent\\resources";
+	
+	//java -DRESOURCES_FOLDER="H:\Development\productionEnvironment\resources"
+	
+	private static String  RESOURCES_FOLDER = System.getProperty("RESOURCES_FOLDER");
+	
+	//private static final String RESOURCES_FOLDER = "C:\\Users\\Hawkes\\git\\WC\\WebContent\\resources";
 
 	private MP3MetaData processUploadedFile(FileItem item, String currentTime)
 			throws IOException, UnsupportedAudioFileException {
 		String filePath1 = RESOURCES_FOLDER + "\\originalUpload\\" + currentTime + ".mp3";
 		String filePath2 = RESOURCES_FOLDER + "\\generatedWav\\" + currentTime + ".wav";
 		String filePath3 = RESOURCES_FOLDER + "\\wavForm\\" + currentTime + ".txt";
+		
+		System.out.println("RESOURCES_FOLDER="+ RESOURCES_FOLDER);
+		
 		writeUploadedFileToDisk(item, filePath1);
 		Alex alex = new Alex();
 		Vector<Coordinate> coordinates = alex.convertMP3ToWAV(filePath1, filePath2);

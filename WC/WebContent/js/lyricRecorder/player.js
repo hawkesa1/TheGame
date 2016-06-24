@@ -68,7 +68,7 @@ $(document).ready(function($) {
 	windowHeight = $(document).height();
 	addCanvasToPage()
 	bindCanvasTouchControls();
-	loadATrack("1466514491225");
+	loadATrack("1466528157471");
 	loadUser();
 });
 
@@ -93,7 +93,9 @@ function changeCurrentPlayingWordId() {
 
 		var container = $('#lyrics')
 		var scrollTo = $('#' + currentPlayingWordId);
-		container.scrollTop((scrollTo.offset().top) - container.offset().top
+		container
+		.scrollTop((scrollTo.offset().top - 8)
+				- container.offset().top
 				+ container.scrollTop());
 	} else {
 		$('#currentWord').html("");
