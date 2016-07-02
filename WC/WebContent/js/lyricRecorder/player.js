@@ -62,14 +62,20 @@ var lastAddedWordId = "";
 
 var theFillColour="";
 var theLineColour="";
+var availableTracks = new Array();
+
+
 
 $(document).ready(function($) {
+	
+	loadUser();
 	windowWidth = $(document).width();
 	windowHeight = $(document).height();
 	addCanvasToPage()
 	bindCanvasTouchControls();
-	loadATrack("1466528157471");
-	loadUser();
+	
+	
+	
 });
 
 function addCanvasToPage() {
@@ -83,6 +89,16 @@ function addCanvasToPage() {
 
 function lineArrayToJSON() {
 	return $.toJSON(lineArray);
+}
+
+
+function addTrack(trackId, trackName) {
+	console.log("Add Track: " + trackId + " " + trackName);
+	
+
+	
+	$('#loadTrack').append(
+			$("<option></option>").attr("value", trackId).text(trackName));
 }
 
 function changeCurrentPlayingWordId() {
@@ -453,7 +469,6 @@ function loadTrack() {
 function WordObject() {
 
 }
-
 function LineObject() {
 
 }
@@ -463,6 +478,11 @@ function SongObject() {
 function CurrentlyDrawnWordObject() {
 
 }
+function TrackObject()
+{
+
+}
+
 
 /*
  * $(window).on('resize', function() { var win = $(this); canvas1.width =

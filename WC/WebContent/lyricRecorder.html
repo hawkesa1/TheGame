@@ -3,11 +3,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<title>Player</title>
-	<style>
-</style>
-
-	<script src="./js/jquery/jquery-2.1.1.min.js" type="text/javascript"></script>
+	<title>Player</title> <script src="./js/jquery/jquery-2.1.1.min.js"
+		type="text/javascript"></script>
 	<script src="./js/jquery/jquery-ui.min.js" type="text/javascript"></script>
 	<script src="./js/jquery/jquery-json.js" type="text/javascript"></script>
 	<script src="./js/lyricRecorder/player.js" type="text/javascript"></script>
@@ -22,40 +19,38 @@
 </head>
 <body>
 
-
-
-
-
 	<div id="headerContainer">
-		<div id="headerTitle">lyricRecorder.com</div>
-
-		<a id="loadCreateTab" href="javascript:void(0);"
-			onclick="loadCreateTab()">Create New</a>&nbsp; &nbsp; <a
-			id="loadLoadTab" href="javascript:void(0);" onclick="loadLoadTab()">Load
-			Existing</a>&nbsp; &nbsp; <a id="loadCurrentTab"
-			href="javascript:void(0);" onclick="loadCurrentTab()">Current</a>
+		<div id="headerTitle">lyricRecorder.com
+					<select id="loadTrack">
+					</select> <input id="loadButton" type="button" value="load"> </input> <a
+						id="loadCreateTab" href="javascript:void(0);"
+						onclick="loadCreateTab()">Create New</a>
+				</div>
 	</div>
 
-
-	<div id="menuItems"></div>
-
-
-
 	<div id="mainContainer">
-
-
 		<div id="currentTab" class="visibleTab">
-			<BR> <BR> <audio id="audio" controls> <source
-						id="audioSrc" type="audio/mpeg"> Your browser does not
-					support the audio element. </audio>
+			<audio id="audio" controls> <source id="audioSrc"
+				type="audio/mpeg"> Your browser does not support the audio
+			element. </audio>
+			<div>
+			
 
-					<div id="currentWord"></div> <input id="enableLyricTextView"
-					onclick="enableLyricTextView()" class="button" value="Text"
-					type="button"> <input id="enableLyricScriptView"
-						onclick="enableLyricScriptView()" class="button" value="Script"
-						type="button"> <input id="enableLyricWordView"
-							onclick="enableLyricWordView()" class="button" value="Word"
-							type="button"> <BR><BR>
+				<table id="tracks">
+					<tr>
+						<th>Title</th>
+						<th>Artist</th>
+						<th>Album</th>
+					</tr>
+					<tr>
+						<td><span id="trackTitle">XXX</span></td>
+						<td><span id="trackArtist">XXX</span></td>
+						<td><span id="trackAlbum">XXX</span></td>
+					</tr>
+				</table>
+
+
+			</div>
 			<div id="canvasContainer"></div>
 			<div id="lyricsContainer">
 				<textarea id="lyricText">
@@ -90,8 +85,8 @@
 				<div class="buttonType1ContainerSmall">
 					<a href="#" class="buttonType1" id="skipForward5Button">+5</a>
 				</div>
-				
-			<!--  	
+
+				<!--  	
 				<div class="buttonType1ContainerSmall">
 					<a href="#" class="buttonType1" id="save">Save</a>
 				</div>
@@ -99,22 +94,29 @@
 			</div>
 
 
+			<input id="enableLyricTextView" onclick="enableLyricTextView()"
+				class="button" value="Text" type="button"> <input
+				id="enableLyricScriptView" onclick="enableLyricScriptView()"
+				class="button" value="Script" type="button"> <input
+					id="enableLyricWordView" onclick="enableLyricWordView()"
+					class="button" value="Word" type="button"> <BR><BR>
 
 
-
-			<div id="fps">0fps</div>
+								<div id="fps">0fps</div>
 		</div>
-		<div id="loadTab" class="hiddenTab">
 
-			<BR><BR> <select id="loadTrack">
-				</select> <input id="loadButton" type="button" value="load"></input>
-		</div>
 
 
 		<div id="newTab" class="hiddenTab">
-			<BR><BR> <iframe src="lyricRecorderUpload.html"
-						width="100%" height="30px" frameBorder="0"> </iframe> <BR><BR>
+			<a id="loadCurrentTab" href="javascript:void(0);"
+				onclick="loadCurrentTab()">Back</a> <BR><BR> <iframe
+						src="lyricRecorderUpload.html" width="100%" height="30px"
+						frameBorder="0"> </iframe> <BR><BR>
 		</div>
+
+
+		<div id="currentWord"></div>
+
 	</div>
 </body>
 </html>

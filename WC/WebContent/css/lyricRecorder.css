@@ -1,3 +1,26 @@
+table#tracks
+{
+	border-collapse:collapse;
+	border-spacing:10px;
+}
+table#tracks td
+{
+	vertical-align:top;
+	text-align:left;
+	padding-left:0px;
+	padding-right:10px;
+}
+table#tracks th
+{
+	vertical-align:top;
+	text-align:left;
+	padding-left:0px;
+	padding-right:10px;
+}
+
+
+
+
 #canvas1 {
 	background-color: #FFFFFF;
 }

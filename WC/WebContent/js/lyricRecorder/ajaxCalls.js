@@ -2,7 +2,6 @@ function loadATrack(selectedValue) {
 	var audio = document.getElementById('audio');
 	var source = document.getElementById('audioSrc');
 	source.src = mp3Location + selectedValue + ".mp3";
-	
 	loadWaveForm(selectedValue);
 	loadLyricsData(selectedValue);
 	currentSongId = selectedValue;
@@ -10,6 +9,13 @@ function loadATrack(selectedValue) {
 	audio.addEventListener('loadedmetadata', function() {
 		trackDuration = document.getElementById('audio').duration * 100;
 	});
+	for (var i = 0; i < availableTracks.length; i++) {
+		if (availableTracks[i].uniqueId == selectedValue) {
+			$('#trackTitle').html(availableTracks[i].title);
+			$('#trackArtist').html(availableTracks[i].artist);
+			$('#trackAlbum').html(availableTracks[i].album);
+		}
+	}
 
 	$('#lyricText').hide();
 	$('#lyricScript').hide();
@@ -38,6 +44,8 @@ function saveLyrics(JSONFormattedLyricData, songId) {
 	}
 }
 
+var anAvailableTrack;
+
 function loadUser(JSONFormattedLyricData, songId) {
 	$.ajax({
 		type : 'GET',
@@ -46,11 +54,19 @@ function loadUser(JSONFormattedLyricData, songId) {
 			"userId" : "hawkesa",
 		},
 		success : function(text) {
+			availableTracks = new Array();
+
 			for (var i = 0; i < text.mp3MetaDatas.length; i++) {
+				anAvailableTrack = new TrackObject();
+				anAvailableTrack.title = text.mp3MetaDatas[i].title;
+				anAvailableTrack.album = text.mp3MetaDatas[i].album;
+				anAvailableTrack.artist = text.mp3MetaDatas[i].artist;
+				anAvailableTrack.uniqueId = text.mp3MetaDatas[i].uniqueId;
+				availableTracks[i] = anAvailableTrack;
 				addTrack(text.mp3MetaDatas[i].uniqueId,
 						text.mp3MetaDatas[i].title)
 			}
-
+			loadATrack(text.mp3MetaDatas[0].uniqueId);
 		},
 		error : function(xhr) {
 			alert("An error occured: " + xhr.status + " " + xhr.statusText);
@@ -99,7 +115,7 @@ function loadLyricsData(wavFormFile) {
 			generateLyricData(text);
 		},
 		error : function(xhr) {
-			//alert("An error occured: " + xhr.status + " " + xhr.statusText);
+			// alert("An error occured: " + xhr.status + " " + xhr.statusText);
 			generateLyricData("");
 		}
 	});
@@ -109,4 +125,3 @@ function loadLyricsData(wavFormFile) {
 		addClickToLyrics();
 	}
 }
-

@@ -3,6 +3,7 @@ var waveForm;
 var canvas1, context1;
 var touchDiv;
 
+
 $(document).ready(function($) {
 	console.log("The Document is Ready!");
 	windowWidth = $(document).width();
