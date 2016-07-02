@@ -1,0 +1,87 @@
+body {
+	border: 0px;
+	margin: 0px;
+	padding: 0px;
+}
+
+#headerContainer {
+	width: 100%;
+	background-color: #f1f1f1;
+	border-bottom: 1px solid #666;
+	border-color: #e5e5e5;
+	height: 54px;
+}
+#menuContainer {
+	width: 100%;
+	background-color: #f1f1f1;
+	border-bottom: 1px solid #666;
+	border-color: #e5e5e5;
+	height: 54px;
+}
+
+#headerTitle {
+
+	font-family: Rosario, sans-serif;
+	font-size: 28px;
+	font-weight: 300;
+	height: 62px;
+	letter-spacing: -2px;
+	line-height: 62px;
+	text-rendering: optimizeLegibility;
+	color: rgb(51, 51, 51);
+	margin: 0 auto;
+	width: 802px;
+}
+#menuTitle {
+
+	font-family: Rosario, sans-serif;
+	font-size: 12px;
+	
+	text-rendering: optimizeLegibility;
+
+	margin: 0 auto;
+	width: 802px;
+	
+	padding-top:20px;
+}
+
+#mainContainer {
+	margin: 0 auto;
+	width: 810px;
+	border: 0px solid black;
+}
+
+#pageTitle {
+
+	font-family: Rosario, sans-serif;
+	font-size: 62px;
+	font-weight: 300;
+	height: 62px;
+	letter-spacing: -2px;
+	line-height: 62px;
+	text-rendering: optimizeLegibility;
+	padding-top: 50px;
+	padding-bottom: 50px;
+}
+
+input.wordInfo
+{
+	
+	width:50px;
+}
+
+.instructionText {
+	font-family: Rosario, sans-serif;
+	font-size: 21px;
+	font-weight: 200;
+	line-height: 30px;
+	padding-bottom: 20px;
+}
+
+iframe {
+	border: none;
+   margin-bottom: -70px;
+    padding: 0;
+    opacity: 0.8;
+    display:block; /* Add this */
+}

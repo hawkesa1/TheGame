@@ -1,0 +1,204 @@
+table#tracks
+{
+	border-collapse:collapse;
+	border-spacing:10px;
+}
+table#tracks td
+{
+	vertical-align:top;
+	text-align:left;
+	padding-left:0px;
+	padding-right:10px;
+}
+table#tracks th
+{
+	vertical-align:top;
+	text-align:left;
+	padding-left:0px;
+	padding-right:10px;
+}
+
+
+
+
+#canvas1 {
+	background-color: #FFFFFF;
+}
+
+iframe {
+	height: 150px;
+}
+
+.wordSelected {
+	
+}
+
+.word
+{
+	font-family: Rosario, sans-serif;
+	font-size: 18px;
+	height: 18px;
+	letter-spacing: -1px;
+	line-height: 18px;
+	text-rendering: optimizeLegibility;	
+	color:#818c8a;
+}
+
+
+
+.wordBeingAdded {
+	color: #7FFF00;
+}
+
+.disabledButton {
+	opacity: 0.65;
+	cursor: not-allowed;
+}
+
+.wordHasTime {
+	color: #7892c2;
+	cursor: pointer;
+}
+.wordPlaying {
+	text-decoration: underline;
+	color:#00ff00;
+}
+
+.nextWordToAdd {
+	color: orange;
+}
+
+
+
+#lyricText {
+	overflow-y: scroll;
+	width: 100%;
+	height: 150px;
+	resize: none;
+	padding: 0px;
+	margin: 0px;
+	border:0px;
+}
+
+#lyrics {
+	font-family: Arial;
+	font-size: 20px;
+	
+	letter-spacing: -1px;
+	line-height: 30px;
+	text-rendering: optimizeLegibility;
+	
+	background-color: none;
+	
+	overflow-y: scroll;
+	width: 800px;
+	height: 150px;
+	padding: 0px;
+	margin: 0px;
+	border: 0px;
+}
+
+#lyricScript {
+	overflow-y: scroll;
+	width: 800px;
+	height: 150px;
+	padding: 0px;
+	margin: 0px;
+	border: 0px;
+}
+
+#wordInfo {
+	width: 400px;
+	height: 200px;
+	border: 1px solid black;
+	display: none;
+}
+#lyricsContainer {
+	//-webkit-border-radius: 20px 0px 0px 20px;
+	//-moz-border-radius: 20px 0px 0px 20px;
+	//border-radius: 20px 0px 0px 20px;
+	border-top: 1px solid #9E9E9E;
+	border-left: 1px solid #9E9E9E;
+	border-right: 1px solid #9E9E9E;
+	border-bottom: 1px solid #9E9E9E;
+	
+	//-webkit-box-shadow: #9E9E9E 2px 2px 2px;
+	//-moz-box-shadow: #9E9E9E 2px 2px 2px;
+	//box-shadow: #9E9E9E 2px 2px 2px;
+	width:800px;
+	overflow: none;
+	
+	
+}
+#canvasContainer {
+	
+	width: 800px;
+	height: 335px;
+	//padding-top:5px;
+	//padding-bottom:5px;
+	//-webkit-border-radius: 20px;
+	//-moz-border-radius: 20px;
+	//border-radius: 20px;
+	border-top: 1px solid #9E9E9E;
+	border-bottom: 0px solid #9E9E9E;
+	border-left: 1px solid #9E9E9E;
+	border-right: 1px solid #9E9E9E;
+	
+	
+	
+	//-webkit-box-shadow: #9E9E9E 2px 2px 2px;
+	//-moz-box-shadow: #9E9E9E 2px 5px 2px;
+	//box-shadow: #9E9E9E 2px 2px 2px;
+	
+}
+
+#currentWord {
+	display:none;
+	border: 0px solid blue;
+	width: 200px;
+	height: 50px;
+	font-size: 30px;
+	background-color: white;
+	opacity: 0.5;
+	align:center;
+}
+
+#fps {
+	display: none;
+}
+
+.hiddenTab {
+	display: none;
+}
+
+.visibleTab {
+	display: block;
+}
+
+#newTab {
+	
+}
+
+#currentTab {
+	
+}
+
+#loadTab {
+	
+}
+
+#audio {
+	display: none;
+}
+
+.button {
+	background-color: white; /* Green */
+	border: 1px solid #117dbb;
+	color: #117dbb;
+	width: 50px;
+	height: 20px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 10px;
+}
