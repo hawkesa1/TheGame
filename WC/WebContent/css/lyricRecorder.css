@@ -1,14 +1,79 @@
+#trackDetails
+{
+	background-color: #f1f1f1;
+	border:0px;
+	padding-top:5px;
+	padding-bottom:0px;
+	padding-left:10px;
+	width:791px;
+	
+		-webkit-box-shadow: #9E9E9E 2px 2px 2px;
+	-moz-box-shadow: #9E9E9E 2px 2px 2px;
+	box-shadow: #9E9E9E 2px 2px 2px;
+	
+	
+	-webkit-border-radius: 20px 20px 0px 0px;
+	-moz-border-radius: 20px 20px 0px 0px;
+	border-radius: 20px 20px 0px 0px;
+	
+}
+
+
+
+
+
+#loadTrack
+{
+	position:relative;
+	top:-6px;
+	
+	font-family: Rosario, sans-serif;
+	font-size: 12px;
+	font-weight: 100;
+	height: 18px;
+	letter-spacing: 0px;
+	line-height: 12px;
+	text-rendering: optimizeLegibility;
+}
+
+#loadButton
+{
+	position:relative;
+	top:-6px;
+	
+	font-family: Rosario, sans-serif;
+	font-size: 12px;
+	font-weight: 100;
+	height: 18px;
+	letter-spacing: 0px;
+	line-height: 12px;
+	text-rendering: optimizeLegibility;
+	
+}
+
 table#tracks
 {
+	width:100%;
 	border-collapse:collapse;
 	border-spacing:10px;
+	font-family: Rosario, sans-serif;
+	font-size: 12px;
+	font-weight: 100;
+	height: 12px;
+	letter-spacing: 0px;
+	line-height: 12px;
+	text-rendering: optimizeLegibility;
+	
+	
 }
 table#tracks td
 {
 	vertical-align:top;
 	text-align:left;
 	padding-left:0px;
-	padding-right:10px;
+	padding-right:30px;
+	padding-top:5px;
+	padding-bottom:5px;
 }
 table#tracks th
 {
@@ -16,8 +81,17 @@ table#tracks th
 	text-align:left;
 	padding-left:0px;
 	padding-right:10px;
+	padding-top:5px;
+	padding-bottom:5px;
 }
-
+td.trackTableRight
+{
+	vertical-align:top;
+	text-align:right;
+	padding-left:0px;
+	padding-right:30px;
+	color:blue;
+}
 
 
 
@@ -36,39 +110,45 @@ iframe {
 .word
 {
 	font-family: Rosario, sans-serif;
-	font-size: 18px;
-	height: 18px;
+	font-size: 16px;
+	height: 16px;
 	letter-spacing: -1px;
-	line-height: 18px;
+	line-height: 16px;
 	text-rendering: optimizeLegibility;	
 	color:#818c8a;
+	font-weight: 50;
+	
+	  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
+	
+	
 }
-
-
 
 .wordBeingAdded {
 	color: #7FFF00;
+}
+.wordHasTime {
+	color: blue;
+	cursor: pointer;
+	text-decoration: underline;
+}
+.wordPlaying {
+	text-decoration: underline;
+	color:#00ff00;
+}
+.nextWordToAdd {
+	color: orange;
 }
 
 .disabledButton {
 	opacity: 0.65;
 	cursor: not-allowed;
 }
-
-.wordHasTime {
-	color: #7892c2;
-	cursor: pointer;
-}
-.wordPlaying {
-	text-decoration: underline;
-	color:#00ff00;
-}
-
-.nextWordToAdd {
-	color: orange;
-}
-
-
 
 #lyricText {
 	overflow-y: scroll;
@@ -113,18 +193,44 @@ iframe {
 	border: 1px solid black;
 	display: none;
 }
+
+
+#lyricButtonContainer
+{
+	margin-top:20px;
+	background-color: #f1f1f1;
+	border:0px;
+	padding-top:5px;
+	padding-bottom:0px;
+	padding-left:10px;
+	width:790px;
+	
+	height:30px;
+			-webkit-box-shadow: #9E9E9E 1px 1px 1px;
+	-moz-box-shadow: #9E9E9E 1px 1px 1px;
+	box-shadow: #9E9E9E 1px 1px 1px;
+	
+	
+	-webkit-border-radius: 20px 0px 0px;
+	-moz-border-radius:  20px 0px 0px;
+	border-radius:  20px 0px 0px;
+	
+}
+
 #lyricsContainer {
 	//-webkit-border-radius: 20px 0px 0px 20px;
 	//-moz-border-radius: 20px 0px 0px 20px;
 	//border-radius: 20px 0px 0px 20px;
 	border-top: 1px solid #9E9E9E;
-	border-left: 1px solid #9E9E9E;
-	border-right: 1px solid #9E9E9E;
-	border-bottom: 1px solid #9E9E9E;
+	border-left: 0px solid #9E9E9E;
+	border-right: 0px solid #9E9E9E;
+	border-bottom: 0px solid #9E9E9E;
 	
-	//-webkit-box-shadow: #9E9E9E 2px 2px 2px;
-	//-moz-box-shadow: #9E9E9E 2px 2px 2px;
-	//box-shadow: #9E9E9E 2px 2px 2px;
+	//border:0px;
+	margin-top:0px;
+	-webkit-box-shadow: #9E9E9E 2px 2px 2px;
+	-moz-box-shadow: #9E9E9E 2px 2px 2px;
+	box-shadow: #9E9E9E 2px 2px 2px;
 	width:800px;
 	overflow: none;
 	
@@ -134,15 +240,21 @@ iframe {
 	
 	width: 800px;
 	height: 335px;
+	border:0px;
 	//padding-top:5px;
 	//padding-bottom:5px;
 	//-webkit-border-radius: 20px;
 	//-moz-border-radius: 20px;
 	//border-radius: 20px;
-	border-top: 1px solid #9E9E9E;
-	border-bottom: 0px solid #9E9E9E;
-	border-left: 1px solid #9E9E9E;
-	border-right: 1px solid #9E9E9E;
+	
+	//border-top: 1px solid #9E9E9E;
+	border-bottom: 1px solid #f2f2f2;
+	//border-left: 1px solid #9E9E9E;
+	border-right: 1px solid #f2f2f2;
+	
+	-webkit-box-shadow: #9E9E9E 2px 2px 2px;
+	-moz-box-shadow: #9E9E9E 2px 2px 2px;
+	box-shadow: #9E9E9E 2px 2px 2px;
 	
 	
 	

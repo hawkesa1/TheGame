@@ -2,10 +2,10 @@
 var wordSelectedColour="#ccffcc";
 var wordHoveredColour="#ffff00";
 var wordPlayingColour="#00ff00";
-var wordStandardColour='#ccf5ff';
+var wordStandardColour='#f1f1f1';
 var wordEdgeColour="#33cc33";
-var trackingSquareColour='#9E9E9E'
-var beforeTimeCoverColour='#9E9E9E';
+var trackingSquareColour='#f1f1f1'
+var beforeTimeCoverColour='#f1f1f1';
 var wavLineColour='#9E9E9E';
 var shadowColour='#9E9E9E';
 var shadowSize='1';
@@ -298,7 +298,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 				
 					ctx.strokeStyle = 'black';
 					ctx.fillStyle = 'black';
-					ctx.font="10px Arial";
+					ctx.font="normal 12px Rosario, sans-serif";
 					
 					ctx.fillText(aWord.word, wordX, 328)
 				}
