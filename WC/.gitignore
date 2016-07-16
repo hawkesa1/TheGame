@@ -1,8 +1,7 @@
-/build/
-
-WebContent/resources
+!.gitignore
 
 .metadata
+build/
 bin/
 tmp/
 *.tmp
@@ -13,6 +12,7 @@ local.properties
 .settings/
 .loadpath
 .recommenders
+.classpath
 
 # Eclipse Core
 .project

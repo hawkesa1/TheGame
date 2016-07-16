@@ -20,12 +20,9 @@
 <body>
 
 	<div id="headerContainer">
-		<div id="headerTitle">lyricRecorder.com
-					<select id="loadTrack">
-					</select> <input id="loadButton" type="button" value="load"> </input> <a
-						id="loadCreateTab" href="javascript:void(0);"
-						onclick="loadCreateTab()">Create New</a>
-				</div>
+		<div id="headerTitle">
+			lyricRecorder.com  
+		</div>
 	</div>
 
 	<div id="mainContainer">
@@ -33,25 +30,43 @@
 			<audio id="audio" controls> <source id="audioSrc"
 				type="audio/mpeg"> Your browser does not support the audio
 			element. </audio>
-			<div>
 			
-
+					<div>
+					<br> 
+				</div>
+			
+			<div id="trackDetails">
 				<table id="tracks">
 					<tr>
 						<th>Title</th>
 						<th>Artist</th>
 						<th>Album</th>
+						<td class="trackTableRight"><a
+				id="loadCreateTab" href="javascript:void(0);"
+				onclick="loadCreateTab()">Create New</a></td>
 					</tr>
 					<tr>
-						<td><span id="trackTitle">XXX</span></td>
-						<td><span id="trackArtist">XXX</span></td>
-						<td><span id="trackAlbum">XXX</span></td>
+						<td width="20%"><span id="trackTitle">XXX</span></td>
+						<td width="20%"><span id="trackArtist">XXX</span></td>
+						<td width="20%"><span id="trackAlbum">XXX</span></td>
+						<td width="40%" class="trackTableRight"><select id="loadTrack">
+			</select> <input id="loadButton" type="button" value="Load"> </input></td>
 					</tr>
 				</table>
-
-
 			</div>
+			
+			
 			<div id="canvasContainer"></div>
+			<div id="lyricButtonContainer">
+			
+			<input id="enableLyricTextView" onclick="enableLyricTextView()"
+				class="button" value="Text" type="button"> <input
+				id="enableLyricScriptView" onclick="enableLyricScriptView()"
+				class="button" value="Script" type="button"> <input
+					id="enableLyricWordView" onclick="enableLyricWordView()"
+					class="button" value="Word" type="button"> 
+			
+			</div>
 			<div id="lyricsContainer">
 				<textarea id="lyricText">
 </textarea>
@@ -86,20 +101,15 @@
 					<a href="#" class="buttonType1" id="skipForward5Button">+5</a>
 				</div>
 
-				<!--  	
+				 	
 				<div class="buttonType1ContainerSmall">
 					<a href="#" class="buttonType1" id="save">Save</a>
 				</div>
-			-->
+			
 			</div>
 
 
-			<input id="enableLyricTextView" onclick="enableLyricTextView()"
-				class="button" value="Text" type="button"> <input
-				id="enableLyricScriptView" onclick="enableLyricScriptView()"
-				class="button" value="Script" type="button"> <input
-					id="enableLyricWordView" onclick="enableLyricWordView()"
-					class="button" value="Word" type="button"> <BR><BR>
+			
 
 
 								<div id="fps">0fps</div>
