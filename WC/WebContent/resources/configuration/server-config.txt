@@ -1,0 +1,1 @@
+ -DRESOURCES_FOLDER="C:\Users\Hawkes\git\WC\WebContent\resources"
