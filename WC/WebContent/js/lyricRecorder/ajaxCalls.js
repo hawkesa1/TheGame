@@ -1,7 +1,7 @@
 function loadATrack(selectedValue) {
 	var audio = document.getElementById('audio');
 	var source = document.getElementById('audioSrc');
-	source.src = mp3Location + selectedValue + ".mp3";
+	source.src = mp3Location + selectedValue + ".MP3";
 	loadWaveForm(selectedValue);
 	loadLyricsData(selectedValue);
 	currentSongId = selectedValue;
@@ -77,7 +77,7 @@ function loadUser(JSONFormattedLyricData, songId) {
 function loadWaveForm(wavFormFile) {
 	$.ajax({
 		type : 'GET',
-		url : './resources/wavForm/' + wavFormFile + '.txt',
+		url : './resources/wavForm/' + wavFormFile + '.TXT',
 		data : null,
 		success : function(text) {
 			generateWaveForm(text);

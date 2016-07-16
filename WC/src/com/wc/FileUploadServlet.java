@@ -1,15 +1,11 @@
 package com.wc;
 
-import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.Writer;
 import java.util.List;
-import java.util.Vector;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,8 +23,8 @@ import org.farng.mp3.MP3File;
 import org.farng.mp3.TagException;
 import org.farng.mp3.id3.AbstractID3v2;
 import org.farng.mp3.id3.ID3v1;
-import org.mp3transform.test.Alex;
-import org.mp3transform.wav.Coordinate;
+
+import test.TestConversion;
 
 /**
  * Servlet implementation class FileUploadServlet
@@ -57,7 +53,7 @@ public class FileUploadServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		String currentTime = Long.toString(System.currentTimeMillis());
-		String userId=null;
+		String userId = null;
 		MP3MetaData mp3MetaData = null;
 		try {
 			List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
@@ -70,7 +66,12 @@ public class FileUploadServlet extends HttpServlet {
 					}
 
 				} else {
-					mp3MetaData = processUploadedFile(item, currentTime);
+					try {
+						mp3MetaData = processUploadedFile(item, currentTime);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					MP3MetaData.writeMP3MetaDataToDisk(mp3MetaData);
 					User user = User.readUserFromDisk(userId);
 					user.addTrackId(mp3MetaData.getUniqueId());
@@ -98,31 +99,50 @@ public class FileUploadServlet extends HttpServlet {
 
 	}
 
-	
-	//java -DRESOURCES_FOLDER="H:\Development\productionEnvironment\resources"
-	
-	private static String  RESOURCES_FOLDER = System.getProperty("RESOURCES_FOLDER");
-	
-	//private static final String RESOURCES_FOLDER = "C:\\Users\\Hawkes\\git\\WC\\WebContent\\resources";
+	// java -DRESOURCES_FOLDER="H:\Development\productionEnvironment\resources"
+
+	private static String RESOURCES_FOLDER = System.getProperty("RESOURCES_FOLDER");
+
+	// private static final String RESOURCES_FOLDER =
+	// "C:\\Users\\Hawkes\\git\\WC\\WebContent\\resources";
 
 	private MP3MetaData processUploadedFile(FileItem item, String currentTime)
-			throws IOException, UnsupportedAudioFileException {
-		String filePath1 = RESOURCES_FOLDER + "\\originalUpload\\" + currentTime + ".mp3";
+			throws IOException, UnsupportedAudioFileException, InterruptedException {
+
+		String ext = FilenameUtils.getExtension(item.getName());
+		System.out.println("Gahhhhhhhh " + ext);
+
+		String filePath1 = RESOURCES_FOLDER + "\\originalUpload\\" + currentTime + "." + ext;
 		String filePath2 = RESOURCES_FOLDER + "\\generatedWav\\" + currentTime + ".wav";
 		String filePath3 = RESOURCES_FOLDER + "\\wavForm\\" + currentTime + ".txt";
-		
-		System.out.println("RESOURCES_FOLDER="+ RESOURCES_FOLDER);
-		
+
+		System.out.println("RESOURCES_FOLDER=" + RESOURCES_FOLDER);
+
 		writeUploadedFileToDisk(item, filePath1);
-		Alex alex = new Alex();
-		Vector<Coordinate> coordinates = alex.convertMP3ToWAV(filePath1, filePath2);
-		writeCoordinatesToFile(filePath3, coordinates);
-		MP3MetaData mp3MetaData = readMP3MetaData(currentTime);
+
+		// Alex alex = new Alex();
+		// Vector<Coordinate> coordinates = alex.convertMP3ToWAV(filePath1,
+		// filePath2);
+
+		TestConversion testConversion = new TestConversion();
+		testConversion.processFile(currentTime, ext);
+		MP3MetaData mp3MetaData = null;
+		
+		if (ext.equalsIgnoreCase("mp3")) {
+			mp3MetaData = readMP3MetaData(currentTime, ext);
+		} else {
+			mp3MetaData = new MP3MetaData();
+			mp3MetaData.setUniqueId(currentTime);
+			mp3MetaData.setTitle(FilenameUtils.getBaseName(item.getName()));
+			mp3MetaData.setAlbum("Unknown: " + ext);
+			mp3MetaData.setArtist("Unknown: " + ext);
+		}
+
 		return mp3MetaData;
 	}
 
-	private MP3MetaData readMP3MetaData(String currentTime) {
-		String filePath = RESOURCES_FOLDER + "\\originalUpload\\" + currentTime + ".mp3";
+	private MP3MetaData readMP3MetaData(String currentTime, String ext) {
+		String filePath = RESOURCES_FOLDER + "\\originalUpload\\" + currentTime + "." + ext;
 		MP3MetaData mp3MetaData = new MP3MetaData();
 		try {
 			MP3File mp3file = new MP3File(filePath);
@@ -148,28 +168,6 @@ public class FileUploadServlet extends HttpServlet {
 		}
 		return mp3MetaData;
 	}
-
-	private void writeCoordinatesToFile(String filePath, Vector<Coordinate> coordinates) throws IOException {
-		Writer writer = null;
-
-		try {
-			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath), "utf-8"));
-
-			for (Coordinate coordinate : coordinates) {
-				writer.write(
-						coordinate.getX() + "," + coordinate.getY_min() + "," + coordinate.getY_max() + newLineChar);
-			}
-		} catch (IOException ex) {
-			throw ex;
-		} finally {
-			try {
-				writer.close();
-			} catch (Exception ex) {
-			}
-		}
-	}
-
-	static final String newLineChar = System.getProperty("line.separator");
 
 	private void writeUploadedFileToDisk(FileItem item, String filePath) throws IOException {
 
