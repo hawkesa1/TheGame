@@ -125,7 +125,7 @@ public class FileUploadServlet extends HttpServlet {
 		// filePath2);
 
 		TestConversion testConversion = new TestConversion();
-		testConversion.processFile(currentTime, ext);
+		testConversion.processFile(currentTime, ext, RESOURCES_FOLDER);
 		MP3MetaData mp3MetaData = null;
 		
 		if (ext.equalsIgnoreCase("mp3")) {

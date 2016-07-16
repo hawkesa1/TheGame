@@ -18,20 +18,20 @@ import org.mp3transform.wav.Coordinate;
 
 public class TestConversion {
 
-	private static final String RESOURCES_FOLDER = "C:\\Users\\Hawkes\\git\\WC\\WebContent\\resources";
-	private static final String AUDIO_CONVERT_EXECUTABLE = RESOURCES_FOLDER + "\\switch\\switch.exe";
-
-	private static final String COMMAND_STUB_1 = "cmd /c start " + RESOURCES_FOLDER + "\\scripts\\audioConvert1.bat ";
-	private static final String COMMAND_STUB_2 = "cmd /c start " + RESOURCES_FOLDER + "\\scripts\\audioConvert2.bat ";
-	private static final String SWITCH_PROCESS_ROOT = RESOURCES_FOLDER + "\\switchProcessing";
-	private static final String SWITCH_PROCESS_QUEUE = SWITCH_PROCESS_ROOT + "\\1-queued";
-	private static final String SWITCH_PROCESS_WAV = SWITCH_PROCESS_ROOT + "\\2-wav";
-	private static final String SWITCH_PROCESS_MP3 = SWITCH_PROCESS_ROOT + "\\3-mp3";
-	private static final String ORIGINAL_UPLOAD = RESOURCES_FOLDER + "\\originalUpload\\";
-	private static final String CONVERTED_MP3 = RESOURCES_FOLDER + "\\convertedMp3\\";
-	private static final String WAV_COORDINATES = RESOURCES_FOLDER + "\\wavForm\\";
+	private String AUDIO_CONVERT_EXECUTABLE = null;
+	private String COMMAND_STUB_1 = null;
+	private String COMMAND_STUB_2 = null;
+	private String SWITCH_PROCESS_ROOT = null;
+	private String SWITCH_PROCESS_QUEUE = null;
+	private String SWITCH_PROCESS_WAV = null;
+	private String SWITCH_PROCESS_MP3 = null;
+	private String ORIGINAL_UPLOAD = null;
+	private String CONVERTED_MP3 = null;
+	private String WAV_COORDINATES = null;
 
 	public static void main(String[] args) throws UnsupportedAudioFileException, IOException, InterruptedException {
+		String resourcesFolder = "C:\\Users\\Hawkes\\git\\WC\\WebContent\\resources";
+
 		String sourceAudioFileName = "1468673276781";
 		String sourceAudioFileExtension = "mp3";
 		TestConversion testConversion = new TestConversion();
@@ -39,12 +39,14 @@ public class TestConversion {
 		while (i < 1) {
 			System.out.println("Running" + i);
 			i++;
-			testConversion.processFile(sourceAudioFileName, sourceAudioFileExtension);
+			testConversion.processFile(sourceAudioFileName, sourceAudioFileExtension, resourcesFolder);
 		}
 	}
 
-	public Vector<Coordinate> processFile(String audioFileName, String sourceAudioFileExtension)
+	public Vector<Coordinate> processFile(String audioFileName, String sourceAudioFileExtension, String resourcesFolder)
 			throws IOException, InterruptedException, UnsupportedAudioFileException {
+
+		setFolder(resourcesFolder);
 
 		String targetWavFilePath = SWITCH_PROCESS_WAV + "\\" + audioFileName + ".WAV";
 		Vector<Coordinate> waveCoordinates = null;
@@ -81,6 +83,19 @@ public class TestConversion {
 			deleteFile(generatedMp3);
 		}
 		return waveCoordinates;
+	}
+
+	private void setFolder(String RESOURCES_FOLDER) {
+		AUDIO_CONVERT_EXECUTABLE = RESOURCES_FOLDER + "\\switch\\switch.exe";
+		COMMAND_STUB_1 = "cmd /c start " + RESOURCES_FOLDER + "\\scripts\\audioConvert1.bat ";
+		COMMAND_STUB_2 = "cmd /c start " + RESOURCES_FOLDER + "\\scripts\\audioConvert2.bat ";
+		SWITCH_PROCESS_ROOT = RESOURCES_FOLDER + "\\switchProcessing";
+		SWITCH_PROCESS_QUEUE = SWITCH_PROCESS_ROOT + "\\1-queued";
+		SWITCH_PROCESS_WAV = SWITCH_PROCESS_ROOT + "\\2-wav";
+		SWITCH_PROCESS_MP3 = SWITCH_PROCESS_ROOT + "\\3-mp3";
+		ORIGINAL_UPLOAD = RESOURCES_FOLDER + "\\originalUpload\\";
+		CONVERTED_MP3 = RESOURCES_FOLDER + "\\convertedMp3\\";
+		WAV_COORDINATES = RESOURCES_FOLDER + "\\wavForm\\";
 	}
 
 	private void convertAudioFileToWav(String sourceAudioFilePathAndName) throws IOException {
