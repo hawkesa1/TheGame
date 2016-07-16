@@ -1,2 +1,9 @@
+# Ignore everything
 *
+
+# But not these files...
 !.gitignore
+!1468673276781.TXT
+
+# ...even if they are in subdirectories
+!*/
