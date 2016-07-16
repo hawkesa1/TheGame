@@ -19,20 +19,20 @@ import org.mp3transform.wav.Coordinate;
 public class TestConversion {
 
 	private static final String RESOURCES_FOLDER = "C:\\Users\\Hawkes\\git\\WC\\WebContent\\resources";
-	private static final String AUDIO_CONVERT_EXECUTABLE = "C:\\Program Files (x86)\\NCH Software\\Switch\\switch.exe";
-	
-	private static final String COMMAND_STUB_1 = "cmd /c start "+RESOURCES_FOLDER+"\\scripts\\audioConvert1.bat ";
-	private static final String COMMAND_STUB_2 = "cmd /c start "+RESOURCES_FOLDER+"\\scripts\\audioConvert2.bat ";
+	private static final String AUDIO_CONVERT_EXECUTABLE = RESOURCES_FOLDER + "\\switch\\switch.exe";
+
+	private static final String COMMAND_STUB_1 = "cmd /c start " + RESOURCES_FOLDER + "\\scripts\\audioConvert1.bat ";
+	private static final String COMMAND_STUB_2 = "cmd /c start " + RESOURCES_FOLDER + "\\scripts\\audioConvert2.bat ";
 	private static final String SWITCH_PROCESS_ROOT = RESOURCES_FOLDER + "\\switchProcessing";
 	private static final String SWITCH_PROCESS_QUEUE = SWITCH_PROCESS_ROOT + "\\1-queued";
 	private static final String SWITCH_PROCESS_WAV = SWITCH_PROCESS_ROOT + "\\2-wav";
 	private static final String SWITCH_PROCESS_MP3 = SWITCH_PROCESS_ROOT + "\\3-mp3";
-	private static final String ORIGINAL_UPLOAD =  RESOURCES_FOLDER + "\\originalUpload\\";
-	private static final String CONVERTED_MP3 =  RESOURCES_FOLDER + "\\convertedMp3\\";
-	private static final String WAV_COORDINATES =  RESOURCES_FOLDER + "\\wavForm\\";
+	private static final String ORIGINAL_UPLOAD = RESOURCES_FOLDER + "\\originalUpload\\";
+	private static final String CONVERTED_MP3 = RESOURCES_FOLDER + "\\convertedMp3\\";
+	private static final String WAV_COORDINATES = RESOURCES_FOLDER + "\\wavForm\\";
 
 	public static void main(String[] args) throws UnsupportedAudioFileException, IOException, InterruptedException {
-		String sourceAudioFileName = "1466528157471";
+		String sourceAudioFileName = "1468673276781";
 		String sourceAudioFileExtension = "mp3";
 		TestConversion testConversion = new TestConversion();
 		int i = 0;

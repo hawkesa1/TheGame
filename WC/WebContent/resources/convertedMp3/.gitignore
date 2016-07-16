@@ -3,7 +3,7 @@
 
 # But not these files...
 !.gitignore
-1468673276781.MP3
+!1468673276781.MP3
 
 # ...even if they are in subdirectories
 !*/

@@ -3,7 +3,7 @@
 
 # But not these files...
 !.gitignore
-1466528157471.json
+!1466528157471.json
 
 # ...even if they are in subdirectories
 !*/
