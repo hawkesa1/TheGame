@@ -46,7 +46,7 @@ function saveLyrics(JSONFormattedLyricData, songId) {
 
 var anAvailableTrack;
 
-function loadUser(JSONFormattedLyricData, songId) {
+function loadUser() {
 	$.ajax({
 		type : 'GET',
 		url : './GetAvailableTracks',

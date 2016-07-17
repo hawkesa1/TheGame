@@ -74,6 +74,8 @@ $(document).ready(function($) {
 	addCanvasToPage()
 	bindCanvasTouchControls();
 	
+	loadUploader();
+	
 	
 	
 });

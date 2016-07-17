@@ -73,6 +73,12 @@ public class FileUploadServlet extends HttpServlet {
 						e.printStackTrace();
 					}
 					MP3MetaData.writeMP3MetaDataToDisk(mp3MetaData);
+					
+					if(userId==null)
+					{
+						//got to fix thsi bit!
+						userId="hawkesa";
+					}	
 					User user = User.readUserFromDisk(userId);
 					user.addTrackId(mp3MetaData.getUniqueId());
 					user.writeUserToDisk();

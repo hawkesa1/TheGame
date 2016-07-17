@@ -1,0 +1,36 @@
+#holder {
+	border: 4px dashed #ccc;
+	width: 400px;
+	height: 100px;
+}
+#holder.hover {
+	border: 4px dashed #0c0;
+}
+#holder.error {
+	border: 4px dashed red;
+}
+
+#holder p {
+	margin: 10px;
+	font-size: 14px;
+}
+
+progress {
+	margin-top:10px;
+	width: 408px;
+	height: 25px;
+}
+
+progress:after {
+	content: '';
+}
+
+.fail {
+	background: #c00;
+	padding: 2px;
+	color: #fff;
+}
+
+.hidden {
+	display: none !important;
+}
