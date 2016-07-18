@@ -68,7 +68,8 @@ var availableTracks = new Array();
 
 $(document).ready(function($) {
 	
-	loadUser();
+	loadUser("first");
+	
 	windowWidth = $(document).width();
 	windowHeight = $(document).height();
 	addCanvasToPage()

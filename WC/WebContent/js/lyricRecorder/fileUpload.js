@@ -33,7 +33,7 @@ function loadUploader() {
 			// Element.prototype, but then IE10 doesn't
 			// even give me access
 			// to the Element object. Brilliant.
-			//support[api].className = 'hidden';
+			// support[api].className = 'hidden';
 		}
 	});
 
@@ -58,7 +58,7 @@ function loadUploader() {
 							formData.append('file', file);
 							doAnUpload = true;
 
-							holder.innerHTML = '<p>Uploading '
+							holder.innerHTML = '<p>Step 1/3 - Uploading '
 									+ file.name
 									+ ' ('
 									+ (file.size ? (file.size / 1024 | 0)
@@ -82,14 +82,16 @@ function loadUploader() {
 		}
 
 		// now post a new XHR request
-		if (tests.formdata && doAnUpload) { 
+		if (tests.formdata && doAnUpload) {
 			var xhr = new XMLHttpRequest();
 			xhr.open('POST', './FileUploadServlet');
 			xhr.onload = function() {
-				progress.value = progress.innerHTML = 100;
+				//progress.value = progress.innerHTML = 100;
+				holder.innerHTML += '<p>Step 3/3 Downloading file and preparing interface</p>';
 				console.log("Complete!");
-				loadUser();
+				loadUser("last");
 				console.log("Loaded User!");
+				holder.innerHTML += '<p>Processing Complete ...</p>';
 			};
 
 			if (tests.progress) {
@@ -98,6 +100,9 @@ function loadUploader() {
 						var complete = (event.loaded / event.total * 100 | 0);
 						progress.value = progress.innerHTML = complete;
 						console.log(complete);
+						if (complete == 100) {
+							holder.innerHTML += '<p>Step 2/3 - Generating Waveform and coonverting file.  This process usually takes around 10 seconds, but may take longer depending on current server load.</p>';
+						}
 					}
 				}
 			}
@@ -132,5 +137,3 @@ function loadUploader() {
 	}
 
 }
-
-

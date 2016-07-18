@@ -1,6 +1,6 @@
 #holder {
 	border: 4px dashed #ccc;
-	width: 400px;
+	width: 792px;
 	height: 100px;
 }
 #holder.hover {
@@ -17,7 +17,7 @@
 
 progress {
 	margin-top:10px;
-	width: 408px;
+	width: 800px;
 	height: 25px;
 }
 

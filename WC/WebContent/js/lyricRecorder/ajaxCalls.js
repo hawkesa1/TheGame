@@ -46,7 +46,7 @@ function saveLyrics(JSONFormattedLyricData, songId) {
 
 var anAvailableTrack;
 
-function loadUser() {
+function loadUser(trackToLoadOnCompletion) {
 	$.ajax({
 		type : 'GET',
 		url : './GetAvailableTracks',
@@ -66,7 +66,16 @@ function loadUser() {
 				addTrack(text.mp3MetaDatas[i].uniqueId,
 						text.mp3MetaDatas[i].title)
 			}
-			loadATrack(text.mp3MetaDatas[0].uniqueId);
+			
+			
+			if (trackToLoadOnCompletion === 'first') {
+				loadATrack(text.mp3MetaDatas[0].uniqueId);
+			} else if (trackToLoadOnCompletion === 'last') {
+				loadATrack(text.mp3MetaDatas[text.mp3MetaDatas.length-1].uniqueId);
+			} else {
+				// do nothing
+			}
+			
 		},
 		error : function(xhr) {
 			alert("An error occured: " + xhr.status + " " + xhr.statusText);
