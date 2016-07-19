@@ -16,7 +16,7 @@ function loadATrack(selectedValue) {
 			$('#trackAlbum').html(availableTracks[i].album);
 		}
 	}
-
+	$("#loadTrack").val(selectedValue);
 	$('#lyricText').hide();
 	$('#lyricScript').hide();
 	$('#lyrics').show();

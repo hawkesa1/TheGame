@@ -79,9 +79,9 @@ public class FileUploadServlet extends HttpServlet {
 						//got to fix thsi bit!
 						userId="hawkesa";
 					}	
-					User user = User.readUserFromDisk(userId);
-					user.addTrackId(mp3MetaData.getUniqueId());
-					user.writeUserToDisk();
+					//User user = User.readUserFromDisk(userId);
+					//user.addTrackId(mp3MetaData.getUniqueId());
+					//user.writeUserToDisk();
 				}
 			}
 		} catch (FileUploadException e) {
@@ -99,9 +99,13 @@ public class FileUploadServlet extends HttpServlet {
 
 		// out.println("<h1>" + wavFormFile + "</h1>");
 
-		response.sendRedirect("lyricRecorderUpload.html?trackId=" + mp3MetaData.getUniqueId() + "&trackTitle="
-				+ mp3MetaData.getTitle() + "&trackAlbum=" + mp3MetaData.getAlbum() + "&trackArtist="
-				+ mp3MetaData.getArtist());
+		//response.sendRedirect("lyricRecorderUpload.html?trackId=" + mp3MetaData.getUniqueId() + "&trackTitle="
+		//		+ mp3MetaData.getTitle() + "&trackAlbum=" + mp3MetaData.getAlbum() + "&trackArtist="
+		//		+ mp3MetaData.getArtist());
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(mp3MetaData.toJSON());
 
 	}
 

@@ -85,12 +85,29 @@ function loadUploader() {
 		if (tests.formdata && doAnUpload) {
 			var xhr = new XMLHttpRequest();
 			xhr.open('POST', './FileUploadServlet');
-			xhr.onload = function() {
+			xhr.onload = function(progressEvent) {
 				//progress.value = progress.innerHTML = 100;
 				holder.innerHTML += '<p>Step 3/3 Downloading file and preparing interface</p>';
-				console.log("Complete!");
-				loadUser("last");
-				console.log("Loaded User!");
+				
+				
+				var json = JSON.parse(progressEvent.target.response);
+				
+				console.log(json);
+				console.log(json.uniqueId);
+				
+				
+				addTrack(json.uniqueId,
+						json.title)
+				
+				
+				
+				
+				
+				loadATrack(json.uniqueId);
+				$('#trackTitle').html(json.title);
+				$('#trackArtist').html(json.artist);
+				$('#trackAlbum').html(json.album);
+				
 				holder.innerHTML += '<p>Processing Complete ...</p>';
 			};
 
