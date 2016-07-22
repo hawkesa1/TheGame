@@ -1,0 +1,3 @@
+[mm:ss.hs] <mm:ss.hs> line 1 lyric #1 <mm:ss.hs> line 1 lyric #2 <mm:ss.hs>
+[mm:ss.hs] <mm:ss.hs> line 2 lyric #1 <mm:ss.hs> line 2 lyric #2 <mm:ss.hs>
+[mm:ss.hs] <mm:ss.hs> line 3 lyric #1 <mm:ss.hs> line 3 lyric #2 <mm:ss.hs>
