@@ -19,7 +19,7 @@ public class Mp3Parse {
 		// detecting the file type
 		BodyContentHandler handler = new BodyContentHandler();
 		Metadata metadata = new Metadata();
-		FileInputStream inputstream = new FileInputStream(new File("C:\\Users\\Hawkes\\Desktop\\01 - Intro.mp3"));
+		FileInputStream inputstream = new FileInputStream(new File("C:\\Users\\Hawkes\\Desktop\\04 Wasting My Young Years.mp3"));
 		ParseContext pcontext = new ParseContext();
 
 		// Mp3 parser
