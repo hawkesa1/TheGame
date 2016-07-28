@@ -117,9 +117,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 					class="button" value="Word" type="button"></input>
 			</div>
 			<div id="lyricsContainer">
-				<textarea id="lyricText">
-</textarea>
-				<textarea id="lyricScript"></textarea>
+				<textarea id="lyricText"></textarea>
+				
+				<div id="lyricScriptContainer">
+				<div id="lyricScriptOptions">
+				
+				<select id="lyricFileFormatsSelect">
+				<option value="JSON">JSON (LyricRecorder.com)</option>
+				<option value="LRC">LRC</option>
+				<option value="EnhancedLRC">Enhanced LRC</option>
+				<option value="4">RealText</option>
+				</select>
+				
+				</div>
+				
+				<textarea id="lyricScript">
+				</textarea></div>
 				<div id="lyrics"></div>
 			</div>
 
