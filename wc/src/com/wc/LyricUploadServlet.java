@@ -1,13 +1,21 @@
 package com.wc;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.CannotWriteException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.tag.TagException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -43,14 +51,86 @@ public class LyricUploadServlet extends HttpServlet {
 		String jSONFormattedLyricData = request.getParameter("JSONFormattedLyricData");
 		String songId = request.getParameter("songId");
 
-		writeToFile(jSONFormattedLyricData, songId);
+		
+		MP3MetaData mP3MetaData=writeToMetaData(jSONFormattedLyricData, songId);
+		writeToFile(mP3MetaData.toJSON(), songId);
+		
+		
+		
 		response.setContentType("text/plain");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(currentTime);
 	}
 
+	private MP3MetaData writeToMetaData(String jSONFormattedLyricData, String songId)
+	{
+		String filePath1 = RESOURCES_FOLDER + "\\convertedMp3\\" + songId + ".MP3";
+		TagEditor tagEditor=new TagEditor();
+		String description = "LYRICRECORDER.COM";
+		String text = prettyPrintJSON(jSONFormattedLyricData);
+		
+		try {
+			tagEditor.setCustomTag(new File(filePath1), description, text);
+		} catch (CannotWriteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (CannotReadException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TagException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ReadOnlyFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidAudioFrameException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		MP3MetaData mP3MetaData=null;
+		try {
+			mP3MetaData=convert(tagEditor.readAllTags(new File(filePath1)), songId);
+		} catch (CannotReadException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TagException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ReadOnlyFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidAudioFrameException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return mP3MetaData;
+		
+		
+		
+	}
+	
+	private  MP3MetaData convert(HashMap<String, String> allTags, String currentTime)
+	{
+		MP3MetaData mp3MetaData=new MP3MetaData();
+		mp3MetaData.setAlbum(allTags.get("ALBUM"));
+		mp3MetaData.setArtist(allTags.get("ARTIST"));
+		mp3MetaData.setTitle(allTags.get("TITLE"));
+		mp3MetaData.setUnsynchronisedLyrics(allTags.get("LYRICS"));
+		mp3MetaData.setLyricRecorderSynchronisedLyrics(allTags.get("LYRICRECORDER.COM"));
+		mp3MetaData.setAllTags(allTags);
+		mp3MetaData.setUniqueId(currentTime);
+		return mp3MetaData;
+	}
+	
 	private void writeToFile(String jSONFormattedLyricData, String songId) {
-		String filePath1 = RESOURCES_FOLDER + "\\lyricData\\" + songId + ".json";
+		String filePath1 = RESOURCES_FOLDER + "\\mp3MetaData\\" + songId + ".json";
 		try (FileWriter file = new FileWriter(filePath1)) {
 			file.write(prettyPrintJSON(jSONFormattedLyricData));
 		} catch (IOException e) {

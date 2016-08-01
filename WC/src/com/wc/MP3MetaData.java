@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -15,6 +16,9 @@ public class MP3MetaData {
 	private String artist;
 	private String album;
 	private String uniqueId;
+	private String unsynchronisedLyrics;
+	private String lyricRecorderSynchronisedLyrics;
+	HashMap<String, String> allTags;
 
 	public MP3MetaData() {
 		super();
@@ -26,6 +30,33 @@ public class MP3MetaData {
 		this.artist = artist;
 		this.album = album;
 		this.uniqueId = uniqueId;
+	}
+	
+	
+	
+	
+	public String getLyricRecorderSynchronisedLyrics() {
+		return lyricRecorderSynchronisedLyrics;
+	}
+
+	public void setLyricRecorderSynchronisedLyrics(String lyricRecorderSynchronisedLyrics) {
+		this.lyricRecorderSynchronisedLyrics = lyricRecorderSynchronisedLyrics;
+	}
+
+	public String getUnsynchronisedLyrics() {
+		return unsynchronisedLyrics;
+	}
+
+	public void setUnsynchronisedLyrics(String unsynchronisedLyrics) {
+		this.unsynchronisedLyrics = unsynchronisedLyrics;
+	}
+
+	public HashMap<String, String> getAllTags() {
+		return allTags;
+	}
+
+	public void setAllTags(HashMap<String, String> allTags) {
+		this.allTags = allTags;
 	}
 
 	public String getTitle() {
@@ -82,4 +113,7 @@ public class MP3MetaData {
 	}
 
 	private static String RESOURCES_FOLDER = System.getProperty("RESOURCES_FOLDER");
+	
+	
+	
 }

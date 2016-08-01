@@ -1,3 +1,4 @@
+
 function loadATrack(selectedValue) {
 	var audio = document.getElementById('audio');
 	var source = document.getElementById('audioSrc');
@@ -117,7 +118,7 @@ function loadWaveForm(wavFormFile) {
 function loadLyricsData(wavFormFile) {
 	$.ajax({
 		type : 'GET',
-		url : './resources/lyricData/' + wavFormFile + '.json',
+		url : './resources/mp3MetaData/' + wavFormFile + '.json',
 		data : null,
 		cache : false,
 		success : function(text) {
@@ -129,8 +130,31 @@ function loadLyricsData(wavFormFile) {
 		}
 	});
 	function generateLyricData(text) {
-		lineArray = text;
-		$('#lyrics').html(generateLyrics(lineArray));
-		addClickToLyrics();
+		
+		console.log("alex")
+		console.log(text);
+		
+		
+		if (text.lyricRecorderSynchronisedLyrics !="")
+		{
+			console.log("loading synchronised lyrics");
+			lineArray=JSON.parse(text.lyricRecorderSynchronisedLyrics);
+			$('#lyrics').html(generateLyrics(lineArray));
+			addClickToLyrics();
+		}	else if(text.unsynchronisedLyrics !="")
+		{
+			console.log ("loading unsycnhronised lyrics");
+			resetStuff;
+			enableLyricTextView(text.unsynchronisedLyrics)
+		}
+		else
+		{
+			console.log ("No lyrics found");
+			resetStuff;
+			enableLyricTextView("Please enter some lyrics here ...")
+		}	
+		
+		
+		
 	}
 }

@@ -357,9 +357,17 @@ function wordClicked(wordId) {
 
 }
 
-function generateLyrics(lines) {
+
+function resetStuff()
+{
 	onlyWordsArray = new Array();
 	words = new Array();
+	lineArray=new Array();
+}
+
+
+function generateLyrics(lines) {
+	resetStuff();
 	lineArray = lines;
 	var html = "";
 	var words;

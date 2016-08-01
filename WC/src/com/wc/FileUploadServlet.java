@@ -1,10 +1,13 @@
 package com.wc;
 
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -19,10 +22,14 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
-import org.farng.mp3.MP3File;
-import org.farng.mp3.TagException;
-import org.farng.mp3.id3.AbstractID3v2;
-import org.farng.mp3.id3.ID3v1;
+import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 import test.TestConversion;
 
@@ -73,15 +80,17 @@ public class FileUploadServlet extends HttpServlet {
 						e.printStackTrace();
 					}
 					MP3MetaData.writeMP3MetaDataToDisk(mp3MetaData);
+
 					
-					if(userId==null)
-					{
-						//got to fix thsi bit!
-						userId="hawkesa";
-					}	
-					//User user = User.readUserFromDisk(userId);
-					//user.addTrackId(mp3MetaData.getUniqueId());
-					//user.writeUserToDisk();
+					
+					
+					if (userId == null) {
+						// got to fix thsi bit!
+						userId = "hawkesa";
+					}
+					// User user = User.readUserFromDisk(userId);
+					// user.addTrackId(mp3MetaData.getUniqueId());
+					// user.writeUserToDisk();
 				}
 			}
 		} catch (FileUploadException e) {
@@ -99,85 +108,72 @@ public class FileUploadServlet extends HttpServlet {
 
 		// out.println("<h1>" + wavFormFile + "</h1>");
 
-		//response.sendRedirect("lyricRecorderUpload.html?trackId=" + mp3MetaData.getUniqueId() + "&trackTitle="
-		//		+ mp3MetaData.getTitle() + "&trackAlbum=" + mp3MetaData.getAlbum() + "&trackArtist="
-		//		+ mp3MetaData.getArtist());
-		
+		// response.sendRedirect("lyricRecorderUpload.html?trackId=" +
+		// mp3MetaData.getUniqueId() + "&trackTitle="
+		// + mp3MetaData.getTitle() + "&trackAlbum=" + mp3MetaData.getAlbum() +
+		// "&trackArtist="
+		// + mp3MetaData.getArtist());
+
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(mp3MetaData.toJSON());
-
 	}
+	
+	
+
 
 	// java -DRESOURCES_FOLDER="H:\Development\productionEnvironment\resources"
-
-	private static String RESOURCES_FOLDER = System.getProperty("RESOURCES_FOLDER");
-
 	// private static final String RESOURCES_FOLDER =
 	// "C:\\Users\\Hawkes\\git\\WC\\WebContent\\resources";
+	private static String RESOURCES_FOLDER = System.getProperty("RESOURCES_FOLDER");
 
 	private MP3MetaData processUploadedFile(FileItem item, String currentTime)
 			throws IOException, UnsupportedAudioFileException, InterruptedException {
-
 		String ext = FilenameUtils.getExtension(item.getName());
-		System.out.println("Gahhhhhhhh " + ext);
-
 		String filePath1 = RESOURCES_FOLDER + "\\originalUpload\\" + currentTime + "." + ext;
-		String filePath2 = RESOURCES_FOLDER + "\\generatedWav\\" + currentTime + ".wav";
-		String filePath3 = RESOURCES_FOLDER + "\\wavForm\\" + currentTime + ".txt";
-
 		System.out.println("RESOURCES_FOLDER=" + RESOURCES_FOLDER);
-
 		writeUploadedFileToDisk(item, filePath1);
-
-		// Alex alex = new Alex();
-		// Vector<Coordinate> coordinates = alex.convertMP3ToWAV(filePath1,
-		// filePath2);
-
 		TestConversion testConversion = new TestConversion();
 		testConversion.processFile(currentTime, ext, RESOURCES_FOLDER);
 		MP3MetaData mp3MetaData = null;
-		
-		if (ext.equalsIgnoreCase("mp3")) {
-			mp3MetaData = readMP3MetaData(currentTime, ext);
-		} else {
-			mp3MetaData = new MP3MetaData();
-			mp3MetaData.setUniqueId(currentTime);
-			mp3MetaData.setTitle(FilenameUtils.getBaseName(item.getName()));
-			mp3MetaData.setAlbum("Unknown: " + ext);
-			mp3MetaData.setArtist("Unknown: " + ext);
-		}
-
+		mp3MetaData = readMP3MetaData(currentTime, ext);
 		return mp3MetaData;
 	}
 
-	private MP3MetaData readMP3MetaData(String currentTime, String ext) {
+	private MP3MetaData readMP3MetaData(String currentTime, String ext) throws IOException {
 		String filePath = RESOURCES_FOLDER + "\\originalUpload\\" + currentTime + "." + ext;
-		MP3MetaData mp3MetaData = new MP3MetaData();
+		TagEditor tagEditor = new TagEditor();
+		File file = new File(filePath);
+		HashMap<String, String> allTags = null;
 		try {
-			MP3File mp3file = new MP3File(filePath);
-			ID3v1 tagv1 = mp3file.getID3v1Tag();
-			AbstractID3v2 tagv2 = mp3file.getID3v2Tag();
-
-			if (tagv1 == null) {
-				mp3MetaData.setTitle(tagv2.getSongTitle());
-				mp3MetaData.setAlbum(tagv2.getAlbumTitle());
-				mp3MetaData.setArtist(tagv2.getLeadArtist());
-			} else {
-				mp3MetaData.setTitle(tagv1.getTitle());
-				mp3MetaData.setAlbum(tagv1.getAlbum());
-				mp3MetaData.setArtist(tagv1.getArtist());
-			}
-			mp3MetaData.setUniqueId(currentTime);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			allTags = tagEditor.readAllTags(file);
+		} catch (CannotReadException e) {
 			e.printStackTrace();
-		} catch (TagException e) {
-			// TODO Auto-generated catch block
+		} catch (org.jaudiotagger.tag.TagException e) {
+			e.printStackTrace();
+		} catch (ReadOnlyFileException e) {
+			e.printStackTrace();
+		} catch (InvalidAudioFrameException e) {
 			e.printStackTrace();
 		}
+		return convert(allTags, currentTime);
+	}
+	
+	private  MP3MetaData convert(HashMap<String, String> allTags, String currentTime)
+	{
+		MP3MetaData mp3MetaData=new MP3MetaData();
+		mp3MetaData.setAlbum(allTags.get("ALBUM"));
+		mp3MetaData.setArtist(allTags.get("ARTIST"));
+		mp3MetaData.setTitle(allTags.get("TITLE"));
+		mp3MetaData.setUnsynchronisedLyrics(allTags.get("LYRICS"));
+		mp3MetaData.setLyricRecorderSynchronisedLyrics(allTags.get("LYRICRECORDER.COM"));
+		mp3MetaData.setAllTags(allTags);
+		mp3MetaData.setUniqueId(currentTime);
 		return mp3MetaData;
 	}
+	
+	
+	
 
 	private void writeUploadedFileToDisk(FileItem item, String filePath) throws IOException {
 

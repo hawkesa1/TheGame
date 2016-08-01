@@ -86,28 +86,26 @@ function loadUploader() {
 			var xhr = new XMLHttpRequest();
 			xhr.open('POST', './FileUploadServlet');
 			xhr.onload = function(progressEvent) {
-				//progress.value = progress.innerHTML = 100;
+				// progress.value = progress.innerHTML = 100;
 				holder.innerHTML += '<p>Step 3/3 Downloading file and preparing interface</p>';
-				
-				
+
 				var json = JSON.parse(progressEvent.target.response);
-				
 				console.log(json);
 				console.log(json.uniqueId);
+				addTrack(json.uniqueId, json.title)
+
 				
-				
-				addTrack(json.uniqueId,
-						json.title)
-				
-				
-				
-				
-				
-				loadATrack(json.uniqueId);
+				//Only do this when runnign in eclipse!!!!
+				setTimeout(function() {
+					loadATrack(json.uniqueId);
+				}, 5000);
+
 				$('#trackTitle').html(json.title);
 				$('#trackArtist').html(json.artist);
 				$('#trackAlbum').html(json.album);
-				
+
+				// $('#lyricText').html("helloAlex"+json.unsynchronisedLyrics);
+
 				holder.innerHTML += '<p>Processing Complete ...</p>';
 			};
 

@@ -32,6 +32,15 @@ public class CustomTagText {
 		customTagText.setCustomTag(f, description, text);
 	}
 
+	public String readCustomTag()
+	{
+		
+		
+		return null;
+		
+	}
+	
+	
 	public boolean setCustomTag(AudioFile audioFile, String description, String text) {
 		FrameBodyTXXX txxxBody = new FrameBodyTXXX();
 		txxxBody.setDescription(description);

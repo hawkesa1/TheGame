@@ -373,7 +373,7 @@ function lineArrayToEnhancedLRC() {
 	return lrc;
 }
 
-function enableLyricTextView() {
+function enableLyricTextView(textToShow) {
 
 	if (currentLyricView === "TEXT_VIEW") {
 	} else if (currentLyricView === "SCRIPT_VIEW") {
@@ -381,12 +381,19 @@ function enableLyricTextView() {
 	} else if (currentLyricView === "WORD_VIEW") {
 
 	}
-
-	if (confirm('You  will lose any entered timings if you return to text view.  Are you sure?')) {
-		$('#lyricText').show();
-		$('#lyrics').hide();
-		$('#lyricScript').hide();
-		var html = "";
+	$('#lyricText').show();
+	$('#lyrics').hide();
+	$('#lyricScript').hide();
+	//if (confirm('You  will lose any entered timings if you return to text view.  Are you sure?')) {
+	
+	var html = "";
+	
+	if(textToShow){
+		html=textToShow;
+	}else
+		{
+	
+		
 		for (var i = 0; i < lineArray.length; i++) {
 			words = lineArray[i].words;
 			for (var j = 0; j < words.length; j++) {
@@ -401,6 +408,7 @@ function enableLyricTextView() {
 		lineArray.length = 0;
 		onlyWordsArray.length = 0;
 	}
+	$('#lyricText').html(html);
 	currentLyricView = "TEXT_VIEW";
 }
 
