@@ -132,7 +132,7 @@ function loadLyricsData(wavFormFile) {
 		console.log(text);
 		
 		
-		if (text.lyricRecorderSynchronisedLyrics !="")
+		if (text.lyricRecorderSynchronisedLyrics && text.lyricRecorderSynchronisedLyrics !="")
 		{
 			console.log("loading synchronised lyrics");
 			resetStuff();

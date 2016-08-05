@@ -54,7 +54,7 @@ function loadUploader() {
 				if (tests.formdata) {
 					if (file.type.split("/")[0] === "audio") {
 
-						if (file.size < (10 * 1024 * 1024)) {
+						if (file.size < (15 * 1024 * 1024)) {
 							formData.append('file', file);
 							doAnUpload = true;
 
@@ -64,7 +64,7 @@ function loadUploader() {
 									+ (file.size ? (file.size / 1024 | 0)
 											+ ' Kb)' : '') + '</p>';
 						} else {
-							holder.innerHTML = '<p> The maximum file size is 10 Mb.  This file is: '
+							holder.innerHTML = '<p> The maximum file size is 15 Mb.  This file is: '
 									+ parseFloat((file.size / 1024 / 1024))
 											.toFixed(2) + ' Mb</p>';
 							holder.className = 'error'
