@@ -3,6 +3,7 @@ var waveForm;
 var canvas1, context1;
 var touchDiv;
 var mp3Location = "./resources/convertedMp3/";
+var downloadableMp3Location = "./resources/convertedMp3/";
 var audioTime;
 var lineArray = new Array();
 var onlyWordsArray = new Array();
