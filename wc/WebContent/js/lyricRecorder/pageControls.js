@@ -184,7 +184,8 @@ $(function() {
 var currentlyAddingWord = false;
 
 function formatTime(number) {
-	return number.toFixed(2);
+	//return number.toFixed(2); // this seems to break drag and drop!
+	return number;
 }
 
 $(function() {

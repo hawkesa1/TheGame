@@ -164,11 +164,13 @@ WaveForm.prototype.draw = function(time, ctx) {
 					//
 					// Allow a word to be selected if it is currently paused
 					if (clickedWhilePausedX > 0) {
+						
 						if (clickedWhilePausedX > wordX
 								&& clickedWhilePausedX < wordX + width) {
-							// start
+							console.log("GOOOOPKLAAAAA" + wordX);
 							if (clickedWhilePausedX > wordX
 									&& clickedWhilePausedX < wordX + 5) {
+								
 								startOfWordMouseDownX = clickedWhilePausedX;
 								// end
 							} else if (clickedWhilePausedX > (wordX + width - 5)
@@ -177,6 +179,7 @@ WaveForm.prototype.draw = function(time, ctx) {
 								endOfWordMouseDownX = clickedWhilePausedX;
 							} else {
 								// middle
+								console.log("GOOOOPKL");
 								middleOfWordMouseDownX = clickedWhilePausedX;
 							}
 							clickedWhilePausedX = 0;
