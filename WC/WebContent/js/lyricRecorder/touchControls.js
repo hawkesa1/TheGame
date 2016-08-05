@@ -9,6 +9,7 @@ function bindCanvasTouchControls() {
 		if (clickY > 256) {
 			if (document.getElementById('audio').paused) {
 				clickedWhilePausedX = clickX;
+				updateLog("clickedWhilePausedX="+clickedWhilePausedX);
 			}
 		} else if (clickY < 25 && clickX > 200) {
 			trackingClicked = clickX;
@@ -78,6 +79,7 @@ function bindCanvasTouchControls() {
 						} else if (clickY > 256) {
 							hoverWhilePausedX = clickX;
 							if (startOfWordMouseDownX > 0) {
+								
 								if (currentSelectedWord.startTime
 										+ ((clickX - startOfWordMouseDownX) * 5) < (currentSelectedWord.endTime - 50)) {
 									if (currentSelectedWordPreviousWord != null
@@ -112,21 +114,37 @@ function bindCanvasTouchControls() {
 								endOfWordMouseDownX = clickX;
 								changeCurrentSelectedWord();
 							} else if (middleOfWordMouseDownX > 0) {
+								
+								
+								var temp1=parseFloat(currentSelectedWord.startTime) + ((clickX - middleOfWordMouseDownX) * 5);
+								var temp2=parseFloat(currentSelectedWord.endTime) + ((clickX - middleOfWordMouseDownX) * 5);
+								var temp3=parseFloat(currentSelectedWordNextWord.startTime) - 10;
+	
+								+ ((clickX - middleOfWordMouseDownX) * 5);
+								updateLog("currentSelectedWordPreviousWord="+currentSelectedWordPreviousWord);
+								updateLog("temp1="+temp1);
+								updateLog("temp2="+temp2);
+								updateLog("temp3="+temp3);
+								
 								if (currentSelectedWordPreviousWord != null
 										&& currentSelectedWord.startTime
 												+ ((clickX - middleOfWordMouseDownX) * 5) > (currentSelectedWordPreviousWord.endTime + 10)
 										&& currentSelectedWord.endTime
 												+ ((clickX - middleOfWordMouseDownX) * 5) < currentSelectedWordNextWord.startTime - 10) {
+									updateLog("gazoooya="+clickX - middleOfWordMouseDownX);
+									
 									currentSelectedWord.endTime = currentSelectedWord.endTime
 											+ ((clickX - middleOfWordMouseDownX) * 5);
 									currentSelectedWord.startTime = currentSelectedWord.startTime
 											+ ((clickX - middleOfWordMouseDownX) * 5);
 
 								} else if (currentSelectedWordPreviousWord == null
-										&& currentSelectedWord.startTime
-												+ ((clickX - middleOfWordMouseDownX) * 5) > 0
-										&& currentSelectedWord.endTime
-												+ ((clickX - middleOfWordMouseDownX) * 5) < currentSelectedWordNextWord.startTime - 10) {
+										&& temp1 > 0
+										&& temp2 < temp3) {
+									
+									
+									updateLog("gazoooy="+clickX - middleOfWordMouseDownX);
+									
 									currentSelectedWord.endTime = currentSelectedWord.endTime
 											+ ((clickX - middleOfWordMouseDownX) * 5);
 									currentSelectedWord.startTime = currentSelectedWord.startTime
@@ -184,6 +202,6 @@ function setCursor(hoverX, hoverY) {
 }
 
 function updateLog(text1) {
-	// console.log(text1);
+	//console.log(text1);
 	// $('#logMessages').text(" " + text1);
 }

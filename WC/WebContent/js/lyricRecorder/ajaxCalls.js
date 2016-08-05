@@ -22,7 +22,6 @@ function loadATrack(selectedValue) {
 	$('#lyricScript').hide();
 	$('#lyrics').show();
 	currentLyricView = "WORD_VIEW";
-
 }
 
 function saveLyrics(JSONFormattedLyricData, songId) {
@@ -56,7 +55,6 @@ function loadUser(trackToLoadOnCompletion) {
 		},
 		success : function(text) {
 			availableTracks = new Array();
-
 			for (var i = 0; i < text.mp3MetaDatas.length; i++) {
 				anAvailableTrack = new TrackObject();
 				anAvailableTrack.title = text.mp3MetaDatas[i].title;
@@ -67,8 +65,6 @@ function loadUser(trackToLoadOnCompletion) {
 				addTrack(text.mp3MetaDatas[i].uniqueId,
 						text.mp3MetaDatas[i].title)
 			}
-			
-			
 			if (trackToLoadOnCompletion === 'first') {
 				loadATrack(text.mp3MetaDatas[0].uniqueId);
 			} else if (trackToLoadOnCompletion === 'last') {
@@ -76,7 +72,6 @@ function loadUser(trackToLoadOnCompletion) {
 			} else {
 				// do nothing
 			}
-			
 		},
 		error : function(xhr) {
 			alert("An error occured: " + xhr.status + " " + xhr.statusText);
@@ -138,19 +133,21 @@ function loadLyricsData(wavFormFile) {
 		if (text.lyricRecorderSynchronisedLyrics !="")
 		{
 			console.log("loading synchronised lyrics");
+			resetStuff();
 			lineArray=JSON.parse(text.lyricRecorderSynchronisedLyrics);
 			$('#lyrics').html(generateLyrics(lineArray));
 			addClickToLyrics();
 		}	else if(text.unsynchronisedLyrics !="")
 		{
 			console.log ("loading unsycnhronised lyrics");
-			resetStuff;
-			enableLyricTextView(text.unsynchronisedLyrics)
+			resetStuff();
+			enableLyricTextView(text.unsynchronisedLyrics);
+			
 		}
 		else
 		{
 			console.log ("No lyrics found");
-			resetStuff;
+			resetStuff();
 			enableLyricTextView("Please enter some lyrics here ...")
 		}	
 		

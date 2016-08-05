@@ -96,17 +96,20 @@ function loadUploader() {
 
 				
 				//Only do this when runnign in eclipse!!!!
+				holder.innerHTML += '<p>Waiting for eclipse to refresh ...</p>';
 				setTimeout(function() {
 					loadATrack(json.uniqueId);
+					$('#trackTitle').html(json.title);
+					$('#trackArtist').html(json.artist);
+					$('#trackAlbum').html(json.album);
+					holder.innerHTML += '<p>Processing Complete ...</p>';
 				}, 5000);
 
-				$('#trackTitle').html(json.title);
-				$('#trackArtist').html(json.artist);
-				$('#trackAlbum').html(json.album);
+				
 
 				// $('#lyricText').html("helloAlex"+json.unsynchronisedLyrics);
 
-				holder.innerHTML += '<p>Processing Complete ...</p>';
+				
 			};
 
 			if (tests.progress) {

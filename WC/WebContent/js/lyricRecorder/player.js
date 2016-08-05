@@ -67,19 +67,20 @@ var availableTracks = new Array();
 
 
 $(document).ready(function($) {
-	
+	setGlobalPageDimensions();
 	loadUser("first");
-	
-	windowWidth = $(document).width();
-	windowHeight = $(document).height();
-	addCanvasToPage()
+	addCanvasToPage();
 	bindCanvasTouchControls();
 	
+	
 	loadUploader();
-	
-	
-	
 });
+
+function setGlobalPageDimensions()
+{
+	windowWidth = $(document).width();
+	windowHeight = $(document).height();
+}
 
 function addCanvasToPage() {
 	canvas1 = document.createElement('canvas');
@@ -97,9 +98,6 @@ function lineArrayToJSON() {
 
 function addTrack(trackId, trackName) {
 	console.log("Add Track: " + trackId + " " + trackName);
-	
-
-	
 	$('#loadTrack').append(
 			$("<option></option>").attr("value", trackId).text(trackName));
 }
@@ -109,7 +107,6 @@ function changeCurrentPlayingWordId() {
 	if (currentPlayingWord) {
 		$('#' + currentPlayingWordId).addClass("wordPlaying");
 		$('#currentWord').html(currentPlayingWord.word);
-
 		var container = $('#lyrics')
 		var scrollTo = $('#' + currentPlayingWordId);
 		container
