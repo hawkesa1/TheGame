@@ -39,8 +39,10 @@ function saveLyrics(JSONFormattedLyricData, songId) {
 			alert("An error occured: " + xhr.status + " " + xhr.statusText);
 		}
 	});
-	function successfullySavedLyrics(text) {
-		console.log("Woohoo:" + text);
+	function successfullySavedLyrics(mp3MetaData1) {
+		var mp3MetaData=JSON.parse(mp3MetaData1);
+		var text=mp3MetaData.title ? mp3MetaData.title : mp3MetaData.uniqueId;
+		$('#downloadableLink').html("<a href='"+downloadableMp3Location + mp3MetaData.uniqueId+".MP3' download='"+text+".MP3'>"+text+".MP3</a>");
 	}
 }
 
